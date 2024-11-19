@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+	implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
