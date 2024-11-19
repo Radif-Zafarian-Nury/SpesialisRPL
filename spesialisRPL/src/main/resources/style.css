@@ -38,6 +38,7 @@ header {
 
 .banner {
     height: 70vh;
+    width: 100%;
     overflow: hidden;
     display: flex;
 }
