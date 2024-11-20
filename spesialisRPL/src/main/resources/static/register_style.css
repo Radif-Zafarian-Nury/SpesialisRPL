@@ -6,6 +6,10 @@ body{
     height:100vh;
     width: 100vw;
 }
+label{
+    display: flex;
+    align-items: center;
+}
 .wrapper{
     height: 100%;
     width: auto;
@@ -28,8 +32,8 @@ form {
 .register_container{
     display: grid;
     left:50%;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr 1fr 0.5fr;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(10, auto);
 }
 
 input[type=text], input[type=password] {
@@ -43,7 +47,7 @@ input[type=text], input[type=password] {
 label[for=nama]{
     grid-column: 1;
     grid-row:1;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-bottom:10px;
     margin-left:10px;
     align-items: center;
@@ -80,6 +84,7 @@ label[for=confpassword]{
 }
 input[name="nama"]{
     grid-column: 2/-1;
+    margin-top: 20px;
     grid-row:1;
 }
 input[name="nik"]{
@@ -102,11 +107,20 @@ input[name="confpassword"]{
     grid-column: 2/-1;
     grid-row:6;
 }
+input[type="radio"]{
+    margin-left: 10px;
+    height: 75%;
+    width: 10%;
+}
 .wrapper_p{
+    display: flex;
+    align-items: center;
     grid-column: 2;
     grid-row:7;
 }
 .wrapper_l{
+    display: flex;
+    align-items: center;
     grid-column: 2;
     grid-row:8;
 }
@@ -131,20 +145,9 @@ button:hover {
     text-align: right;
     grid-row: 10;
     grid-column: 1/-1;
-}
-/* .ask{
-    margin-left: 10px;
-    grid-row:10;
-    grid-column: 1/-1;
-    text-align: right;
-}
-.login{
-    text-align: right;
-    grid-row:10;
-    grid-column:3;
-    color:black;
+    margin-bottom:20px;
     margin-right: 10px;
-} */
+}
 
 @media only screen and (min-width: 412px) {
 
