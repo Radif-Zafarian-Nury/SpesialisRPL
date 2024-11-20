@@ -188,18 +188,5 @@
     </div>
 </div>
 
-<script>
-    const form = document.getElementById('registerForm');
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const name = document.getElementById('patientName').value;
-        const doctor = document.getElementById('doctor').value;
-        const schedule = document.getElementById('schedule').value;
-        alert(`Pasien ${name} berhasil didaftarkan ke ${doctor} pada jadwal ${schedule}.`);
-        form.reset();
-    });
-</script>
-
 </body>
 </html>

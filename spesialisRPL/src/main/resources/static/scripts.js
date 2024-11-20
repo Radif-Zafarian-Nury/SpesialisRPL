@@ -4,7 +4,7 @@
         location.href = "/"
     })
 
-    const loginButton = document.querySelector("login");
+    const loginButton = document.querySelector(".login");
     loginButton.addEventListener('mouseclick', (event) => {
         location.href = "redirect:/index.html"
     })
