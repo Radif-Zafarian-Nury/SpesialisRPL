@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register to WomLinic+</title>
+    <link rel="stylesheet" href="/register_style.css">  
+
+</head>
+<body>
+    <a href="index.html">
+        <img src="assets/home.png" class="home_logo" />
+    </a>
+    <div class="wrapper">
+        <form action="" class="register_form" method="post">
+            <div class="register_container">
+                <label for="nama"><b>Nama</b></label>
+                <input type="text" name="nama" required><br>
+                <label for="nik"><b>NIK</b></label>
+                <input type="text" name="nik" required><br>
+                <label for="email"><b>Email</b></label>
+                <input type="text" name="email" required><br>
+                <label for="alamat"><b>Alamat</b></label>
+                <input type="text" name="alamat" required><br>
+                <label for="password"><b>Kata Sandi</b></label>
+                <input type="password" name="password" required><br>
+                <label for="confpassword"><b>Ulangi Kata Sandi</b></label>
+                <input type="password" name="confpassword" required><br>
+                
+
+                <span class="label_jnskelamin"><b>Jenis Kelamin</b></span>
+                <div class="wrapper_p">
+                    <input type="radio" name="jns_kelamin" value="Perempuan" required>
+                    <label for="perempuan">Perempuan</label><br>
+                </div>
+                <div class="wrapper_l">
+                    <input type="radio" name="jns_kelamin" value="Laki-laki">
+                    <label for="lakilaki">Laki-laki</label><br>
+                </div>
+            
+                <button type="submit">Registrasi</button> <br>
+                <div class="wrapper_ask">
+                    <span class="ask">Sudah memiliki akun?</span>
+                    <a href="login.html" class="login">
+                        <span>Masuk</span>
+                    </a>
+                </div>
+               
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
