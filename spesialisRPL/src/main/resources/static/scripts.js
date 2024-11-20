@@ -1,18 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-    //Server Color
-    const title = document.querySelector('h1');
-    title.style.backgroundColor = serverColor;
-    console.log("Server Color:", serverColor);
+(function() {
+    const homePage = document.querySelector("homeButton");
+    homePage.addEventListener('mouseclick', (event) => {
+        location.href = "/"
+    })
 
-
-    //Button Color
-    const buttons = document.querySelectorAll("button");
-    buttons.forEach(button => {
-        button.addEventListener("click", () => {
-            const color = button.textContent;
-            
-            title.style.backgroundColor = color;
-            window.location.href = `/?color=${color}`;
-        });
-    });
-});
+    const loginButton = document.querySelector("login");
+    loginButton.addEventListener('mouseclick', (event) => {
+        location.href = "redirect:/index.html"
+    })
+})();
