@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Mendaftarkan Pasien</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: #7faaa7;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+        .sidebar img {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        .sidebar button {
+            background-color: white;
+            color: rgb(4, 155, 255);
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .sidebar button:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Main content styling */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        header {
+            background-color: #a1c9c7;
+            color: white;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: #a1c9c7;
+            outline: none;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .form-actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-actions .submit-btn {
+            background-color: #a1c9c7;
+            color: white;
+        }
+        .form-actions .submit-btn:hover {
+            opacity: 0.9;
+        }
+        .form-actions .reset-btn {
+            background-color: #ddd;
+            color: #333;
+        }
+        .form-actions .reset-btn:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <img src="static/assets/WomLinic+ Logo.png" alt="Logo">
+    <button>Mendaftarkan Pasien</button>
+    <button>Edit Data Dokter</button>
+    <button>Buat Akun Baru</button>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <header>
+        Halaman Mendaftarkan Pasien
+    </header>
+
+    <div class="form-container">
+        <h2>Formulir Pendaftaran</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="patientName">Nama Pasien</label>
+                <input type="text" id="patientName" name="patientName" placeholder="Masukkan nama pasien" required>
+            </div>
+            <div class="form-group">
+                <label for="patientDOB">Tanggal Lahir</label>
+                <input type="date" id="patientDOB" name="patientDOB" required>
+            </div>
+            <div class="form-group">
+                <label>Jenis Kelamin</label>
+                <input type="radio" id="male" name="gender" value="Laki-laki" required>
+                <label for="male">Laki-laki</label>
+                <input type="radio" id="female" name="gender" value="Perempuan" required>
+                <label for="female">Perempuan</label>
+            </div>
+            <div class="form-group">
+                <label for="contactNumber">Nomor Telepon</label>
+                <input type="tel" id="contactNumber" name="contactNumber" placeholder="Masukkan nomor telepon" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor">Pilih Dokter</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="">Pilih Dokter</option>
+                    <option value="Dr. Woms">Dr. Woms - Spesialis Jantung</option>
+                    <option value="Dr. Dodo">Dr. Dodo - Spesialis Anak</option>
+                    <option value="Dr. Kapi">Dr. Kapi - Spesialis Bedah</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="schedule">Pilih Jadwal</label>
+                <select id="schedule" name="schedule" required>
+                    <option value="">Pilih Jadwal</option>
+                    <option value="08:00 - 12:00">08:00 - 12:00</option>
+                    <option value="13:00 - 17:00">13:00 - 17:00</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="reset-btn">Reset</button>
+                <button type="submit" class="submit-btn">Daftar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('patientName').value;
+        const doctor = document.getElementById('doctor').value;
+        const schedule = document.getElementById('schedule').value;
+        alert(`Pasien ${name} berhasil didaftarkan ke ${doctor} pada jadwal ${schedule}.`);
+        form.reset();
+    });
+</script>
+
+</body>
+</html>
