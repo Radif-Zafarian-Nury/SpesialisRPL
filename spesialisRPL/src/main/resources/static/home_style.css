@@ -30,6 +30,13 @@ header {
     width: 80px;
 }
 
+.login:hover {
+    background-color: rgb(115, 3, 3);
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: white;
+}
+
 .banner_image {
     height: 110vh;
     width:100vw;
@@ -120,6 +127,13 @@ header {
     border-radius: 50px;
     width: 150px;
     border: solid white;
+}
+
+.book_doctor:hover {
+    background-color: rgb(255, 255, 255);
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
 }
 
 .login > p {
