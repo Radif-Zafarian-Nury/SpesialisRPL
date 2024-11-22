@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.forEach(button => {
         button.addEventListener("click", () => {
             const color = button.textContent;
-            
+
             title.style.backgroundColor = color;
             window.location.href = `/?color=${color}`;
         });

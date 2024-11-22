@@ -15,4 +15,9 @@ public class IndexController {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/req/signup")
+    public String signup(){
+        return "signup";
+    }
 }
