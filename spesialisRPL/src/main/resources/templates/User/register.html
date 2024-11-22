@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register to WomLinic+</title>
-    <link rel="stylesheet" href="/register_style.css">  
+    <link rel="stylesheet" type="text/css" th:href="@{/User/register_style.css}">  
 
 </head>
 <body>
-    <a href="index.html">
-        <img src="assets/home.png" class="home_logo" />
+    <a th:href="@{/user/}">
+        <img src="/assets/Home.png" class="home_logo" />
     </a>
     <div class="wrapper">
         <form action="" class="register_form" method="post">
@@ -41,7 +41,7 @@
                 <button type="submit">Registrasi</button> 
                 <div class="wrapper_ask">
                     <span class="ask">Sudah memiliki akun?</span>
-                    <a href="login.html" class="login">
+                    <a th:href="@{login}" class="login">
                         <span>Masuk</span>
                     </a>
                 </div>
