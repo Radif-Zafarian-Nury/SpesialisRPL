@@ -1,0 +1,25 @@
+package com.example.spesialisRPL.User;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+    @GetMapping("/")
+    public String index(){
+        return "User/index";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "User/login";
+    }
+
+    @GetMapping("/register")
+    public String register(){
+        return "User/register";
+    }
+}
