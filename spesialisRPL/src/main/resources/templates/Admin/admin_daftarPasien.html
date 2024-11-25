@@ -129,10 +129,12 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <img src="static/assets/WomLinic+ Logo.png" alt="Logo">
-    <button>Mendaftarkan Pasien</button>
-    <button>Edit Data Dokter</button>
-    <button>Buat Akun Baru</button>
+    <img src="/assets/WomLinic+ Logo.png" alt="Logo">
+    <a th:href="@{daftarpasien}"><button>Mendaftarkan Pasien</button></a>
+    <!-- Belum di link -->
+    <a><button onclick="editDoctor()">Edit Data Dokter</button></a> 
+    <!-- Belum di link -->
+    <a><button onclick="createAccount()">Buat Akun Baru</button></a>
 </div>
 
 <!-- Main Content -->

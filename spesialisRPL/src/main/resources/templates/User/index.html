@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WomLinic+</title>
-    <link rel="stylesheet" href="home_style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/User/home_style.css}">
 </head>
 <body>
     <div class="header_container">
         <header>
-            <img src="assets/WomLinic Fix Logo.png" class="womlinic_logo" />
+            <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
             <div class="login_wrapper">
-                <a class="login" href="login.html"><p>MASUK</p></a>
+                <a class="login" th:href="@{login}"><p>MASUK</p></a>
             </div>
         </header>
     </div>
     <div class="banner">
-        <img src="assets/—Pngtree—hospital inpatient room with bed_4090048.jpg" class="banner_image" />
+        <img src="/assets/—Pngtree—hospital inpatient room with bed_4090048.jpg" class="banner_image" />
         <div class="banner_texts">
             <div class="main_text">
                 <p class="actual_text">Kesehatan Anda Adalah Prioritas Utama Kami</p>
@@ -26,7 +26,7 @@
             </div>
             <div class="booking_info">
                 <span>Jadwalkan konsultasi sekarang</span>
-                <img src="assets/right arrow.png" class="arrow"/>
+                <img src="/assets/right arrow.png" class="arrow"/>
                 <div class="learn_more_button">
                      <a class="book_doctor" href="https://www.google.com/"><p>Pilih Dokter</p></a>
                 </div>
@@ -47,7 +47,11 @@
         </div>
         <div class="doctor_image_content">
             <div class="img_container">
+<<<<<<< HEAD:spesialisRPL/src/main/resources/static/index.html
                 <img class="doctor_img" src="assets/doctor-healthcare-medicine-patient-talking-600nw-2191880035.png" />
+=======
+                <img src="/assets/doctor-healthcare-medicine-patient-talking-600nw-2191880035.png" />
+>>>>>>> 3d7e7034e9baa2e82f049e687c8541d28e733ef1:spesialisRPL/src/main/resources/templates/User/index.html
             </div>
         </div>
     </div>
