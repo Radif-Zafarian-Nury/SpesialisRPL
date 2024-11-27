@@ -3,6 +3,7 @@ package com.example.spesialisRPL.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +32,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute UserData userData, Model model){
-        if(!userData.getPassword().equals(userData.getConfpassword())){
+    public String registerUser(
+        @ModelAttribute UserData userData, 
+        Model model,
+        BindingResult bindingResult){
+            
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "Please correct the highlighted errors.");
+            return "User/register";
+        }
+
+        if(!userData.getKata_sandi().equals(userData.getConfpassword())){
             model.addAttribute("error", "Passwords do not match!");
             return "User/register";
         }
