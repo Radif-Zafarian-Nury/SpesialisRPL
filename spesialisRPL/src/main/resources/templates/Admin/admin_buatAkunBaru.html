@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Mendaftarkan Pasien</title>
+    <title>Buat Akun Baru</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,9 +40,8 @@
             box-sizing: border-box;
         }
         .sidebar button:hover {
-            background-color:  rgb(251, 7, 7);
+            background-color: rgb(251, 7, 7);
         }
-
 
         /* Main content styling */
         header {
@@ -59,11 +58,11 @@
             gap: 15px;
         }
         header span {
-            color: rgb(181, 4, 4); 
+            color: rgb(181, 4, 4);
         }
 
         header button {
-            background-color:  rgb(181, 4, 4);
+            background-color: rgb(181, 4, 4);
             color: white;
             border: none;
             padding: 5px 10px;
@@ -71,8 +70,9 @@
             border-radius: 5px;
         }
         header button:hover {
-            background-color:  rgb(255, 0, 0);
+            background-color: rgb(255, 0, 0);
         }
+
         .main-content {
             flex: 1;
             display: flex;
@@ -82,51 +82,57 @@
         .form-container {
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Elemen di dalam formulir tetap vertikal */
+            justify-content: center;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            width: 600px; /* Perlebar kotak formulir */
+            width: 600px;
             max-width: 90%;
-            margin: 0 auto; /* Pastikan kotak tetap rata tengah */
-            height: auto; /* Hindari konflik dengan tinggi */
-            padding: 40px; /* Tambahkan jarak internal lebih besar */
+            margin: auto;
+            padding: 20px;
         }
-
 
         .form-container h2 {
             margin-bottom: 20px;
             text-align: center;
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        .form-group input, 
+
+        .form-group input,
         .form-group select {
             width: 100%;
-            padding: 15px;
+            padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
         .form-group input[type="radio"] {
             width: auto;
             margin-right: 10px;
         }
-        .form-group input:focus, 
+
+        .form-group input:focus,
         .form-group select:focus {
             border-color: #a1c9c7;
             outline: none;
         }
+
         .form-actions {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
+
         .form-actions button {
             padding: 10px 20px;
             font-size: 16px;
@@ -134,96 +140,117 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .form-actions .submit-btn {
+
+        .form-actions .save-btn {
             background-color: rgb(181, 4, 4);
             color: white;
         }
-        .form-actions .submit-btn:hover {
+
+        .form-actions .save-btn:hover {
             background-color: rgb(255, 0, 0);
         }
-        .form-actions .reset-btn {
+
+        .form-actions .cancel-btn {
             background-color: #535252;
             color: white;
         }
-        .form-actions .reset-btn:hover {
+
+        .form-actions .cancel-btn:hover {
             background-color: #bbb;
         }
+
         a{
             text-decoration: none;
             color: white;
         }
     </style>
 </head>
-
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
         <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
         <button><a th:href="@{daftarpasien}">Mendaftarkan Pasien</a></button>
         <!-- Belum di link -->
-        <button onclick="editDoctor()"><a>Edit Data Dokter</a></button>
+        <button><a>Edit Data Dokter</a></button>
         <!-- Belum di link -->
-        <button onclick="createAccount()"><a>Buat Akun Baru</a></button>
+        <button><a>Buat Akun Baru</a></button>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <header>
-            <span>Mendaftarkan Pasien</span>
+            <span>Buat Akun Baru</span>
             <div class="right">
                 <span>Hi, Admin</span>
                 <button onclick="logout()">Logout</button>
             </div>
         </header>
 
+        <!-- Formulir Buat Akun -->
         <div class="form-container">
-            <h2>Formulir Pendaftaran</h2>
-            <form id="registerForm">
+            <h2>Formulir Buat Akun</h2>
+            <form id="createAccountForm">
+                <!-- Name -->
                 <div class="form-group">
-                    <label for="patientName">Nama Pasien</label>
-                    <input type="text" id="patientName" name="patientName" placeholder="Masukkan nama pasien" required>
+                    <label for="userName">Nama</label>
+                    <input type="text" id="userName" name="userName" placeholder="Masukkan nama lengkap" required>
                 </div>
+
+                <!-- NIK -->
                 <div class="form-group">
-                    <label for="patientDOB">Tanggal Lahir</label>
-                    <input type="date" id="patientDOB" name="patientDOB" required>
+                    <label for="userNIK">NIK</label>
+                    <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required>
                 </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="userAddress">Alamat</label>
+                    <input type="text" id="userAddress" name="userAddress" placeholder="Masukkan alamat lengkap" required>
+                </div>
+
+                <!-- Specialization -->
+                <div class="form-group">
+                    <label for="userSpecialization">Spesialis</label>
+                    <select id="userSpecialization" name="userSpecialization">
+                        <option value="Spesialis Jantung">Spesialis Jantung</option>
+                        <option value="Spesialis Mata">Spesialis Mata</option>
+                        <option value="Spesialis Gigi">Spesialis Gigi</option>
+                        <option value="Spesialis THT">Spesialis THT</option>
+                        <option value="Perawat">Perawat</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Pasien">Pasien</option>
+                    </select>
+                </div>
+
+                <!-- Gender -->
                 <div class="form-group">
                     <label>Jenis Kelamin</label>
                     <label>
-                        <input type="radio" name="gender" value="male"> Laki-laki
+                        <input type="radio" name="gender" value="male" checked> Laki-laki
                     </label>
                     <label>
                         <input type="radio" name="gender" value="female"> Perempuan
                     </label>
                 </div>
+
+                <!-- Role -->
                 <div class="form-group">
-                    <label for="contactNumber">Nomor Telepon</label>
-                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Masukkan nomor telepon" required>
-                </div>
-                <div class="form-group">
-                    <label for="doctor">Pilih Dokter</label>
-                    <select id="doctor" name="doctor" required>
-                        <option value="">Pilih Dokter</option>
-                        <option value="Dr. Woms">Dr. Woms - Spesialis Jantung</option>
-                        <option value="Dr. Dodo">Dr. Dodo - Spesialis Anak</option>
-                        <option value="Dr. Kapi">Dr. Kapi - Spesialis Bedah</option>
+                    <label for="userRole">Role</label>
+                    <select id="userRole" name="userRole" required>
+                        <option value="dokter">Dokter</option>
+                        <option value="perawat">Perawat</option>
+                        <option value="admin">Admin</option>
+                        <option value="pasien">Pasien</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="schedule">Pilih Jadwal</label>
-                    <select id="schedule" name="schedule" required>
-                        <option value="">Pilih Jadwal</option>
-                        <option value="08:00 - 12:00">08:00 - 12:00</option>
-                        <option value="13:00 - 17:00">13:00 - 17:00</option>
-                    </select>
-                </div>
+
+                <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="reset" class="reset-btn">Reset</button>
-                    <button type="submit" class="submit-btn">Daftar</button>
+                    <button type="button" class="cancel-btn" onclick="cancelCreateAccount()">Batal</button>
+                    <button type="submit" class="save-btn">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
-
 </body>
 </html>
