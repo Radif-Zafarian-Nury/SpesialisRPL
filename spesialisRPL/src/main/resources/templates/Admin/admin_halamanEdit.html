@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data Dokter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: rgb(243, 243, 243);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+        .sidebar img {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        .sidebar button {
+            width: 100%;
+            background-color: rgb(181, 4, 4);
+            color: white;
+            border: none;
+            padding: 15px 0; 
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .sidebar button:hover {
+            background-color: rgb(251, 7, 7);
+        }
+
+        /* Main content styling */
+        header {
+            background-color: rgb(243, 243, 243);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        header span {
+            color: rgb(181, 4, 4); 
+        }
+
+        header button {
+            background-color:  rgb(181, 4, 4);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        header button:hover {
+            background-color:  rgb(255, 0, 0);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            max-width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #a1c9c7;
+            outline: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .form-actions .save-btn {
+            background-color: rgb(181, 4, 4);
+            color: white;
+        }
+
+        .form-actions .save-btn:hover {
+            background-color: rgb(255, 0, 0);
+        }
+
+        .form-actions .cancel-btn {
+            background-color: #535252;
+            color: white;
+        }
+
+        .form-actions .cancel-btn:hover {
+            background-color: #bbb;
+        }
+
+        a{
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
+        <button><a href="daftarpasien">Mendaftarkan Pasien</a></button>
+        <button><a href="editdokter">Edit Data Dokter</a></button>
+        <button onclick="createAccount()"><a>Buat Akun Baru</a></button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Edit Data Dokter</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Edit Form -->
+        <div class="form-container">
+            <h2>Formulir Edit Dokter</h2>
+            <form id="editDoctorForm">
+                <!-- HARUSNYA DI TAG INPUT VALUE TEH DARI DB BISA GAK? HEHEHEHE -->
+                <!-- Doctor Name -->
+                <div class="form-group">
+                    <label for="doctorName">Nama Dokter</label>
+                    <input type="text" id="doctorName" name="doctorName" value="Dr. Woms" required>
+                </div>
+
+                <!-- Doctor NIK -->
+                <div class="form-group">
+                    <label for="doctorNIK">NIK Dokter</label>
+                    <input type="text" id="doctorNIK" name="doctorNIK" value="123456789" required>
+                </div>
+
+                <!-- Doctor Address -->
+                <div class="form-group">
+                    <label for="doctorAddress">Alamat</label>
+                    <input type="text" id="doctorAddress" name="doctorAddress" value="Jl. Sehat No. 123, Bandung" required>
+                </div>
+
+                <!-- Doctor Specialization -->
+                <div class="form-group">
+                    <label for="doctorSpecialization">Spesialis</label>
+                    <select id="doctorSpecialization" name="doctorSpecialization" required>
+                        <option value="Spesialis Jantung" selected>Spesialis Jantung</option>
+                        <option value="Spesialis Anak">Spesialis Anak</option>
+                        <option value="Spesialis Bedah">Spesialis Bedah</option>
+                    </select>
+                </div>
+
+                <!-- Doctor Gender -->
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <label>
+                        <input type="radio" name="gender" value="male" checked> Laki-laki
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female"> Perempuan
+                    </label>
+                </div>
+
+                <!-- Doctor Schedule -->
+                <div class="form-group">
+                    <label for="doctorSchedule">Jadwal</label>
+                    <select id="doctorSchedule" name="doctorSchedule" required>
+                        <option value="08:00 - 12:00" selected>08:00 - 12:00</option>
+                        <option value="13:00 - 17:00">13:00 - 17:00</option>
+                    </select>
+                </div>
+
+                <!-- Doctor Quota -->
+                <div class="form-group">
+                    <label for="doctorQuota">Kuota</label>
+                    <input type="number" id="doctorQuota" name="doctorQuota" value="10" min="1" max="10" required>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="cancelEdit()">Batal</button>
+                    <button type="submit" class="save-btn">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

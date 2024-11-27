@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Mendaftarkan Pasien</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: rgb(243, 243, 243);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+        .sidebar img {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        .sidebar button {
+            width: 100%;
+            background-color: rgb(181, 4, 4);
+            color: white;
+            border: none;
+            padding: 15px 0; 
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .sidebar button:hover {
+            background-color:  rgb(251, 7, 7);
+        }
+
+
+        /* Main content styling */
+        header {
+            background-color: rgb(243, 243, 243);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        header span {
+            color: rgb(181, 4, 4); 
+        }
+
+        header button {
+            background-color:  rgb(181, 4, 4);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        header button:hover {
+            background-color:  rgb(255, 0, 0);
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Elemen di dalam formulir tetap vertikal */
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 600px; /* Perlebar kotak formulir */
+            max-width: 90%;
+            margin: 0 auto; /* Pastikan kotak tetap rata tengah */
+            height: auto; /* Hindari konflik dengan tinggi */
+            padding: 40px; /* Tambahkan jarak internal lebih besar */
+        }
+
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: #a1c9c7;
+            outline: none;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-actions .submit-btn {
+            background-color: rgb(181, 4, 4);
+            color: white;
+        }
+        .form-actions .submit-btn:hover {
+            background-color: rgb(255, 0, 0);
+        }
+        .form-actions .reset-btn {
+            background-color: #535252;
+            color: white;
+        }
+        .form-actions .reset-btn:hover {
+            background-color: #bbb;
+        }
+        a{
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
+        <button><a th:href="@{daftarpasien}">Mendaftarkan Pasien</a></button>
+        <!-- Belum di link -->
+        <button onclick="editDoctor()"><a>Edit Data Dokter</a></button>
+        <!-- Belum di link -->
+        <button onclick="createAccount()"><a>Buat Akun Baru</a></button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Mendaftarkan Pasien</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <h2>Formulir Pendaftaran</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="patientName">Nama Pasien</label>
+                    <input type="text" id="patientName" name="patientName" placeholder="Masukkan nama pasien" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientDOB">Tanggal Lahir</label>
+                    <input type="date" id="patientDOB" name="patientDOB" required>
+                </div>
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <label>
+                        <input type="radio" name="gender" value="male"> Laki-laki
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female"> Perempuan
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="contactNumber">Nomor Telepon</label>
+                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Masukkan nomor telepon" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor">Pilih Dokter</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">Pilih Dokter</option>
+                        <option value="Dr. Woms">Dr. Woms - Spesialis Jantung</option>
+                        <option value="Dr. Dodo">Dr. Dodo - Spesialis Anak</option>
+                        <option value="Dr. Kapi">Dr. Kapi - Spesialis Bedah</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schedule">Pilih Jadwal</label>
+                    <select id="schedule" name="schedule" required>
+                        <option value="">Pilih Jadwal</option>
+                        <option value="08:00 - 12:00">08:00 - 12:00</option>
+                        <option value="13:00 - 17:00">13:00 - 17:00</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Daftar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
