@@ -11,14 +11,14 @@ public class UserJdbc implements UserRepository{
 
     @Override
     public void saveUser(UserData userData) {
-        String sql = "INSERT INTO users(nama, nik, email, alamat, password, jenis_kelamin) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(
             sql, 
             userData.getNama(), 
             userData.getNik(), 
             userData.getEmail(), 
             userData.getAlamat(), 
-            userData.getPassword(), 
+            userData.getKata_sandi(), 
             userData.getJenis_kelamin());
     }
 

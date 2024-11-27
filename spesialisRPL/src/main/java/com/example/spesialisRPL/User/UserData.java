@@ -9,7 +9,7 @@ public class UserData {
     private String nik;
     private String email;
     private String alamat;
-    private String password;
+    private String kata_sandi;
     private String jenis_kelamin;
 
     @Transient
