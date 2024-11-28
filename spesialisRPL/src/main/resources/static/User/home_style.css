@@ -33,10 +33,10 @@ header {
 }
 
 .login:hover {
-    background-color: rgb(115, 3, 3);
+    background-color: white;
     transition-duration: 200ms;
     cursor: pointer;
-    color: white;
+    color: rgb(216, 215, 215);
 }
 
 .banner_image {

@@ -10,13 +10,13 @@
             margin: 0;
             display: flex;
             height: 100vh;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
         }
 
         /* Sidebar styling */
         .sidebar {
             width: 250px;
-            background-color: #7faaa7;
+            background-color: rgb(243, 243, 243);
             color: white;
             display: flex;
             flex-direction: column;
@@ -28,18 +28,19 @@
             margin-bottom: 20px;
         }
         .sidebar button {
-            background-color: white;
-            color: #5b918d;
+            width: 100%;
+            background-color: rgb(181, 4, 4);
+            color: white;
             border: none;
-            padding: 15px 20px;
+            padding: 15px 0; 
             cursor: pointer;
             border-radius: 5px;
-            width: 100%;
             text-align: center;
             margin-bottom: 15px;
+            box-sizing: border-box;
         }
         .sidebar button:hover {
-            background-color: #f1f1f1;
+            background-color:  rgb(251, 7, 7);
         }
 
         /* Main content styling */
@@ -49,7 +50,7 @@
             flex-direction: column;
         }
         header {
-            background-color: #7faaa7;
+            background-color: rgb(243, 243, 243);
             color: white;
             padding: 10px 20px;
             display: flex;
@@ -61,22 +62,26 @@
             align-items: center;
             gap: 15px;
         }
+        header span {
+            color: rgb(181, 4, 4); 
+        }
+
         header button {
-            background-color: white;
-            color: #7faaa7;
+            background-color:  rgb(181, 4, 4);
+            color: white;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
             border-radius: 5px;
         }
         header button:hover {
-            background-color: #f1f1f1;
+            background-color:  rgb(255, 0, 0);
         }
         .search-bar {
             display: flex;
             justify-content: center;
             padding: 20px;
-            background-color: #f1f1f1;
+            background-color: white;
         }
         .search-bar input {
             width: 300px;
@@ -89,14 +94,14 @@
         .search-bar button {
             padding: 10px 15px;
             font-size: 16px;
-            background-color: #7faaa7;
+            background-color: rgb(181, 4, 4);
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 5px;
         }
         .search-bar button:hover {
-            opacity: 0.8;
+            background-color: rgb(255, 0, 0);
         }
         .schedule {
             padding: 20px;
@@ -114,74 +119,79 @@
             border: 1px solid #ddd;
         }
         .schedule th {
-            background-color: #7faaa7;
+            background-color: rgb(181, 4, 4);
+            color: white;
+            text-align: center;
+        }
+        a{
+            text-decoration: none;
             color: white;
         }
     </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <img src="/assets/WomLinic+ Logo.png" alt="Logo">
-    <a th:href="@{daftarpasien}"><button>Mendaftarkan Pasien</button></a>
-    <!-- Belum di link -->
-    <a><button onclick="editDoctor()">Edit Data Dokter</button></a> 
-    <!-- Belum di link -->
-    <a><button onclick="createAccount()">Buat Akun Baru</button></a>
-</div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
+        <button><a th:href="@{daftarpasien}">Mendaftarkan Pasien</a></button>
+        <!-- Belum di link -->
+        <button><a>Edit Data Dokter</a></button>
+        <!-- Belum di link -->
+        <button><a>Buat Akun Baru</a></button>
+    </div>
 
-<!-- Main Content -->
-<div class="main-content">
-    <header>
-        <span>Jadwal Dokter Hari Ini</span>
-        <div class="right">
-            <span>Hi, Admin</span>
-            <button onclick="logout()">Logout</button>
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Jadwal Dokter Hari Ini</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+        
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien">
+            <button onclick="search()">Cari</button>
         </div>
-    </header>
-    
-    <!-- Search Bar -->
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien">
-        <button onclick="search()">Cari</button>
-    </div>
 
-    <!-- Schedule -->
-    <div class="schedule">
-        <h2>JADWAL DOKTER YANG TERSEDIA</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Dokter</th>
-                    <th>Spesialisasi</th>
-                    <th>Jam Mulai</th>
-                    <th>Jam Selesai</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- data dibawah ambil dari DB -->
-                <!-- <tr>
-                    <td>Dr. Woms</td>
-                    <td>Spesialis Jantung</td>
-                    <td>08:00</td>
-                    <td>12:00</td>
-                </tr>
-                <tr>
-                    <td>Dr. Dodo</td>
-                    <td>Spesialis Anak</td>
-                    <td>10:00</td>
-                    <td>14:00</td>
-                </tr>
-                <tr>
-                    <td>Dr. Kapi</td>
-                    <td>Spesialis Bedah</td>
-                    <td>13:00</td>
-                    <td>17:00</td>
-                </tr> -->
-            </tbody>
-        </table>
+        <!-- Jadwal Dokter -->
+        <div class="schedule">
+            <h2>JADWAL DOKTER YANG TERSEDIA</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Dokter</th>
+                        <th>Spesialisasi</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- data dibawah ambil dari DB -->
+                    <!-- <tr>
+                        <td>Dr. Woms</td>
+                        <td>Spesialis Jantung</td>
+                        <td>08:00</td>
+                        <td>12:00</td>
+                    </tr>
+                    <tr>
+                        <td>Dr. Dodo</td>
+                        <td>Spesialis Anak</td>
+                        <td>10:00</td>
+                        <td>14:00</td>
+                    </tr>
+                    <tr>
+                        <td>Dr. Kapi</td>
+                        <td>Spesialis Bedah</td>
+                        <td>13:00</td>
+                        <td>17:00</td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </body>
 </html>
