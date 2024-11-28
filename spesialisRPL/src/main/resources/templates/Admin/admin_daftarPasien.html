@@ -158,12 +158,10 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
+        <a th:href="@{/admin/}"><img src="/assets/WomLinic Fix Logo.png" alt="Logo"></a>
         <button><a th:href="@{daftarpasien}">Mendaftarkan Pasien</a></button>
-        <!-- Belum di link -->
-        <button onclick="editDoctor()"><a>Edit Data Dokter</a></button>
-        <!-- Belum di link -->
-        <button onclick="createAccount()"><a>Buat Akun Baru</a></button>
+        <button><a th:href="@{editdokter}">Edit Data Dokter</a></button>
+        <button><a th:href="@{buatakun}">Buat Akun Baru</a></button>
     </div>
 
     <!-- Main Content -->
@@ -180,9 +178,15 @@
             <h2>Formulir Pendaftaran</h2>
             <form id="registerForm">
                 <div class="form-group">
+                    <label for="NIK">NIK</label>
+                    <input type="text" id="NIK" name="NIK" placeholder="Masukkan NIK" maxlength="16" oninput="checkNik()" required>
+                </div>
+                
+                <div class="form-group">
                     <label for="patientName">Nama Pasien</label>
                     <input type="text" id="patientName" name="patientName" placeholder="Masukkan nama pasien" required>
                 </div>
+                
                 <div class="form-group">
                     <label for="patientDOB">Tanggal Lahir</label>
                     <input type="date" id="patientDOB" name="patientDOB" required>
@@ -190,16 +194,18 @@
                 <div class="form-group">
                     <label>Jenis Kelamin</label>
                     <label>
-                        <input type="radio" name="gender" value="male"> Laki-laki
+                        <input type="radio" name="gender" value="L"> Laki-laki
                     </label>
                     <label>
-                        <input type="radio" name="gender" value="female"> Perempuan
+                        <input type="radio" name="gender" value="P"> Perempuan
                     </label>
                 </div>
-                <div class="form-group">
+
+                <!-- <div class="form-group">
                     <label for="contactNumber">Nomor Telepon</label>
                     <input type="tel" id="contactNumber" name="contactNumber" placeholder="Masukkan nomor telepon" required>
-                </div>
+                </div> -->
+
                 <div class="form-group">
                     <label for="doctor">Pilih Dokter</label>
                     <select id="doctor" name="doctor" required>
@@ -224,6 +230,44 @@
             </form>
         </div>
     </div>
+
+    <script>
+        async function checkNik(){
+            const nik = document.getElementById('NIK').value;
+
+            if(nik.length === 16){
+                try {
+                    const response = await fetch(`/admin/check-nik?nik=${nik}`);
+
+                    if (!response.ok) {
+                        throw new Error('Pasien belum terdaftar');
+                    }
+
+                    const data = await response.json();
+
+                    //isi data ke dalam form
+                    document.getElementById('patientName').value = data.nama || '';
+                    document.getElementById('patientDOB').value = data.tanggalLahir || '';
+                    document.getElementsByName('gender').forEach(radio => {
+                        if (radio.value === (data.jenisKelamin === 'L' ? 'L' : 'P')) {
+                            radio.checked = true;
+                        }
+                    });
+                    // document.getElementById('contactNumber').value = data.nomorTelepon || '';
+
+                    //error message kosongin
+                    document.getElementById('error').innerText = '';
+                } catch (error){
+                    document.getElementById('error').innerText = error.message;
+
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientDOB').value = '';
+                    document.getElementsByName('gender').forEach(radio => (radio.checked = false));
+                    // document.getElementById('contactNumber').value = '';
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
