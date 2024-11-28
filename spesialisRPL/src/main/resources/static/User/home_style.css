@@ -193,6 +193,35 @@ body {
     width: 100%;
 }
 
+.specialist_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.specialist_name > p {
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.specialists_section_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(246, 246, 246);
+    height: 35vh;
+}
+
+.specialist_choices {
+    display: flex;
+    gap: 10vw;
+}
+
+.specialist_choice_img {
+    width: 8vw;
+    height: 16vh;
+}
+
 @media only screen and (min-width: 412px) {
 
 }
