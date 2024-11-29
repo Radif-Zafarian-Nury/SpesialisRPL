@@ -17,6 +17,10 @@ header {
     padding: 15px;
 }
 
+.register_wrapper {
+    padding-right: 15px;
+}
+
 .login {
     margin-left: auto;
     font-weight: bold;
@@ -205,23 +209,58 @@ body {
 }
 
 .specialists_section_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-areas: 
+    "title"
+    "main"
+    ;
+    grid-template-columns: 1fr;
     background-color: rgb(246, 246, 246);
     height: 35vh;
 }
 
 .specialist_choices {
     display: flex;
-    gap: 10vw;
+    gap: 5vw;
 }
 
 .specialist_choice_img {
-    width: 8vw;
+    width: 9rem;
     height: 16vh;
 }
 
-@media only screen and (min-width: 412px) {
+.specialist_main {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 
+.specialist_section_title {
+    grid-area: title;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.specialist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 30vh;
+    width: 16vw;
+}
+
+.choice_of_specialist {
+    text-decoration: none;
+    color: rgb(50, 50, 50);
+}
+
+.specialist:hover {
+    background-color: rgb(208, 208, 208);
+    transition-duration: 200ms;
+    color: rgb(50, 50, 50);
 }

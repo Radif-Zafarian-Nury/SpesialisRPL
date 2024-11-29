@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WomLinic+ Pilih Spesialis</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/User/spesialis_style.css}">
+</head>
+<body>
+    <div class="header_container">
+        <header>
+            <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
+            <div class="login_wrapper">
+                <a class="login" th:href="@{login}"><p>MASUK</p></a>
+            </div>
+            <div class="register_wrapper">
+                <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
+            </div>
+        </header>
+    </div>
+    <div class="banner">
+        <img src="/assets/—Pngtree—hospital inpatient room with bed_4090048.jpg" class="banner_image" />
+        <div class="banner_texts">
+            <div class="main_text">
+                <p class="actual_text">Dokter Spesialis Mata</p>
+            </div>
+        </div>
+    </div>
+    <main class="main_container">
+        <div class="body_title_text">
+            <div class="small_title">
+                <h5>Dokter Kami</h5>
+            </div>
+            <div class="big_title">
+                <h1>Dokter Spesialis Mata</h1>
+            </div>
+            <div class="element_divider">
+                <div class="element_divider_separator"> </div>
+            </div>
+        </div>
+        <div th:each="doctor : ${doctors}" class="doctors_container">
+            <div class="doctor_card">
+                
+            </div>
+        </div>
+    </main>
+</body>
+</html>

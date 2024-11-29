@@ -33,6 +33,11 @@ public class UserController {
         return "User/register";
     }
 
+    @GetMapping("/spesialisMata")
+    public String spesialisMata() {
+        return "User/spesialis_mata";
+    } 
+
     @PostMapping("/register")
     public String registerUser(
         @Valid @ModelAttribute UserData userData, 

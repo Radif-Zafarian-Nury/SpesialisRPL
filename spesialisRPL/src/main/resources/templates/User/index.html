@@ -13,6 +13,9 @@
             <div class="login_wrapper">
                 <a class="login" th:href="@{login}"><p>MASUK</p></a>
             </div>
+            <div class="register_wrapper">
+                <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
+            </div>
         </header>
     </div>
     <div class="banner">
@@ -28,7 +31,7 @@
                 <span>Jadwalkan konsultasi sekarang</span>
                 <img src="/assets/right arrow.png" class="arrow"/>
                 <div class="learn_more_button">
-                     <a class="book_doctor" href="https://www.google.com/"><p>Pilih Dokter</p></a>
+                     <a class="book_doctor" href="#specialist_section"><p>Pilih Dokter</p></a>
                 </div>
             </div>
         </div>
@@ -51,40 +54,45 @@
             </div>
         </div>
     </div>
-    <div class="specialists_section_container">
-        <div class="specialist_choices">
-            <a href="https://www.wikipedia.org/" class="link_to_mata">
-                <div class="specialist">
-                    <img class="specialist_choice_img" src="../assets/logo_mata_fix.png" />
-                    <div class="specialist_name">
-                        <p>Mata</p>
+    <div class="specialists_section_container" id="specialist_section">
+        <div class="specialist_section_title">
+            <h1>Pilih Spesialis yang Anda Butuhkan</h1>
+        </div>
+        <div class="specialist_main">
+            <div class="specialist_choices">
+                <a th:href="@{spesialisMata}" class="choice_of_specialist">
+                    <div class="specialist">
+                        <img class="specialist_choice_img" src="../assets/logo_mata_fix.png" />
+                        <div class="specialist_name">
+                            <p>Mata</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="https://www.wikipedia.org/" class="link_to_gigi">
-                <div class="specialist">
-                    <img class="specialist_choice_img" src="../assets/logo_gigi-removebg-preview.png" />
-                    <div class="specialist_name">
-                        <p>Gigi</p>
+                </a>
+                <a href="https://www.wikipedia.org/" class="choice_of_specialist">
+                    <div class="specialist">
+                        <img class="specialist_choice_img" src="../assets/logo_gigi-removebg-preview.png" />
+                        <div class="specialist_name">
+                            <p>Gigi</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="https://www.wikipedia.org/" class="link_to_tht">
-                <div class="specialist">
-                    <img class="specialist_choice_img" src="../assets/logo_tht-removebg-preview.png" />
-                    <div class="specialist_name">
-                        <p>THT</p>
+                </a>
+                <a href="https://www.wikipedia.org/" class="choice_of_specialist">
+                    <div class="specialist">
+                        <img class="specialist_choice_img" src="../assets/logo_tht-removebg-preview.png" />
+                        <div class="specialist_name">
+                            <p>THT</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="https://www.wikipedia.org/" class="link_to_jantung">
-                <div class="specialist">
-                    <img class="specialist_choice_img" src="../assets/logo_jantung-removebg-preview.png" />
-                    <div class="specialist_name">
-                        <p>Jantung</p>
+                </a>
+                <a href="https://www.wikipedia.org/" class="choice_of_specialist">
+                    <div class="specialist">
+                        <img class="specialist_choice_img" src="../assets/logo_jantung-removebg-preview.png" />
+                        <div class="specialist_name">
+                            <p>Jantung</p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
 </body>
