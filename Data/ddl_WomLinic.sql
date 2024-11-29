@@ -1,18 +1,18 @@
 -- DROP TABLE
-DROP TABLE IF EXISTS diagnosa;
-DROP TABLE IF EXISTS spesialisasi_dokter;
-DROP TABLE IF EXISTS jadwal_dokter;
-DROP TABLE IF EXISTS pendaftaran;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS spesialisasi;
-DROP TABLE IF EXISTS jadwal;
+DROP TABLE IF EXISTS diagnosa CASCADE;
+DROP TABLE IF EXISTS spesialisasi_dokter CASCADE;
+DROP TABLE IF EXISTS jadwal_dokter CASCADE;
+DROP TABLE IF EXISTS pendaftaran CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS spesialisasi CASCADE;
+DROP TABLE IF EXISTS jadwal CASCADE;
 
 -- CREATE TABLE
 CREATE TABLE users (
 	id_user SERIAL PRIMARY KEY,
 	nama VARCHAR(100),
 	jenis_kelamin CHAR(1),
-	kata_sandi VARCHAR(20),
+	kata_sandi VARCHAR(50),
 	email VARCHAR(100),
 	alamat VARCHAR(200),
 	nik VARCHAR(16),
@@ -21,6 +21,7 @@ CREATE TABLE users (
 	status_aktif BOOLEAN,
 	peran VARCHAR(10),
 	sip VARCHAR(30),
+	foto_dokter BYTEA,
 	no_rekam_medis VARCHAR(10),
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );
