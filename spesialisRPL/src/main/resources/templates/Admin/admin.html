@@ -169,24 +169,12 @@
                 </thead>
                 <tbody>
                     <!-- data dibawah ambil dari DB -->
-                    <!-- <tr>
-                        <td>Dr. Woms</td>
-                        <td>Spesialis Jantung</td>
-                        <td>08:00</td>
-                        <td>12:00</td>
+                    <tr th:each="row : ${results}">
+                        <td th:text="${row.nama}"></td>
+                        <td th:text="${row.nama_spesialisasi}"></td>
+                        <td th:text="${row.waktu_mulai}"></td>
+                        <td th:text="${row.waktu_selesai}"></td>
                     </tr>
-                    <tr>
-                        <td>Dr. Dodo</td>
-                        <td>Spesialis Anak</td>
-                        <td>10:00</td>
-                        <td>14:00</td>
-                    </tr>
-                    <tr>
-                        <td>Dr. Kapi</td>
-                        <td>Spesialis Bedah</td>
-                        <td>13:00</td>
-                        <td>17:00</td>
-                    </tr> -->
                 </tbody>
             </table>
         </div>
