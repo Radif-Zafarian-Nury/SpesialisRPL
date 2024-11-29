@@ -2,7 +2,6 @@ package com.example.spesialisRPL.User;
 
 import lombok.Data;
 import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -17,7 +16,6 @@ public class UserData {
     private String nik;
 
     @NotEmpty(message = "Email tidak boleh kosong")
-    @Email(message = "Email tidak valid")
     private String email;
 
     @NotEmpty(message = "Alamat tidak boleh kosong")

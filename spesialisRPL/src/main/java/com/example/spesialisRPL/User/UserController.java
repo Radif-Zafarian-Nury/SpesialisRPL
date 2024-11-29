@@ -51,10 +51,10 @@ public class UserController {
         }
 
         //Check NIK
-        if (userRepository.findByNik(userData.getNik()).isPresent()) {
-            model.addAttribute("error", "NIK sudah terdaftar");
-            return "User/register";
-        }
+        // if (userRepository.findByNik(userData.getNik()).isPresent()) {
+        //     model.addAttribute("error", "NIK sudah terdaftar");
+        //     return "User/register";
+        // }
 
         if(userData.getNik().length() != 16){
             model.addAttribute("error", "NIK harus 16 digit");
