@@ -1,9 +1,12 @@
 package com.example.spesialisRPL.Admin;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +24,9 @@ public class AdminController {
     private AdminRepository adminRepository;
 
     @GetMapping("/")
-    public String index(){
+    public String index(Model model){
+        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+        model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
 
@@ -30,18 +35,18 @@ public class AdminController {
         return "Admin/admin_daftarPasien";
     }
 
-    @PostMapping("/daftarpasien")
-    public String formPasien(@Valid @ModelAttribute FormPendaftaranData formData){
-        //Check NIK
-        if(adminRepository.findNik(formData.getNik()).isPresent()){
-            //Tampilkan tanggal Lahir, jenis kelamin dan nomor telp (jika ada)
-        } else {
-            //Tidak terdaftar keluarkan error "Pasien belum terdaftar"
-        }
+    // @PostMapping("/daftarpasien")
+    // public String formPasien(@Valid @ModelAttribute FormPendaftaranData formData){
+    //     //Check NIK
+    //     if(adminRepository.findNik(formData.getNik()).isPresent()){
+    //         //Tampilkan tanggal Lahir, jenis kelamin dan nomor telp (jika ada)
+    //     } else {
+    //         //Tidak terdaftar keluarkan error "Pasien belum terdaftar"
+    //     }
 
-        //Tambahin pop up kalau udah berhasil daftar
-        return "redirect:/Admin/daftarpasien";
-    }
+    //     //Tambahin pop up kalau udah berhasil daftar
+    //     return "redirect:/Admin/daftarpasien";
+    // }
 
     @GetMapping("/check-nik")
     @ResponseBody

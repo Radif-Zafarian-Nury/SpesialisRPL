@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,12 @@ public class AdminJdbc implements AdminRepository{
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<JadwalDokterData> findAll() {
+        String sql = "SELECT * FROM lihat_jadwal_dokter";
+        return jdbcTemplate.query(sql, this::mapRowToJadwalDokter);
+    }
 
     @Override
     public Optional<FormPendaftaranData> findNik(String nik) {
@@ -30,5 +38,14 @@ public class AdminJdbc implements AdminRepository{
             new BeanPropertyRowMapper<>(FormPendaftaranData.class)
         );
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
+    public JadwalDokterData mapRowToJadwalDokter(ResultSet resultSet, int rowNum) throws SQLException {
+        return new JadwalDokterData(
+            resultSet.getString("nama"),
+            resultSet.getString("nama_spesialisasi"),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai")
+            );
     }
 }
