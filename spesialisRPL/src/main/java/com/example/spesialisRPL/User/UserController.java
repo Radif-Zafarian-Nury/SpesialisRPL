@@ -77,4 +77,6 @@ public class UserController {
         userRepository.saveUser(userData);
         return "redirect:/user/login";
     }
+
+    
 }

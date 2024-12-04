@@ -40,7 +40,12 @@
         </div>
         <div th:each="doctor : ${doctors}" class="doctors_container">
             <div class="doctor_card">
-                
+                <div class="doctor_profile_pic">
+                    <img th:src="${doctor.profilePictureUrl}" alt="Doctor Image" />
+                </div>
+                <div>
+                    <h3 th:text="${doctor.name}"></h3>
+                </div>
             </div>
         </div>
     </main>
