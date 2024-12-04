@@ -5,37 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register to WomLinic+</title>
     <link rel="stylesheet" type="text/css" th:href="@{/User/register_style.css}">  
-
 </head>
 <body>
     <a th:href="@{/user/}">
         <img src="/assets/Home.png" class="home_logo" />
     </a>
+
     <div class="wrapper">
-        <form action="" class="register_form" method="post">
+        
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+        
+        <form action="/user/register" class="register_form" method="post" id="registerForm">
             <div class="register_container">
                 <label for="nama"><b>Nama</b></label>
-                <input type="text" name="nama" required>
-                <label for="nik"><b>NIK</b></label>
-                <input type="text" name="nik" required>
-                <label for="email"><b>Email</b></label>
-                <input type="text" name="email" required>
-                <label for="alamat"><b>Alamat</b></label>
-                <input type="text" name="alamat" required>
-                <label for="password"><b>Kata Sandi</b></label>
-                <input type="password" name="password" required>
-                <label for="confpassword"><b>Ulangi Kata Sandi</b></label>
-                <input type="password" name="confpassword" required>
-                
+                <input type="text" id="nama" name="nama" required>
 
+                <label for="nik"><b>NIK</b></label>
+                <input type="text" id="nik" name="nik" required minlength="16" maxlength="16">
+
+                <label for="email"><b>Email</b></label>
+                <input type="text" id="email" name="email" required>
+
+                <label for="alamat"><b>Alamat</b></label>
+                <input type="text" id="alamat" name="alamat" required>
+
+                <label for="kata_sandi"><b>Kata Sandi</b></label>
+                <input type="password" id="kata_sandi" name="kata_sandi" required minlength="6" maxlength="20">
+
+                <label for="confpassword"><b>Ulangi Kata Sandi</b></label>
+                <input type="password" id="confpassword" name="confpassword" required>
+                
                 <span class="label_jnskelamin"><b>Jenis Kelamin</b></span>
                 <div class="wrapper_p">
-                    <input type="radio" name="jns_kelamin" value="Perempuan" required>
-                    <label for="perempuan">Perempuan</label>
+                    <input type="radio" id="jenis_kelamin_P" name="jenis_kelamin" value="P" required>
+                    <label for="jenis_kelamin_P">Perempuan</label>
                 </div>
                 <div class="wrapper_l">
-                    <input type="radio" name="jns_kelamin" value="Laki-laki">
-                    <label for="lakilaki">Laki-laki</label>
+                    <input type="radio" id="jenis_kelamin_L" name="jenis_kelamin" value="L">
+                    <label for="jenis_kelamin_L">Laki-laki</label>
                 </div>
             
                 <button type="submit">Registrasi</button> 
@@ -45,7 +54,6 @@
                         <span>Masuk</span>
                     </a>
                 </div>
-               
             </div>
         </form>
     </div>

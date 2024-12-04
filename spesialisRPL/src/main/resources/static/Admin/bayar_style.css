@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+}
+/* Main content styling */
+header {
+    background-color: rgb(243, 243, 243);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+header span {
+    color: rgb(181, 4, 4);
+}
+
+header button {
+    background-color: rgb(181, 4, 4);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+header button:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search bar styling */
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+.search-bar input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.search-bar button {
+    width: 15%;
+    background-color: rgb(181, 4, 4);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.search-bar button:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+/* Patient card styling */
+.patient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.patient-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+
+.patient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.patient-info span {
+    font-weight: bold;
+}
+
+.patient-info p {
+    margin: 0;
+}
+
+.status-btn, .reregister-btn {
+    padding: 10px 20px;
+    background-color: rgb(181, 4, 4);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.status-btn:hover, .reregister-btn:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}

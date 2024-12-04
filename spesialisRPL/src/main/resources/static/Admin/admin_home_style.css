@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+/* Main content styling */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+header {
+    background-color: rgb(243, 243, 243);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+header span {
+    color: rgb(181, 4, 4); 
+}
+
+header button {
+    background-color:  rgb(181, 4, 4);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+header button:hover {
+    background-color:  rgb(255, 0, 0);
+}
+.search-bar {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: white;
+}
+.search-bar input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.search-bar button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: rgb(181, 4, 4);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.search-bar button:hover {
+    background-color: rgb(255, 0, 0);
+}
+.schedule {
+    padding: 20px;
+}
+.schedule h2 {
+    margin-bottom: 20px;
+}
+.schedule table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.schedule th, .schedule td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+.schedule th {
+    background-color: rgb(181, 4, 4);
+    color: white;
+    text-align: center;
+}
+a{
+    text-decoration: none;
+    color: white;
+}

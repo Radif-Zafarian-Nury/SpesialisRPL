@@ -4,169 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Pasien</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            background-color: #ffffff;
-        }
-
-        /* Sidebar styling */
-        .sidebar {
-            width: 250px;
-            background-color: rgb(243, 243, 243);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-        }
-        .sidebar img {
-            height: 80px;
-            margin-bottom: 20px;
-        }
-        .sidebar button {
-            width: 100%;
-            background-color: rgb(181, 4, 4);
-            color: white;
-            border: none;
-            padding: 15px 0; 
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-        .sidebar button:hover {
-            background-color: rgb(251, 7, 7);
-        }
-
-        /* Main content styling */
-        header {
-            background-color: rgb(243, 243, 243);
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header .right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        header span {
-            color: rgb(181, 4, 4);
-        }
-
-        header button {
-            background-color: rgb(181, 4, 4);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        header button:hover {
-            background-color: rgb(255, 0, 0);
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Search bar styling */
-        .search-bar {
-            display: flex;
-            margin-bottom: 20px;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .search-bar input {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .search-bar button {
-            width: 15%;
-            background-color: rgb(181, 4, 4);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .search-bar button:hover {
-            background-color: rgb(255, 0, 0);
-        }
-
-        /* Patient card styling */
-        .patient-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .patient-card {
-            display: flex;
-            justify-content: space-between;
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            align-items: center;
-        }
-
-        .patient-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .patient-info span {
-            font-weight: bold;
-        }
-
-        .patient-info p {
-            margin: 0;
-        }
-
-        .status-btn, .reregister-btn {
-            padding: 10px 20px;
-            background-color: rgb(181, 4, 4);
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .status-btn:hover, .reregister-btn:hover {
-            background-color: rgb(255, 0, 0);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        a{
-            text-decoration: none;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/bayar_style.css}">
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <img src="/assets/WomLinic Fix Logo.png" alt="Logo">
-        <button><a href="daftarpasien">Mendaftarkan Pasien</a></button>
-        <button><a href="editdokter">Edit Data Dokter</a></button>
-        <button><a href="buatakun">Buat Akun Baru</a></button>
-    </div>
+    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -174,14 +16,14 @@
             <span>Search Pasien</span>
             <div class="right">
                 <span>Hi, Admin</span>
-                <button onclick="logout()">Logout</button>
+                <button th:href="@{logout}">Logout</button>
             </div>
         </header>
 
         <!-- Search bar -->
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Cari Pasien..." onkeyup="searchPatient()">
-            <button onclick="searchPatient()">Cari</button>
+            <button th:href="@{search}" >Cari</button>
         </div>
 
         <!-- Patient List -->
@@ -195,8 +37,8 @@
                     <p>Status Pembayaran: Belum Bayar</p>
                 </div>
                 <div class="button-group">
-                    <button class="status-btn" onclick="updatePaymentStatus(this)">Tandai Sudah Bayar</button>
-                    <button class="reregister-btn" onclick="reRegisterPatient(this)">Daftar Ulang</button>
+                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
+                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
                 </div>
             </div>
             <div class="patient-card">
@@ -207,8 +49,8 @@
                     <p>Status Pembayaran: Belum Bayar</p>
                 </div>
                 <div class="button-group">
-                    <button class="status-btn" onclick="updatePaymentStatus(this)">Tandai Sudah Bayar</button>
-                    <button class="reregister-btn" onclick="reRegisterPatient(this)">Daftar Ulang</button>
+                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
+                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
                 </div>
             </div>
         </div>
