@@ -1,4 +1,4 @@
-package com.example.spesialisRPL;
+package com.example.spesialisRPL.Config;
 
 import javax.sql.DataSource;
 
