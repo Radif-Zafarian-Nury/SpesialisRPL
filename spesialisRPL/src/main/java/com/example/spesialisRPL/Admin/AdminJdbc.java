@@ -46,6 +46,6 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getString("nama_spesialisasi"),
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
-            );
+        );
     }
 }

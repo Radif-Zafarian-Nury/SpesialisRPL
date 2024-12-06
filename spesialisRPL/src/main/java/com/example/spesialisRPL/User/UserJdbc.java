@@ -8,10 +8,16 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.spesialisRPL.Doctor.Doctor;
+import com.example.spesialisRPL.Doctor.DoctorJdbc;
+
 @Repository
 public class UserJdbc implements UserRepository{
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private DoctorJdbc dokterJdbc;
 
     @Override
     public void saveUser(UserData userData) {
@@ -36,5 +42,11 @@ public class UserJdbc implements UserRepository{
             new BeanPropertyRowMapper<>(UserData.class)
             );
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
+    }
+
+    @Override
+    public Iterable<Doctor> findAllDokterMata() {
+        List<Doctor> listDokterMata = this.dokterJdbc.getAllDokterMata();
+        return listDokterMata;
     }
 }

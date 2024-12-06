@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.Doctor;
 
+import java.util.List;
+
 public interface DoctorRepository {
-    Iterable<Doctor> getAllDoctors();
+    List<Doctor> getAllDokterMata();
 }
