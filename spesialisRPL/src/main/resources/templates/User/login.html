@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login to WomLinic+</title>
-    <link rel="stylesheet" href="/login_style.css">  
-
+    <link rel="stylesheet" type="text/css" th:href="@{/User/login_style.css}">
+    <script src="/scripts.js" defer></script>
 </head>
 <body>
-    <a href="index.html">
-        <img src="assets/home.png" class="womlinic_logo" />
+    <a th:href="@{/user/}">
+        <img src="/assets/Home.png" class="home_logo" />
     </a>
     <div class="wrapper">
         <form action="" class="login_form" method="post">
@@ -22,7 +22,7 @@
                 <a href="forgot_password.html" class="forgot">
                     <span>Lupa kata sandi?</span>
                 </a>
-                <a href="register.html" class="register">
+                <a th:href="@{register}" class="register">
                     <span>Daftar</span>
                 </a>
             </div>

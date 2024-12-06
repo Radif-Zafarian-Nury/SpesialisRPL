@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Homepage</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/admin_home_style.css}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Jadwal Dokter Hari Ini</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <a th:href="@{logout}"><button>Logout</button></a>
+            </div>
+        </header>
+        
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien">
+            <button onclick="search()">Cari</button>
+        </div>
+
+        <!-- Jadwal Dokter -->
+        <div class="schedule">
+            <h2>JADWAL DOKTER YANG TERSEDIA</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Dokter</th>
+                        <th>Spesialisasi</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- data dibawah ambil dari DB -->
+                    <tr th:each="row : ${results}">
+                        <td th:text="${row.nama}"></td>
+                        <td th:text="${row.nama_spesialisasi}"></td>
+                        <td th:text="${row.waktu_mulai}"></td>
+                        <td th:text="${row.waktu_selesai}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

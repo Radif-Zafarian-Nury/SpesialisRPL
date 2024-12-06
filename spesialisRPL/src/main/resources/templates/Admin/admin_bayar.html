@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Pasien</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/bayar_style.css}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Search Pasien</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <button th:href="@{logout}">Logout</button>
+            </div>
+        </header>
+
+        <!-- Search bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari Pasien..." onkeyup="searchPatient()">
+            <button th:href="@{search}" >Cari</button>
+        </div>
+
+        <!-- Patient List -->
+        <div class="patient-list" id="patientList">
+            <!-- Patient cards will be displayed here -->
+            <div class="patient-card">
+                <div class="patient-info">
+                    <span>Nama Pasien: John Doe</span>
+                    <p>Dokter: Dr. Woms - Spesialis Jantung</p>
+                    <p>Jadwal: 08:00 - 12:00</p>
+                    <p>Status Pembayaran: Belum Bayar</p>
+                </div>
+                <div class="button-group">
+                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
+                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
+                </div>
+            </div>
+            <div class="patient-card">
+                <div class="patient-info">
+                    <span>Nama Pasien: Jane Smith</span>
+                    <p>Dokter: Dr. Dodo - Spesialis Anak</p>
+                    <p>Jadwal: 13:00 - 17:00</p>
+                    <p>Status Pembayaran: Belum Bayar</p>
+                </div>
+                <div class="button-group">
+                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
+                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

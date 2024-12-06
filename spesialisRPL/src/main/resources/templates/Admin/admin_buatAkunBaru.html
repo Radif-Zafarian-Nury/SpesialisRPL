@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Akun Baru</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/buatAkunBaru_style.css}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Buat Akun Baru</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <a th:href="@{logout}"><button>Logout</button></a>
+            </div>
+        </header>
+
+        <!-- Formulir Buat Akun -->
+        <div class="form-container">
+            <h2>Formulir Buat Akun</h2>
+            <form id="createAccountForm">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="userName">Nama</label>
+                    <input type="text" id="userName" name="userName" placeholder="Masukkan nama lengkap" required>
+                </div>
+
+                <!-- NIK -->
+                <div class="form-group">
+                    <label for="userNIK">NIK</label>
+                    <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="userAddress">Alamat</label>
+                    <input type="text" id="userAddress" name="userAddress" placeholder="Masukkan alamat lengkap" required>
+                </div>
+
+                <!-- Specialization -->
+                <div class="form-group">
+                    <label for="userSpecialization">Spesialis</label>
+                    <select id="userSpecialization" name="userSpecialization">
+                        <option value="Spesialis Jantung">Spesialis Jantung</option>
+                        <option value="Spesialis Mata">Spesialis Mata</option>
+                        <option value="Spesialis Gigi">Spesialis Gigi</option>
+                        <option value="Spesialis THT">Spesialis THT</option>
+                        <option value="Perawat">Perawat</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Pasien">Pasien</option>
+                    </select>
+                </div>
+
+                <!-- Gender -->
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <label>
+                        <input type="radio" name="gender" value="male" required> Laki-laki
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female" required> Perempuan
+                    </label>
+                </div>
+
+                <!-- Role -->
+                <div class="form-group">
+                    <label for="userRole">Role</label>
+                    <select id="userRole" name="userRole" required>
+                        <option value="dokter">Dokter</option>
+                        <option value="perawat">Perawat</option>
+                        <option value="admin">Admin</option>
+                        <option value="pasien">Pasien</option>
+                    </select>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a th:href="@{cancel}"><button type="button" class="cancel-btn">Batal</button></a>
+                    <a th:href="@{simpan}"><button type="submit" class="save-btn">Simpan</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

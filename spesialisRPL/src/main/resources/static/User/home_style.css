@@ -30,6 +30,13 @@ header {
     width: 80px;
 }
 
+.login:hover {
+    background-color: white;
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: rgb(216, 215, 215);
+}
+
 .banner_image {
     height: 110vh;
     width:100vw;
@@ -122,8 +129,48 @@ header {
     border: solid white;
 }
 
+.book_doctor:hover {
+    background-color: rgb(255, 255, 255);
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+}
+
 .login > p {
     padding: 15px;
+}
+
+.content {
+    display: grid;
+    grid-template-areas: 
+    "text img"
+    ;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 3vh;
+    padding: 6rem;
+}
+
+.actual_text {
+    grid-area: text;
+}
+
+.actual_text > p {
+    color: black;
+    font-size: 3vh;
+    text-align: justify;
+}
+
+.doctor_image_content {
+    display: flex;
+    grid-area: img;
+}
+
+.img_container {
+    width: 50%;
+}
+
+.img_container img {
+    margin-left: 5rem;
 }
 
 body {
