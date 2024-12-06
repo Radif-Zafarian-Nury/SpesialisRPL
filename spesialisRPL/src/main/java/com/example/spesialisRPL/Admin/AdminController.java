@@ -64,4 +64,9 @@ public class AdminController {
     public String buatAkun(){
         return "Admin/admin_buatAkunBaru";
     }
+
+    @GetMapping("/halamanedit")
+    public String halamanEdit(){
+        return "Admin/admin_halamanEdit";
+    }
 }
