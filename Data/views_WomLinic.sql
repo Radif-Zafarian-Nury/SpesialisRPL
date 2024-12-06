@@ -7,14 +7,12 @@ CREATE VIEW lihat_jadwal_dokter AS
 (SELECT
 	nama,
 	nama_spesialisasi,
-	hari,
+	tanggal,
 	waktu_mulai,
 	waktu_selesai
 FROM
-	users INNER JOIN jadwal_dokter
-	ON users.id_user = jadwal_dokter.id_dokter
-	INNER JOIN jadwal
-	ON jadwal.id_jadwal = jadwal_dokter.id_jadwal
+	users INNER JOIN jadwal
+	ON users.id_user = jadwal.id_dokter
 	INNER JOIN spesialisasi_dokter
 	ON spesialisasi_dokter.id_dokter = users.id_user
 	INNER JOIN spesialisasi
