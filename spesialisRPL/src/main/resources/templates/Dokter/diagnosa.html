@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Medis Pasien</title>
+    <link rel="stylesheet" th:href="@{/Dokter/stylesDiagnosa.css}>
+</head>
+<body>
+    <div class="medical-card">
+        <h1>Kartu Medis Pasien</h1>
+        <table id="medical-history">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Informasi Awal (BB, TB, Tekanan Darah, Suhu)</th>
+                    <th>Diagnosa Dokter</th>
+                    <th>Resep Obat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- dari DB tampilin riwayat medis -->
+                <tr>
+                    <td>2024-12-01</td>
+                    <td>BB: 65kg, TB: 170cm, Tekanan: 120/80, Suhu: 36.7°C</td>
+                    <td>Flu ringan</td>
+                    <td>Paracetamol 500mg, Vitamin C</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- buat tambah yang baru -->
+        <button id="add-row-btn">Tambah Baris Baru</button>
+    </div>
+
+    <!-- INI TAPI MASI PAKE JS GATAU BISA GA KLO PAKE JAVA HEHE :) -->
+    <script>
+        document.getElementById('add-row-btn').addEventListener('click', function() {
+            const table = document.getElementById('medical-history').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            const dateCell = newRow.insertCell(0);
+            const infoCell = newRow.insertCell(1);
+            const diagnosisCell = newRow.insertCell(2);
+            const prescriptionCell = newRow.insertCell(3);
+
+            dateCell.contentEditable = "true";
+            infoCell.contentEditable = "true";
+            diagnosisCell.contentEditable = "true";
+            prescriptionCell.contentEditable = "true";
+
+            dateCell.innerText = "YYYY-MM-DD";
+            infoCell.innerText = "Masukkan data BB, TB, Tekanan Darah, Suhu";
+            diagnosisCell.innerText = "Masukkan diagnosa dokter";
+            prescriptionCell.innerText = "Masukkan resep obat";
+        });
+    </script>
+</body>
+</html>

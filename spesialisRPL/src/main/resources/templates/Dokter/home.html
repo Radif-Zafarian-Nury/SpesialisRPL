@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pasien</title>
+    <link rel="stylesheet" th:href="@{/Dokter/stylesHome.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <span>Daftar Pasien Hari Ini</span>
+        <div class="right">
+            <span>Hi, Dokter</span>
+            <a th:href="@{logout}"><button>Logout</button></a>
+        </div>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien">
+        <button>Cari</button>
+    </div>
+
+    <main>
+        <div class="card-container">
+            <div class="card">
+                <div class="info">
+                    <h3>John Doe</h3>
+                    <p>Tanggal Lahir: 30</p>
+                    <p>Gender: Laki-laki</p>
+                    <p>Nomor Antrian: 3</p>
+                </div>
+                <button class="edit-btn">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
