@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.User;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -16,23 +19,28 @@ import jakarta.validation.Valid;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-    
+    private UserService userService; // Inject UserService
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+   
     @GetMapping("/")
-    public String index(){
-        return "User/index";
+    public String index(HttpSession session){
+        if(session.getAttribute("loggedInUser") == null){   //kalo belom login ke index
+            return "User/index";
+        }
+        
+        //UserData loggedInUser  = (UserData) session.getAttribute("loggedInUser ");
+        //logger.info("User  role: {}", loggedInUser.getPeran()); // Log the user's role
+        return "User/LoggedInIndex"; //kalo udh ke yg logged in
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "User/login";
-    }
-
+    
     @GetMapping("/register")
     public String register(){
         return "User/register";
     }
 
+    
     @PostMapping("/register")
     public String registerUser(
         @Valid @ModelAttribute UserData userData, 
@@ -50,8 +58,9 @@ public class UserController {
         //     model.addAttribute("error", "NIK sudah terdaftar");
         //     return "User/register";
         // }
-
-        if(userData.getNik().length() != 16){
+        
+        //cek length sama ada huruf ato ga
+        if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
             model.addAttribute("error", "NIK harus 16 digit");
             return "User/register";
         }
@@ -68,8 +77,13 @@ public class UserController {
             return "User/register";
         }
 
+        boolean isRegistered = userService.register(userData);
+        if (!isRegistered) {
+            model.addAttribute("error", "Registration failed. Please try again.");
+            return "User/register";
+        }
         userData.setPeran("pasien");
-        userRepository.saveUser(userData);
-        return "redirect:/user/login";
+        // userRepository.saveUser(userData);
+        return "redirect:/login";
     }
 }

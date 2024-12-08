@@ -23,8 +23,7 @@
         <!-- Edit Form -->
         <div class="form-container">
             <h2>Formulir Edit Dokter</h2>
-            <form id="editDoctorForm">
-                <!-- HARUSNYA DI TAG INPUT VALUE TEH DARI DB BISA GAK? HEHEHEHE -->
+            <form id="editDoctorForm" th:action="@{/admin/editdokter}" th:method="post" enctype="multipart/form-data">
                 <!-- Doctor Name -->
                 <div class="form-group">
                     <label for="doctorName">Nama Dokter</label>
@@ -37,6 +36,12 @@
                     <input type="text" id="doctorNIK" name="doctorNIK" value="123456789" required>
                 </div>
 
+                <!-- Doctor Photo -->
+                <div class="form-group">
+                    <label for="doctorPhoto">Foto Dokter</label>
+                    <input type="file" id="dokterPhoto" name="doctorPhoto" accept="image/jpg, image/jpeg, image/png" value=""required>
+                </div>
+                
                 <!-- Doctor Address -->
                 <div class="form-group">
                     <label for="doctorAddress">Alamat</label>
@@ -86,6 +91,7 @@
                 </div>
             </form>
         </div>
+        
     </div>
 </body>
 </html>

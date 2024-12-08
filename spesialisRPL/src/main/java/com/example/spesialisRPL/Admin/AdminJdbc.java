@@ -23,6 +23,7 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
+<<<<<<< HEAD
     public List<JadwalDokterData> findDoctorsByDay(String day) {
        String sql = """
                SELECT DISTINCT nama, nama_spesialisasi, hari, waktu_mulai, waktu_selesai
@@ -53,6 +54,8 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
+=======
+>>>>>>> e5683d201a1fac39bb41446ba6aef654764cc5de
     public Optional<FormPendaftaranData> findNik(String nik) {
         String sql = """
             SELECT
@@ -74,7 +77,10 @@ public class AdminJdbc implements AdminRepository{
         return new JadwalDokterData(
             resultSet.getString("nama"),
             resultSet.getString("nama_spesialisasi"),
+<<<<<<< HEAD
             resultSet.getString("hari"),
+=======
+>>>>>>> e5683d201a1fac39bb41446ba6aef654764cc5de
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
             );
