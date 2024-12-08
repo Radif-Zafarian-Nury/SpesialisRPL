@@ -34,8 +34,8 @@ public class AdminController {
     //AMBIL NILAI DOKTER BERDASARKAN HARI
     @GetMapping("/get-dokter")
     @ResponseBody
-    public ResponseEntity<List<JadwalDokterData>> getDoctorsByDay(@RequestParam("day") String day){
-        List<JadwalDokterData> daftarDokter = adminRepository.findDoctorsByDay(day);
+    public ResponseEntity<List<String>> getDoctorsByDay(@RequestParam("tanggal") String tanggal){
+        List<String> daftarDokter = adminRepository.findDoctorsByDay(tanggal);
         return ResponseEntity.ok(daftarDokter);
     }
 
@@ -56,8 +56,7 @@ public class AdminController {
     }
 
     @GetMapping("/daftarpasien")
-    public String daftarPasien(@RequestParam(value ="day", required = false) String day, Model model){
-        model.addAttribute("days", List.of("Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"));
+    public String daftarPasien(){
         return "Admin/admin_daftarPasien";
     }
 
