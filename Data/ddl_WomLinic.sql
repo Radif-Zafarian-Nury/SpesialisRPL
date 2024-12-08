@@ -24,7 +24,6 @@ CREATE TABLE users (
 	no_rekam_medis VARCHAR(10),
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );
-
 CREATE TABLE spesialisasi(
 	id_spesialisasi SERIAL PRIMARY KEY,
 	nama_spesialisasi VARCHAR(50)

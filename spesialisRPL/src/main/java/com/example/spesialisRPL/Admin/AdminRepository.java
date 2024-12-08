@@ -5,5 +5,9 @@ import java.util.Optional;
 
 public interface AdminRepository {
     Optional<FormPendaftaranData> findNik(String nik);
+    List<String> findDoctorsByDay(String day);
+    List<String> findSpecializationsByDoctor(String dokter);
+    List<JadwalDokterData> findSchedulesBySpecialization(String spesialisasi);
+
     List<JadwalDokterData> findAll();
 }

@@ -82,7 +82,7 @@ public class UserController {
             model.addAttribute("error", "Registration failed. Please try again.");
             return "User/register";
         }
-        // userData.setPeran("pasien");
+        userData.setPeran("pasien");
         // userRepository.saveUser(userData);
         return "redirect:/login";
     }

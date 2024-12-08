@@ -23,6 +23,7 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
+    //HALAMAN UTAMA
     @GetMapping("/")
     public String index(Model model){
         List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
@@ -30,23 +31,34 @@ public class AdminController {
         return "Admin/admin";
     }
 
+    //AMBIL NILAI DOKTER BERDASARKAN HARI
+    @GetMapping("/get-dokter")
+    @ResponseBody
+    public ResponseEntity<List<String>> getDoctorsByDay(@RequestParam("tanggal") String tanggal){
+        List<String> daftarDokter = adminRepository.findDoctorsByDay(tanggal);
+        return ResponseEntity.ok(daftarDokter);
+    }
+
+    //AMBIL NILAI DOKTER SPESIALISASI BERDASARKAN DOKTER
+    @GetMapping("/get-spesialisasi")
+    @ResponseBody
+    public ResponseEntity<List<String>> getSpesialisasi(@RequestParam("dokter") String dokter){
+        List<String> spesialisai = adminRepository.findSpecializationsByDoctor(dokter);
+        return ResponseEntity.ok(spesialisai);
+    }
+
+    //AMBIL NILAI JADWAL BERDASARKAN SPESIALIASI
+    @GetMapping("/get-jadwal")
+    @ResponseBody
+    public ResponseEntity<List<JadwalDokterData>> getJadwal(@RequestParam("spesialisasi") String spesialisasi){
+        List<JadwalDokterData> jadwal = adminRepository.findSchedulesBySpecialization(spesialisasi);
+        return ResponseEntity.ok(jadwal);
+    }
+
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
     }
-
-    // @PostMapping("/daftarpasien")
-    // public String formPasien(@Valid @ModelAttribute FormPendaftaranData formData){
-    //     //Check NIK
-    //     if(adminRepository.findNik(formData.getNik()).isPresent()){
-    //         //Tampilkan tanggal Lahir, jenis kelamin dan nomor telp (jika ada)
-    //     } else {
-    //         //Tidak terdaftar keluarkan error "Pasien belum terdaftar"
-    //     }
-
-    //     //Tambahin pop up kalau udah berhasil daftar
-    //     return "redirect:/Admin/daftarpasien";
-    // }
 
     @GetMapping("/check-nik")
     @ResponseBody
