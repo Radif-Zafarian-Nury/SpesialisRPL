@@ -46,17 +46,28 @@ public class AdminJdbc implements AdminRepository{
     @Override
     public List<JadwalDokterData> findSchedulesBySpecialization(String spesialisasi) {
         String sql = """
-                SELECT nama, nama_spesialisasi, tanggal, waktu_mulai, waktu_selesai
+                SELECT id_jadwal AS idJadwal, nama, nama_spesialisasi, tanggal, waktu_mulai, waktu_selesai
                 FROM lihat_jadwal_dokter
                 WHERE nama_spesialisasi = ?
                 """;
-        return jdbcTemplate.query(sql, (resultSet, rowNum) -> mapRowToJadwalDokter(resultSet, rowNum), spesialisasi);
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> {
+            JadwalDokterData jadwal = new JadwalDokterData(
+                resultSet.getInt("idJadwal"),
+                resultSet.getString("nama"),
+                resultSet.getString("nama_spesialisasi"),
+                resultSet.getString("tanggal"),
+                resultSet.getString("waktu_mulai"),
+                resultSet.getString("waktu_selesai")
+            );
+            return jadwal;
+        }, spesialisasi);
     }
 
     @Override
     public Optional<FormPendaftaranData> findNik(String nik) {
         String sql = """
             SELECT
+                id_user,
                 nama,
                 tanggal_lahir AS tanggalLahir,
                 jenis_kelamin AS jenisKelamin
@@ -69,6 +80,26 @@ public class AdminJdbc implements AdminRepository{
             new BeanPropertyRowMapper<>(FormPendaftaranData.class)
         );
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
+    @Override
+    public void registerPasien(String nik, int idJadwal){
+        String sqlUser = "SELECT id_user FROM users WHERE nik = ?";
+        Integer idUser = jdbcTemplate.queryForObject(sqlUser, Integer.class, nik);
+        if (idUser == null) {
+            throw new IllegalArgumentException("Pasien tidak ditemukan");
+        }
+
+        // Tambahkan pasien ke tabel pendaftaran
+        String sql = """
+            INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
+            VALUES (?, ?, FALSE, FALSE, (
+                SELECT COALESCE(MAX(no_antrian), 0) + 1
+                FROM pendaftaran
+                WHERE id_jadwal = ?
+            ))
+        """;
+        jdbcTemplate.update(sql, idUser, idJadwal, idJadwal);
     }
 
     public JadwalDokterData mapRowToJadwalDokter(ResultSet resultSet, int rowNum) throws SQLException {

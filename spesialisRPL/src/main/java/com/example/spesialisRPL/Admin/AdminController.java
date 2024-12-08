@@ -60,6 +60,29 @@ public class AdminController {
         return "Admin/admin_daftarPasien";
     }
 
+    @PostMapping("/register-pasien")
+    @ResponseBody
+    public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
+        //Validasi nik
+        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("NIK tidak valid.");
+        }
+        
+        //Cek nik di db
+        var pasien = adminRepository.findNik(nik);
+        if(pasien.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pasien belum memilki akun");
+        }
+
+        //Mendaftarkan pasien
+        try {
+            adminRepository.registerPasien(nik, idJadwal);
+            return ResponseEntity.ok("Pasien berhasil didaftarkan");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal mendaftarkan pasien");
+        }
+    }
+
     @GetMapping("/check-nik")
     @ResponseBody
     public ResponseEntity<?> checkNik(@RequestParam("nik") String nik){
