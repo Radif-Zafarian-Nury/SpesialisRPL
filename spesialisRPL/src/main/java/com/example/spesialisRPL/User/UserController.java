@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.User;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.spesialisRPL.Doctor.Doctor;
 
 import jakarta.validation.Valid;
 
@@ -34,9 +38,11 @@ public class UserController {
     }
 
     @GetMapping("/spesialisMata")
-    public String spesialisMata() {
+    public String spesialisMata(Model model) {
+        List<Doctor> listDokterMata = this.userRepository.findAllDokterMata();
+        model.addAttribute("dokter_mata", listDokterMata);
         return "User/spesialis_mata";
-    } 
+    }
 
     @PostMapping("/register")
     public String registerUser(
@@ -77,6 +83,4 @@ public class UserController {
         userRepository.saveUser(userData);
         return "redirect:/user/login";
     }
-
-    
 }

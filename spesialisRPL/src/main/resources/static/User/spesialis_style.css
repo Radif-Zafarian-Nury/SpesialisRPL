@@ -12,6 +12,14 @@ header {
     height: 9vh;
 }
 
+.header_container {
+    position: fixed; 
+    top: 0;
+    left: 0; 
+    width: 100%; 
+    z-index: 1000;
+}
+
 .login_wrapper {
     margin-left: auto;
     padding: 15px;
@@ -97,12 +105,49 @@ body {
     background-color: rgb(181, 4, 4);
 }
 
-.small_title > h5 {
+.small_title > h3 {
     margin: 0;
 }
 
 .big_title > h1 {
     margin-top: 1vh;
     margin-bottom: 1vh;
+}
+
+.doctors_container {
+    display: flex;
+    margin-top: 3vh;
+    gap: 30px;
+}
+
+.doctor_card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    grid-template-areas: 
+    "photo"
+    "name"
+    ;
+    align-items: center;
+    width: 14vw;
+    height: 34vh;
+}
+
+.doctor_profile_pic {
+    display: flex;
+    justify-content: center;
+}
+
+.doctor_img {
+    grid-area: photo;
+    width: 8vw;
+    height: 15vh;
+}
+
+.doctor_name {
+    grid-area: name;
+    display: flex;
+    justify-content: center;
 }
 

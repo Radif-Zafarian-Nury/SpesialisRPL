@@ -23,7 +23,7 @@ public class DoctorJdbc implements DoctorRepository {
 
     @Override
     public List<Doctor> getAllDokterMata() {
-        String sql = "SELECT * FROM daftar_dokter WHERE nama_spesialisasi = 'Mata'";
+        String sql = "SELECT * FROM daftar_dokter WHERE nama_spesialisasi = 'Mata' OR nama_spesialisasi = 'Umum'";
         List<Doctor> doctors = jdbcTemplate.query(sql, this::mapRowToDoctor);
         return doctors;
     }

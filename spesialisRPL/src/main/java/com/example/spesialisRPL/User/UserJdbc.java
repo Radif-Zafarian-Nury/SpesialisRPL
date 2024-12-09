@@ -45,7 +45,7 @@ public class UserJdbc implements UserRepository{
     }
 
     @Override
-    public Iterable<Doctor> findAllDokterMata() {
+    public List<Doctor> findAllDokterMata() {
         List<Doctor> listDokterMata = this.dokterJdbc.getAllDokterMata();
         return listDokterMata;
     }
