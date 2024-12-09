@@ -64,6 +64,18 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
+    public JadwalDokterData findScheduleById(int idJadwal){
+        String sql = "SELECT id_jadwal as idJadwal, kuota_max, kuota_terisi FROM jadwal WHERE id_jadwal = ?";
+        return jdbcTemplate.queryForObject(sql, (resultSet, rowNum) -> {
+            return new JadwalDokterData(
+                resultSet.getInt("idJadwal"),
+                resultSet.getInt("kuota_max"),
+                resultSet.getInt("kuota_terisi")
+            );
+        }, idJadwal);
+    }
+
+    @Override
     public Optional<FormPendaftaranData> findNik(String nik) {
         String sql = """
             SELECT
@@ -80,6 +92,11 @@ public class AdminJdbc implements AdminRepository{
             new BeanPropertyRowMapper<>(FormPendaftaranData.class)
         );
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
+    public void incrementKuotaTerisi(int idJadwal){
+        String sql = "UPDATE jadwal SET kuota_terisi = kuota_terisi + 1 WHERE id_jadwal = ?";
+        jdbcTemplate.update(sql, idJadwal);
     }
 
     @Override

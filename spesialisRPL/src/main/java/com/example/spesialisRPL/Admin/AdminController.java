@@ -55,6 +55,18 @@ public class AdminController {
         return ResponseEntity.ok(jadwal);
     }
 
+    //CEK KUOTA DOKTER
+    @GetMapping("/check-quota")
+    @ResponseBody
+    public ResponseEntity<?> checkQuota(@RequestParam("idJadwal") int idJadwal){
+        JadwalDokterData jadwal = adminRepository.findScheduleById(idJadwal);
+        if(jadwal == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jadwal tidak ditemukan");
+        }
+
+        return ResponseEntity.ok(new QuotaResponse(jadwal.getKuotaTerisi(), jadwal.getKuotaMax()));
+    }
+
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
@@ -77,8 +89,10 @@ public class AdminController {
         //Mendaftarkan pasien
         try {
             adminRepository.registerPasien(nik, idJadwal);
+            adminRepository.incrementKuotaTerisi(idJadwal);
             return ResponseEntity.ok("Pasien berhasil didaftarkan");
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal mendaftarkan pasien");
         }
     }

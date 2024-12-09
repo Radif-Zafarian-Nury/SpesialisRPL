@@ -10,4 +10,6 @@ public interface AdminRepository {
     List<JadwalDokterData> findSchedulesBySpecialization(String spesialisasi);
     void registerPasien(String nik, int idJadwal);
     List<JadwalDokterData> findAll();
+    JadwalDokterData findScheduleById(int idJadwal);
+    void incrementKuotaTerisi(int idJadwal);
 }

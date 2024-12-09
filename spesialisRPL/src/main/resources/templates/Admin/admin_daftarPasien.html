@@ -203,6 +203,18 @@
             }
 
             try {
+                const quotaResponse = await fetch(`/admin/check-quota?idJadwal=${idJadwal}`);
+                const quotaData = await quotaResponse.json();
+
+                if(!quotaResponse.ok){
+                    throw new Error(quotaData.message);
+                }
+
+                if(quotaData.kuotaTerisi >= quotaData.kuotaMax){
+                    alert("Kuota sudah penuh");
+                    return false;
+                }
+
                 const response = await fetch('/admin/register-pasien', {
                     method: 'POST',
                     headers: {
@@ -219,7 +231,7 @@
                     alert(message);
                 }
             } catch (error) {
-                alert("Terjadi kesalahan saat mendaftarkan pasien.")
+                alert("Terjadi kesalahan saat mendaftarkan pasien: " + error.message)
             }
 
             return false;
