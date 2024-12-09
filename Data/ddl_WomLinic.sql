@@ -31,6 +31,7 @@ CREATE TABLE spesialisasi(
 CREATE TABLE diagnosa(
 	id_diagnosa SERIAL,
 	id_pasien INT REFERENCES users(id_user),
+	tanggal DATE,
 	tinggi_badan FLOAT,
 	berat_badan FLOAT,
 	suhu_tubuh FLOAT,
@@ -81,10 +82,10 @@ VALUES
   	('Jantung'),
 	('Gigi'),
 	('Mata');
-INSERT INTO diagnosa (id_pasien, tinggi_badan, berat_badan, suhu_tubuh, resep_obat, diagnosa_dokter)
+INSERT INTO diagnosa (id_pasien, tanggal, tinggi_badan, berat_badan, suhu_tubuh, resep_obat, diagnosa_dokter)
 VALUES
-	(3, 165, 60, 36.7, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
-	(4, 180, 75, 37.2, 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
+	(3, '2024-12-01', 165, 60, 36.7, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
+	(4, '2024-12-02', 180, 75, 37.2, 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
 INSERT INTO spesialisasi_dokter (id_dokter, id_spesialisasi)
 VALUES
 	(1, 1), 
@@ -94,6 +95,8 @@ VALUES
 	(2, 5);
 INSERT INTO jadwal (id_dokter, waktu_mulai, waktu_selesai, tanggal, kuota_max, kuota_terisi)
 VALUES
+	(1, '07:00', '10:00', '2024-12-01', 10, 1),
+	(2, '07:00', '10:00', '2024-12-02', 10, 1),
 	(1, '07:00', '10:00', '2024-12-20', 10, 1), 
 	(1, '13:00', '15:00', '2024-12-20', 5, 0),
 	(1, '13:00', '15:00', '2024-12-21', 5, 0), 
