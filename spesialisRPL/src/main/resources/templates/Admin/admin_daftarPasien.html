@@ -52,28 +52,34 @@
                     </label>
                 </div>
 
-                <!-- <div class="form-group">
-                    <label for="contactNumber">Nomor Telepon</label>
-                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Masukkan nomor telepon" required>
-                </div> -->
+                <!-- Filter By Date -->
+                <div class="form-group">
+                    <label for="tanggal">Pilih Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" onchange="filterDokter()" required>
+                </div>
+
+                <!-- Dropdown Dokter -->
+                <div class="form-group">
+                    <label for="dokter">Pilih Dokter</label>
+                    <select id="dokter" name="dokter" onchange="filterSpesialisasi()" required>
+                        <option value="">Pilih Dokter</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
-                    <label for="doctor">Pilih Dokter</label>
-                    <select id="doctor" name="doctor" required>
-                        <option value="">Pilih Dokter</option>
-                        <option value="Dr. Woms">Dr. Woms - Spesialis Jantung</option>
-                        <option value="Dr. Dodo">Dr. Dodo - Spesialis Anak</option>
-                        <option value="Dr. Kapi">Dr. Kapi - Spesialis Bedah</option>
+                    <label for="spesialisasi">Pilih Spesialisasi</label>
+                    <select id="spesialisasi" name="spesialisasi" onchange="filterJadwal()" required>
+                        <option value="">Pilih Spesialisasi</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label for="schedule">Pilih Jadwal</label>
-                    <select id="schedule" name="schedule" required>
+                    <label for="jadwal">Pilih Jadwal</label>
+                    <select id="jadwal" name="jadwal" required>
                         <option value="">Pilih Jadwal</option>
-                        <option value="08:00 - 12:00">08:00 - 12:00</option>
-                        <option value="13:00 - 17:00">13:00 - 17:00</option>
                     </select>
                 </div>
+
                 <div class="form-actions">
                     <button type="reset" class="reset-btn">Reset</button>
                     <a th:href="@{daftarpasien}"><button type="submit" class="submit-btn">Daftar</button></a>
@@ -82,7 +88,7 @@
         </div>
     </div>
 
-    <script>
+    <script>  
         async function checkNik(){
             const nik = document.getElementById('NIK').value;
 
@@ -104,19 +110,89 @@
                             radio.checked = true;
                         }
                     });
-                    // document.getElementById('contactNumber').value = data.nomorTelepon || '';
-
-                    //error message kosongin
-                    document.getElementById('error').innerText = '';
+    
                 } catch (error){
-                    document.getElementById('error').innerText = error.message;
-
-                    document.getElementById('patientName').value = '';
-                    document.getElementById('patientDOB').value = '';
-                    document.getElementsByName('gender').forEach(radio => (radio.checked = false));
-                    // document.getElementById('contactNumber').value = '';
+                    alert(error.message);
                 }
             }
+        }
+      
+
+        async function filterDokter() {
+            const tanggal = document.getElementById("tanggal").value;
+            if (!tanggal) return;
+            
+            try {
+                const response = await fetch(`/admin/get-dokter?tanggal=${tanggal}`);
+                if(!response.ok) {
+                    throw new Error(`Failed to fetch dokter: ${response.status}`)
+                }
+                
+                const dokter = await response.json();
+                const dokterDropdown = document.getElementById("dokter");
+                dokterDropdown.innerHTML = '<option value="">Pilih Dokter</option>';
+                
+                dokter.forEach(dokter => {
+                    const option = document.createElement("option");
+                    option.value = dokter;
+                    option.text = dokter;
+                    dokterDropdown.appendChild(option);
+                });    
+            } catch (error) {
+                console.error("Error fetching dokter: ", error);   
+            }
+            
+        }
+
+        async function filterSpesialisasi() {
+            const dokter = document.getElementById("dokter").value;
+            if (!dokter) return;
+            
+            try{
+                const response = await fetch(`/admin/get-spesialisasi?dokter=${dokter}`);
+                if(!response.ok){
+                    throw new Error(`Failed to fetch spesialisasi: @{response.status}`)
+                }
+                
+                const spesialisasi = await response.json();
+                const spesialisasiDropdown = document.getElementById("spesialisasi");
+                spesialisasiDropdown.innerHTML = `<option value="">Pilih Spesialisasi</option>`;
+                
+                spesialisasi.forEach(spec => {
+                    const option = document.createElement("option");
+                    option.value = spec;
+                    option.textContent = spec;
+                    spesialisasiDropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error("error fetching spesialisasi: ", error);
+            }
+            
+        }
+
+        async function filterJadwal() {
+            const spesialisasi = document.getElementById("spesialisasi").value;
+            if (!spesialisasi) return;
+
+            try {
+                const response = await fetch(`/admin/get-jadwal?spesialisasi=${spesialisasi}`);
+                if(!response.ok){
+                    throw new Error(`Failed to fetch jadwal: ${response.status}`);
+                }
+
+                const jadwal = await response.json();
+                const jadwalDropdown = document.getElementById("jadwal");
+                jadwalDropdown.innerHTML = '<option value="">Pilih Jadwal</option>';
+                jadwal.forEach(jadwal => {
+                    const option = document.createElement("option");
+                    option.value = jadwal.waktu_mulai;
+                    option.textContent = `${jadwal.waktu_mulai} - ${jadwal.waktu_selesai}`;
+                    jadwalDropdown.appendChild(option);
+                });  
+            } catch (error) {
+                console.error("Error fetching jadwa: ", error);
+            }
+            
         }
     </script>
 

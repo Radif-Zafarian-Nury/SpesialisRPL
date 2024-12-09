@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,17 @@
     <link rel="stylesheet" type="text/css" th:href="@{/User/login_style.css}">
     <script src="/scripts.js" defer></script>
 </head>
+
 <body>
     <a th:href="@{/user/}">
         <img src="/assets/Home.png" class="home_logo" />
     </a>
     <div class="wrapper">
-        <form action="" class="login_form" method="post">
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form action="/login" class="login_form" method="post">
             <div class="login_container">
                 <label for="email"><b>Email</b></label>
                 <input type="text" name="email" required><br>
@@ -22,7 +28,7 @@
                 <a href="forgot_password.html" class="forgot">
                     <span>Lupa kata sandi?</span>
                 </a>
-                <a th:href="@{register}" class="register">
+                <a th:href="@{/user/register}" class="register">
                     <span>Daftar</span>
                 </a>
             </div>
@@ -30,4 +36,5 @@
     </div>
 
 </body>
+
 </html>
