@@ -11,7 +11,9 @@
         <header>
             <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
             <div class="login_wrapper">
-                <a class="login" th:href="@{login}"><p>MASUK</p></a>
+                <a class="login" th:href="@{/login}">
+                    <p>MASUK</p>
+                </a>
             </div>
             <div class="register_wrapper">
                 <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
@@ -29,7 +31,7 @@
             </div>
             <div class="booking_info">
                 <span>Jadwalkan konsultasi sekarang</span>
-                <img src="/assets/right arrow.png" class="arrow"/>
+                <img src="/assets/right arrow.png" class="arrow" />
                 <div class="learn_more_button">
                      <a class="book_doctor" href="#specialist_section"><p>Pilih Dokter</p></a>
                 </div>
@@ -96,4 +98,5 @@
         </div>
     </div>
 </body>
-</html> 
+
+</html>

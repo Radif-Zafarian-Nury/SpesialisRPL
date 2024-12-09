@@ -9,4 +9,5 @@ public interface UserRepository {
     void saveUser(UserData userData);
     Optional<UserData> findByNik(String nik);
     List<Doctor> findAllDokterMata();
+    Optional<UserData> findByEmail(String email);
 }

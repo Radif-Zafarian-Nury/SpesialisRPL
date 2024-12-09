@@ -49,4 +49,15 @@ public class UserJdbc implements UserRepository{
         List<Doctor> listDokterMata = this.dokterJdbc.getAllDokterMata();
         return listDokterMata;
     }
+
+    @Override
+    public Optional<UserData> findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        List<UserData> users = jdbcTemplate.query(
+            sql, 
+            ps -> ps.setString(1, email),
+            new BeanPropertyRowMapper<>(UserData.class)
+            );
+        return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
+    }
 }
