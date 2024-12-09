@@ -20,11 +20,10 @@ CREATE TABLE users (
 	status_aktif BOOLEAN,
 	peran VARCHAR(10),
 	sip VARCHAR(30),
-	foto_dokter BYTEA,
+	foto_dokter VARCHAR(60),
 	no_rekam_medis VARCHAR(10),
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );
-
 CREATE TABLE spesialisasi(
 	id_spesialisasi SERIAL PRIMARY KEY,
 	nama_spesialisasi VARCHAR(50)
@@ -65,16 +64,16 @@ CREATE TABLE pendaftaran(
 );
 
 -- INSERT DATA
-INSERT INTO users (nama, jenis_kelamin, kata_sandi, email, alamat, nik, tempat_lahir, tanggal_lahir, status_aktif, peran, sip, no_rekam_medis)
+INSERT INTO users (nama, jenis_kelamin, kata_sandi, email, alamat, nik, tempat_lahir, tanggal_lahir, status_aktif, peran, sip, foto_dokter, no_rekam_medis)
 VALUES 
-	('Dr. John Doe', 'L', '$2a$10$4t1vALs2VUw05yNhqF1snuGQffclS2nZmmcvF6G0kVfQhXpKXJQsS', 'johndoe@example.com', '123 Elm St, Springfield', '1234567890123456', 'Springfield', '1975-05-20', TRUE, 'dokter', 'SIP123456', NULL),
-	('Dr. Jane Smith', 'P', '$2a$10$ikWf19/RfrPNZ.kfBxXyPOSbAugTCd3uWcbgJYyz6Jyt3rA5/U3UO', 'janesmith@example.com', '456 Oak St, Shelbyville', '6543210987654321', 'Shelbyville', '1980-11-15', TRUE, 'dokter', 'SIP654321', NULL),
-	('Alice Johnson', 'P', '$2a$10$P4J0RwnrKzJr9w0UOzUCr.b4YAiOOpShHlPZJb5SpQAYsqbzLOlci', 'alicej@example.com', '789 Pine St, Capital City', '1122334455667788', 'Capital City', '1990-07-30', TRUE, 'pasien', NULL, 'RM1001'),
-	('Bob Brown', 'L', '$2a$10$WsVrC5Z3VkDXjxOrIyMM3.bmCJKfAWHp1nCPI5xzFa9aYqnmLECdm', 'bobb@example.com', '101 Maple St, Ogdenville', '2233445566778899', 'Ogdenville', '1985-03-10', TRUE, 'pasien', NULL, 'RM1002'),
-	('Michael Johnson', 'L', '$2a$10$njKUErhgI5TTqT/jEzNeGe2wr1ntZGF81XVj3BZIO1X3G0/TcI9t6', 'michaelj@example.com', '102 Birch Lane, Denver', '3344556677889900', 'Denver', '1980-02-14', TRUE, 'perawat', 'SIP789123', NULL),
-	('Emily Davis', 'P', '$2a$10$we5DEb0/6I4Jm999628l4Ohob9JWbaK47pldl.6xLUTHJdB5deVLu', 'emilyd@example.com', '403 Maple Ave, Seattle', '4455667788990011', 'Seattle', '1985-04-18', TRUE, 'perawat', 'SIP456789', NULL),
-	('Sarah Thompson', 'P', '$2a$10$7vuqZ/HFMuNs2z5JmHkwPeeIxpGiiwOv/ffZ2zYJSKN6NzVbi6gfy', 'saraht@example.com', '505 Cedar Street, Boston', '5566778899001122', 'Boston', '1993-06-01', TRUE, 'admin', NULL, NULL),
-	('James Wilson', 'L', '$2a$10$DksKahS1XjYz5s.aJ1V49ex7JjJuDgRbONRi2N8L0/2lt36ulbFx6', 'jamesw@example.com', '606 Elm Drive, Chicago', '6677889900112233', 'Chicago', '1988-08-30', TRUE, 'admin', NULL, NULL);
+	('Dr. John Doe', 'L', '$2a$10$4t1vALs2VUw05yNhqF1snuGQffclS2nZmmcvF6G0kVfQhXpKXJQsS', 'johndoe@example.com', '123 Elm St, Springfield', '1234567890123456', 'Springfield', '1975-05-20', TRUE, 'dokter', 'SIP123456', 'DrJohn.jpg', NULL),
+	('Dr. Jane Smith', 'P', '$2a$10$ikWf19/RfrPNZ.kfBxXyPOSbAugTCd3uWcbgJYyz6Jyt3rA5/U3UO', 'janesmith@example.com', '456 Oak St, Shelbyville', '6543210987654321', 'Shelbyville', '1980-11-15', TRUE, 'dokter', 'SIP654321', 'DrJane.jpg', NULL),
+	('Alice Johnson', 'P', '$2a$10$P4J0RwnrKzJr9w0UOzUCr.b4YAiOOpShHlPZJb5SpQAYsqbzLOlci', 'alicej@example.com', '789 Pine St, Capital City', '1122334455667788', 'Capital City', '1990-07-30', TRUE, 'pasien', NULL, NULL, 'RM1001'),
+	('Bob Brown', 'L', '$2a$10$WsVrC5Z3VkDXjxOrIyMM3.bmCJKfAWHp1nCPI5xzFa9aYqnmLECdm', 'bobb@example.com', '101 Maple St, Ogdenville', '2233445566778899', 'Ogdenville', '1985-03-10', TRUE, 'pasien', NULL, NULL,'RM1002'),
+	('Michael Johnson', 'L', '$2a$10$njKUErhgI5TTqT/jEzNeGe2wr1ntZGF81XVj3BZIO1X3G0/TcI9t6', 'michaelj@example.com', '102 Birch Lane, Denver', '3344556677889900', 'Denver', '1980-02-14', TRUE, 'perawat', 'SIP789123',NULL, NULL),
+	('Emily Davis', 'P', '$2a$10$we5DEb0/6I4Jm999628l4Ohob9JWbaK47pldl.6xLUTHJdB5deVLu', 'emilyd@example.com', '403 Maple Ave, Seattle', '4455667788990011', 'Seattle', '1985-04-18', TRUE, 'perawat', 'SIP456789', NULL, NULL),
+	('Sarah Thompson', 'P', '$2a$10$7vuqZ/HFMuNs2z5JmHkwPeeIxpGiiwOv/ffZ2zYJSKN6NzVbi6gfy', 'saraht@example.com', '505 Cedar Street, Boston', '5566778899001122', 'Boston', '1993-06-01', TRUE, 'admin', NULL, NULL, NULL),
+	('James Wilson', 'L', '$2a$10$DksKahS1XjYz5s.aJ1V49ex7JjJuDgRbONRi2N8L0/2lt36ulbFx6', 'jamesw@example.com', '606 Elm Drive, Chicago', '6677889900112233', 'Chicago', '1988-08-30', TRUE, 'admin', NULL, NULL, NULL);
 INSERT INTO spesialisasi (nama_spesialisasi)
 VALUES
 	('Umum'),
