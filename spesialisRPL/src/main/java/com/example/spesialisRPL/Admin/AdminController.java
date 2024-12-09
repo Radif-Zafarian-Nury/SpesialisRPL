@@ -57,9 +57,46 @@ public class AdminController {
         return ResponseEntity.ok(jadwal);
     }
 
+    //CEK KUOTA DOKTER
+    @GetMapping("/check-quota")
+    @ResponseBody
+    public ResponseEntity<?> checkQuota(@RequestParam("idJadwal") int idJadwal){
+        JadwalDokterData jadwal = adminRepository.findScheduleById(idJadwal);
+        if(jadwal == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jadwal tidak ditemukan");
+        }
+
+        return ResponseEntity.ok(new QuotaResponse(jadwal.getKuotaTerisi(), jadwal.getKuotaMax()));
+    }
+
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
+    }
+
+    @PostMapping("/register-pasien")
+    @ResponseBody
+    public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
+        //Validasi nik
+        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("NIK tidak valid.");
+        }
+        
+        //Cek nik di db
+        var pasien = adminRepository.findNik(nik);
+        if(pasien.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pasien belum memilki akun");
+        }
+
+        //Mendaftarkan pasien
+        try {
+            adminRepository.registerPasien(nik, idJadwal);
+            adminRepository.incrementKuotaTerisi(idJadwal);
+            return ResponseEntity.ok("Pasien berhasil didaftarkan");
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal mendaftarkan pasien");
+        }
     }
 
     @GetMapping("/check-nik")
