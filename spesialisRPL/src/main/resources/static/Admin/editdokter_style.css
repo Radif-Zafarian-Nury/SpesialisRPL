@@ -76,6 +76,7 @@ header button:hover {
 .doctor-cards {
     display: flex;
     flex-wrap: wrap;
+    margin: 5%;
     gap: 10px;  /* Mengurangi jarak antar kotak */
     justify-content: flex-start;
 }
