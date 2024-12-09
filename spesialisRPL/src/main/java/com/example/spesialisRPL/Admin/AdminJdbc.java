@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.spesialisRPL.Dokter.DokterCard;
+
 @Repository
 public class AdminJdbc implements AdminRepository{
     
@@ -79,5 +81,23 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
             );
+    }
+
+    @Override
+    public List<DokterCard> getAllDoctorCards() {
+        String sql = """
+            SELECT id_user, nama, foto_dokter, nama_spesialisasi
+            FROM dokter_cards
+            """;
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> mapRowToDokterCard(resultSet, rowNum));
+    }
+        
+    private DokterCard mapRowToDokterCard(ResultSet resultSet, int rowNum) throws SQLException {
+        return new DokterCard(
+            resultSet.getInt("id_user"),
+            resultSet.getString("nama"), 
+            resultSet.getString("foto_dokter"), 
+            resultSet.getString("nama_spesialisasi")
+        );
     }
 }

@@ -137,3 +137,8 @@ header button:hover {
 .doctor-card .doctor-info button:hover {
     background-color: rgb(255, 0, 0);
 }
+
+#no-results{
+    color: #555;
+    margin-left: 40%;
+}

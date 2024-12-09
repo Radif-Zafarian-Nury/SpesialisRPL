@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.spesialisRPL.Dokter.DokterCard;
+
 import jakarta.validation.Valid;
 
 @Controller
@@ -73,7 +75,9 @@ public class AdminController {
     }
 
     @GetMapping("/editdokter")
-    public String editDokter(){
+    public String editDokter(Model model){
+        List<DokterCard> listCards = adminRepository.getAllDoctorCards();
+        model.addAttribute("dokter_list", listCards);
         return "Admin/admin_editDokter";
     }
 
