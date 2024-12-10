@@ -21,7 +21,7 @@ CREATE TABLE users (
 	peran VARCHAR(10),
 	sip VARCHAR(30),
 	foto_dokter VARCHAR(60),
-	no_rekam_medis VARCHAR(10),
+	no_rekam_medis INT,
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );
 CREATE TABLE spesialisasi(
@@ -31,6 +31,7 @@ CREATE TABLE spesialisasi(
 CREATE TABLE diagnosa(
 	id_diagnosa SERIAL,
 	id_pasien INT REFERENCES users(id_user),
+	tanggal DATE,
 	tinggi_badan FLOAT,
 	berat_badan FLOAT,
 	suhu_tubuh FLOAT,
@@ -68,8 +69,8 @@ INSERT INTO users (nama, jenis_kelamin, kata_sandi, email, alamat, nik, tempat_l
 VALUES 
 	('Dr. John Doe', 'L', '$2a$10$4t1vALs2VUw05yNhqF1snuGQffclS2nZmmcvF6G0kVfQhXpKXJQsS', 'johndoe@example.com', '123 Elm St, Springfield', '1234567890123456', 'Springfield', '1975-05-20', TRUE, 'dokter', 'SIP123456', 'DrJohn.jpg', NULL),
 	('Dr. Jane Smith', 'P', '$2a$10$ikWf19/RfrPNZ.kfBxXyPOSbAugTCd3uWcbgJYyz6Jyt3rA5/U3UO', 'janesmith@example.com', '456 Oak St, Shelbyville', '6543210987654321', 'Shelbyville', '1980-11-15', TRUE, 'dokter', 'SIP654321', 'DrJane.jpg', NULL),
-	('Alice Johnson', 'P', '$2a$10$P4J0RwnrKzJr9w0UOzUCr.b4YAiOOpShHlPZJb5SpQAYsqbzLOlci', 'alicej@example.com', '789 Pine St, Capital City', '1122334455667788', 'Capital City', '1990-07-30', TRUE, 'pasien', NULL, NULL, 'RM1001'),
-	('Bob Brown', 'L', '$2a$10$WsVrC5Z3VkDXjxOrIyMM3.bmCJKfAWHp1nCPI5xzFa9aYqnmLECdm', 'bobb@example.com', '101 Maple St, Ogdenville', '2233445566778899', 'Ogdenville', '1985-03-10', TRUE, 'pasien', NULL, NULL,'RM1002'),
+	('Alice Johnson', 'P', '$2a$10$P4J0RwnrKzJr9w0UOzUCr.b4YAiOOpShHlPZJb5SpQAYsqbzLOlci', 'alicej@example.com', '789 Pine St, Capital City', '1122334455667788', 'Capital City', '1990-07-30', TRUE, 'pasien', NULL, NULL, 1),
+	('Bob Brown', 'L', '$2a$10$WsVrC5Z3VkDXjxOrIyMM3.bmCJKfAWHp1nCPI5xzFa9aYqnmLECdm', 'bobb@example.com', '101 Maple St, Ogdenville', '2233445566778899', 'Ogdenville', '1985-03-10', TRUE, 'pasien', NULL, NULL, 2),
 	('Michael Johnson', 'L', '$2a$10$njKUErhgI5TTqT/jEzNeGe2wr1ntZGF81XVj3BZIO1X3G0/TcI9t6', 'michaelj@example.com', '102 Birch Lane, Denver', '3344556677889900', 'Denver', '1980-02-14', TRUE, 'perawat', 'SIP789123',NULL, NULL),
 	('Emily Davis', 'P', '$2a$10$we5DEb0/6I4Jm999628l4Ohob9JWbaK47pldl.6xLUTHJdB5deVLu', 'emilyd@example.com', '403 Maple Ave, Seattle', '4455667788990011', 'Seattle', '1985-04-18', TRUE, 'perawat', 'SIP456789', NULL, NULL),
 	('Sarah Thompson', 'P', '$2a$10$7vuqZ/HFMuNs2z5JmHkwPeeIxpGiiwOv/ffZ2zYJSKN6NzVbi6gfy', 'saraht@example.com', '505 Cedar Street, Boston', '5566778899001122', 'Boston', '1993-06-01', TRUE, 'admin', NULL, NULL, NULL),
@@ -81,10 +82,10 @@ VALUES
   	('Jantung'),
 	('Gigi'),
 	('Mata');
-INSERT INTO diagnosa (id_pasien, tinggi_badan, berat_badan, suhu_tubuh, resep_obat, diagnosa_dokter)
+INSERT INTO diagnosa (id_pasien, tanggal, tinggi_badan, berat_badan, suhu_tubuh, resep_obat, diagnosa_dokter)
 VALUES
-	(3, 165, 60, 36.7, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
-	(4, 180, 75, 37.2, 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
+	(3, '2024-12-01', 165, 60, 36.7, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
+	(4, '2024-12-02', 180, 75, 37.2, 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
 INSERT INTO spesialisasi_dokter (id_dokter, id_spesialisasi)
 VALUES
 	(1, 1), 
@@ -94,6 +95,8 @@ VALUES
 	(2, 5);
 INSERT INTO jadwal (id_dokter, waktu_mulai, waktu_selesai, tanggal, kuota_max, kuota_terisi)
 VALUES
+	(1, '07:00', '10:00', '2024-12-01', 10, 1),
+	(2, '07:00', '10:00', '2024-12-02', 10, 1),
 	(1, '07:00', '10:00', '2024-12-20', 10, 1), 
 	(1, '13:00', '15:00', '2024-12-20', 5, 0),
 	(1, '13:00', '15:00', '2024-12-21', 5, 0), 
@@ -103,9 +106,11 @@ VALUES
 INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
 VALUES
 	(3, 1, TRUE, TRUE, 1),
-	(3, 4, TRUE, FALSE, 2),
-	(4, 4, TRUE, FALSE, 1),
-	(4, 5, FALSE, FALSE, NULL);
+	(4, 1, FALSE, FALSE, NULL),
+	(3, 2, TRUE, TRUE, 1),
+	(4, 3, TRUE, TRUE, 1),
+	(3, 6, TRUE, FALSE, 1),
+	(4, 6, TRUE, FALSE, 2);
 
 -- SELECT
 SELECT * FROM users;
