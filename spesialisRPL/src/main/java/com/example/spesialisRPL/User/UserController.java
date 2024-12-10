@@ -25,7 +25,7 @@ public class UserController {
    
     @GetMapping("/")
     public String index(HttpSession session){
-        if(session.getAttribute("loggedInUser") == null){   //kalo belom login ke index
+        if(session.getAttribute("user") == null){   //kalo belom login ke index
             return "User/index";
         }
         

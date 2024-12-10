@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Akun Baru</title>
     <link rel="stylesheet" type="text/css" th:href="@{/Admin/buatAkunBaru_style.css}">
 </head>
+
 <body>
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
@@ -27,25 +29,30 @@
                 <!-- Name -->
                 <div class="form-group">
                     <label for="userName">Nama</label>
-                    <input type="text" id="userName" name="userName" placeholder="Masukkan nama lengkap" required>
+                    <input type="text" id="userName" name="userName" placeholder="Masukkan nama lengkap" required
+                        minlength="16" maxlength="16">
                 </div>
 
                 <!-- NIK -->
                 <div class="form-group">
                     <label for="userNIK">NIK</label>
                     <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required>
+
                 </div>
 
                 <!-- Address -->
                 <div class="form-group">
                     <label for="userAddress">Alamat</label>
-                    <input type="text" id="userAddress" name="userAddress" placeholder="Masukkan alamat lengkap" required>
+                    <input type="text" id="userAddress" name="userAddress" placeholder="Masukkan alamat lengkap"
+                        required>
                 </div>
 
                 <!-- Specialization -->
                 <div class="form-group">
-                    <label for="userSpecialization">Spesialis</label>
-                    <select id="userSpecialization" name="userSpecialization">
+                    <!-- Diganti jadi peran -->
+                    <!-- Kalo spesialis langsung jadi dokter terus tambahin spesialis itu -->
+                    <label for="userRole">Peran</label>
+                    <select id="userRole" name="userSpecialization">
                         <option value="Spesialis Jantung">Spesialis Jantung</option>
                         <option value="Spesialis Mata">Spesialis Mata</option>
                         <option value="Spesialis Gigi">Spesialis Gigi</option>
@@ -67,16 +74,7 @@
                     </label>
                 </div>
 
-                <!-- Role -->
-                <div class="form-group">
-                    <label for="userRole">Role</label>
-                    <select id="userRole" name="userRole" required>
-                        <option value="dokter">Dokter</option>
-                        <option value="perawat">Perawat</option>
-                        <option value="admin">Admin</option>
-                        <option value="pasien">Pasien</option>
-                    </select>
-                </div>
+
 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -87,4 +85,5 @@
         </div>
     </div>
 </body>
+
 </html>
