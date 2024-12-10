@@ -8,6 +8,7 @@ DROP VIEW IF EXISTS list_pasien;
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
 (SELECT
+	jadwal.id_dokter,
 	nama,
 	nama_spesialisasi,
 	id_jadwal,
