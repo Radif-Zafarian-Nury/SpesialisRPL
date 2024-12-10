@@ -58,13 +58,11 @@ CREATE VIEW dokter_info AS
     nik,
     foto_dokter,
     alamat,
-	nama_spesialisasi,
     jenis_kelamin
 FROM
-    users INNER JOIN spesialisasi_dokter
-    ON spesialisasi_dokter.id_dokter = users.id_user
-    INNER JOIN spesialisasi
-    ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi
+    users
+WHERE
+	peran='dokter'
 );
 
 CREATE VIEW list_pasien AS
