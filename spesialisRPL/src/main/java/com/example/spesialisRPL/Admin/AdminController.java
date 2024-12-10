@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.example.spesialisRPL.Dokter.DokterCard;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
@@ -123,8 +125,38 @@ public class AdminController {
         return "Admin/admin_buatAkunBaru";
     }
 
-    @GetMapping("/halamanedit")
-    public String halamanEdit(){
+    @GetMapping("/halamanEdit/{id}")
+    public String showEditDoctorForm(@PathVariable("id") int id, Model model) {
+        Dokter dokter = adminRepository.getDokter(id); 
+        List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
+        List<String> spesialisasiList = adminRepository.getAllSpesialisasi();
+
+        model.addAttribute("dokter", dokter);
+        model.addAttribute("spesialisasi_dokter", spesialisasiDokter);
+        model.addAttribute("spesialisasi_list", spesialisasiList);
         return "Admin/admin_halamanEdit";
     }
+
+    @PostMapping("/editdokter")
+    public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
+                                    @RequestParam List<String> specializations,
+                                    @RequestParam(required = false) MultipartFile doctorPhoto) {  
+
+        if (doctorPhoto != null && !doctorPhoto.isEmpty()) {
+            try {
+                // Convert the image to Base64
+                byte[] fotoBytes = doctorPhoto.getBytes();
+                String fotoBase64 = Base64.getEncoder().encodeToString(fotoBytes);
+                dokter.setFoto(fotoBase64);  
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        adminRepository.updateDokter(dokter, specializations);
+
+        return "redirect:/admin/editdokter";
+    }
+
+
 }

@@ -125,3 +125,38 @@ a{
     text-decoration: none;
     color: white;
 }
+
+.spesialisasi_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.spesialisasi_wrapper label{
+    font-weight: normal;
+    box-sizing: border-box;
+    vertical-align:middle;
+    margin-bottom: 0px;
+}
+.spesialisasi_wrapper input[type="checkbox"] {
+    font-weight: normal;
+    box-sizing: border-box;
+    vertical-align:middle;
+}
+
+.spesialisasi_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.gender_wrapper{
+    display: flex;
+    margin: 5px;
+}
+
+.gender_wrapper label{
+    font-weight: normal;
+    margin-bottom: 0px;
+}
