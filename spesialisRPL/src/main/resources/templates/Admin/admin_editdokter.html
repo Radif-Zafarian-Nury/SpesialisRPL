@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Dokter</title>
     <link rel="stylesheet" type="text/css" th:href="@{/Admin/editdokter_style.css}">
+    <script th:src="@{/Admin/js/editdokter.js}" defer></script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -22,50 +23,24 @@
 
         <!-- Search Bar -->
         <div class="search-bar">
-            <input type="text" id="search" placeholder="Cari nama atau spesialisasi dokter..." onkeyup="filterCards()">
-            <button onclick="filterCards()">Search</button>
+            <input type="text" id="search" placeholder="Cari nama atau spesialisasi dokter...">
+            <button id="searchButton">Search</button>
         </div>
 
         <!-- Doctor Cards -->
         <div class="doctor-cards" id="doctorCards">
-            <!-- data dibawah harusnya ambil dari database -->
-            <!-- Doctor Card Example -->
-            <div class="doctor-card">
-                <img src="/assets/doctor1.jpg" alt="Dr. Woms">
+            <div class="doctor-card" th:each="dokter : ${dokter_list}">
+                <img th:src="@{'/assets/FotoDokter/' + ${dokter.foto}}" th:alt="${dokter.nama}" onerror="this.src='/assets/FotoDokter/placeholder.jpg'">
                 <div class="doctor-info">
-                    <h3>Dr. Woms</h3>
-                    <p>Spesialis Jantung</p>
-                    <p>Jadwal: 08:00 - 12:00</p>
-                    <p>Telp: 081234567890</p>
-                    <div class="quota">Kuota: 10/10</div>
-                    <button onclick="editDoctor('Dr. Woms')">Edit</button>
+                    <h3 th:text="${dokter.nama}" class="nama"></h3>
+                    <p th:text="'Spesialis ' + ${dokter.spesialisasi}" class="spesialisasi"></p>
+                    <button th:onclick="'window.location.href=\'/admin/halamanEdit/' + ${dokter.id} + '\''">Edit</button>
                 </div>
             </div>
+        </div>    
 
-            <div class="doctor-card">
-                <img src="/assets/doctor2.jpg" alt="Dr. Dodo">
-                <div class="doctor-info">
-                    <h3>Dr. Dodo</h3>
-                    <p>Spesialis Anak</p>
-                    <p>Jadwal: 13:00 - 17:00</p>
-                    <p>Telp: 081234567891</p>
-                    <div class="quota">Kuota: 8/10</div>
-                    <button onclick="editDoctor('Dr. Dodo')">Edit</button>
-                </div>
-            </div>
+        <p id="no-results" style="display: none;">No results found</p>
 
-            <div class="doctor-card">
-                <img src="/assets/doctor3.jpg" alt="Dr. Kapi">
-                <div class="doctor-info">
-                    <h3>Dr. Kapi</h3>
-                    <p>Spesialis Bedah</p>
-                    <p>Jadwal: 08:00 - 12:00</p>
-                    <p>Telp: 081234567892</p>
-                    <div class="quota">Kuota: 5/10</div>
-                    <button onclick="editDoctor('Dr. Kapi')">Edit</button>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 </html>
