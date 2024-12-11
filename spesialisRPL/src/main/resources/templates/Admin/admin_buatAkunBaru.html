@@ -18,14 +18,19 @@
             <span>Buat Akun Baru</span>
             <div class="right">
                 <span>Hi, Admin</span>
-                <a th:href="@{logout}"><button>Logout</button></a>
+                <a th:href="@{/logout}"><button>Logout</button></a>
             </div>
         </header>
+
+        <!-- Error msg -->
+        <div th:if="${error}" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
 
         <!-- Formulir Buat Akun -->
         <div class="form-container">
             <h2>Formulir Buat Akun</h2>
-            <form id="createAccountForm">
+            <form id="createAccountForm" action="/admin/buatakun" method="post">
                 <!-- Name -->
                 <div class="form-group">
                     <label for="userName">Nama</label>
@@ -36,8 +41,15 @@
                 <!-- NIK -->
                 <div class="form-group">
                     <label for="userNIK">NIK</label>
-                    <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required>
+                    <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required minlength="16"
+                        maxlength="16">
 
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" id="email" name="email" placeholder="Masukkan Email" required>
                 </div>
 
                 <!-- Address -->
@@ -47,10 +59,25 @@
                         required>
                 </div>
 
-                <!-- Specialization -->
+                <!-- Password -->
                 <div class="form-group">
-                    <!-- Diganti jadi peran -->
-                    <!-- Kalo spesialis langsung jadi dokter terus tambahin spesialis itu -->
+                    <label for="kata_sandi"><b>Kata Sandi</b></label>
+                    <input type="password" id="kata_sandi" name="kata_sandi" placeholder="Masukkan kata sandi" required
+                        minlength="6" maxlength="20">
+                </div>
+
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confpassword"><b>Ulangi Kata Sandi</b></label>
+                    <input type="password" id="confpassword" name="confpassword"
+                        placeholder="Masukkan kembali kata sandi" required>
+                </div>
+
+
+                <!-- Peran/Specialization -->
+                <div class="form-group">
+                    <!-- Kalo spesialis, peran = dokter terus tambahin spesialis-->
                     <label for="userRole">Peran</label>
                     <select id="userRole" name="userSpecialization">
                         <option value="Spesialis Jantung">Spesialis Jantung</option>
@@ -78,8 +105,7 @@
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <a th:href="@{cancel}"><button type="button" class="cancel-btn">Batal</button></a>
-                    <a th:href="@{simpan}"><button type="submit" class="save-btn">Simpan</button></a>
+                    <button type="submit" class="save-btn">Simpan</button>
                 </div>
             </form>
         </div>

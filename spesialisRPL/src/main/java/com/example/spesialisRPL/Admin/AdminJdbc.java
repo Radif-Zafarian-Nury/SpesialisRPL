@@ -26,6 +26,23 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
+    public List<PasienData> findAllPendaftaran() {
+        String sql = "SELECT * FROM lihat_pendaftaran_pasien";
+        return jdbcTemplate.query(sql, this::mapRowToListPasien);
+    }
+
+    //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
+    @Override
+    public List<String> findDoctorNameByPatientName(String nama) {
+       String sql = """
+               SELECT DISTINCT nama_dokter
+               FROM lihat_pendaftaran_pasien
+               WHERE nama = ?
+               """;
+       return jdbcTemplate.query(sql, (resultSet, rowNum) -> resultSet.getString("nama_dokter"), nama);
+    }
+
+    @Override
     public List<String> findDoctorsByDay(String tanggal) {
        String sql = """
                SELECT DISTINCT nama
@@ -128,6 +145,19 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getString("tanggal"),
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
+            );
+    }
+
+    public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
+        return new PasienData(
+            resultSet.getString("nama"),
+            resultSet.getString("nama_dokter"),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai"),
+            resultSet.getString("tanggal"),
+            resultSet.getBoolean("status_bayar"),
+            resultSet.getBoolean("status_daftar_ulang"),
+            resultSet.getInt("no_antrian")
             );
     }
 

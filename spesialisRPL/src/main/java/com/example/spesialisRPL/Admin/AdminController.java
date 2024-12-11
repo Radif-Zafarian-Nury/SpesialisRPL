@@ -7,13 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.spesialisRPL.Dokter.DokterCard;
+import com.example.spesialisRPL.RequiredRole;
+import com.example.spesialisRPL.User.UserData;
+import com.example.spesialisRPL.User.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,12 +29,16 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private UserService userService; // Inject UserService
+
+
     //HALAMAN UTAMA
     @GetMapping("/")
-    // @RequiredRole({"admin"})
+    @RequiredRole({"admin"})
     public String index(Model model){
-        //List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
-        //model.addAttribute("results", jadwalDokter);
+        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+        model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
 
@@ -66,6 +77,23 @@ public class AdminController {
 
         return ResponseEntity.ok(new QuotaResponse(jadwal.getKuotaTerisi(), jadwal.getKuotaMax()));
     }
+
+    //LIST PASIEN
+    @GetMapping("/list-pasien")
+    public String admin_bayar(Model model){
+        List<PasienData> listPasien = adminRepository.findAllPendaftaran();
+        model.addAttribute("results", listPasien);
+        return "Admin/admin_listPasien";
+    }
+
+    //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
+    @GetMapping("/get-nama_dokter")
+    @ResponseBody
+    public ResponseEntity<List<String>> getNamaDokter(@RequestParam("nama") String nama){
+        List<String> jadwal = adminRepository.findDoctorNameByPatientName(nama);
+        return ResponseEntity.ok(jadwal);
+    }
+
 
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
@@ -126,50 +154,50 @@ public class AdminController {
         return "Admin/admin_halamanEdit";
     }
 
-    // @PostMapping("/buatakun")
-    // public String buatAkunUser(
-    //     @Valid @ModelAttribute UserData userData, 
-    //     Model model,
-    //     BindingResult bindingResult){
+    @PostMapping("/buatakun")
+    public String buatAkunUser(
+        @Valid @ModelAttribute UserData userData, 
+        Model model,
+        BindingResult bindingResult){
             
         
-    //     //Check validation
-    //     if (bindingResult.hasErrors()) {
-    //         model.addAttribute("error", "Please correct the highlighted errors.");
-    //         return "User/register";
-    //     }
+        //Check validation
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "Please correct the highlighted errors.");
+            return "User/register";
+        }
 
-    //     //Check NIK
-    //     // if (userRepository.findByNik(userData.getNik()).isPresent()) {
-    //     //     model.addAttribute("error", "NIK sudah terdaftar");
-    //     //     return "User/register";
-    //     // }
+        //Check NIK
+        // if (userRepository.findByNik(userData.getNik()).isPresent()) {
+        //     model.addAttribute("error", "NIK sudah terdaftar");
+        //     return "User/register";
+        // }
         
-    //     //cek NIK (length & Harus Angka)
-    //     if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
-    //         model.addAttribute("error", "NIK harus 16 digit nomor");
-    //         return "User/register";
-    //     }
+        //cek NIK (length & Harus Angka)
+        if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
+            model.addAttribute("error", "NIK harus 16 digit nomor");
+            return "User/register";
+        }
 
-    //     //Check email
-    //     if (!userData.getEmail().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-    //         model.addAttribute("error", "Email tidak valid");
-    //         return "User/register";
-    //     }
+        //Check email
+        if (!userData.getEmail().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            model.addAttribute("error", "Email tidak valid");
+            return "User/register";
+        }
 
-    //     //Check password
-    //     if(!userData.getKata_sandi().equals(userData.getConfpassword())){
-    //         model.addAttribute("error", "Passwords do not match!");
-    //         return "User/register";
-    //     }
+        //Check password
+        if(!userData.getKata_sandi().equals(userData.getConfpassword())){
+            model.addAttribute("error", "Passwords do not match!");
+            return "User/register";
+        }
 
-    //     boolean isRegistered = userService.register(userData);
-    //     if (!isRegistered) {
-    //         model.addAttribute("error", "Registration failed. Please try again.");
-    //         return "User/register";
-    //     }
-    //     // userData.setPeran("pasien");
-    //     // userRepository.saveUser(userData);
-    //     return "redirect:/login";
-    // }
+        boolean isRegistered = userService.register(userData);
+        if (!isRegistered) {
+            model.addAttribute("error", "Registration failed. Please try again.");
+            return "User/register";
+        }
+        // userData.setPeran("pasien");
+        // userRepository.saveUser(userData);
+        return "redirect:/login";
+    }
 }
