@@ -106,8 +106,8 @@ VALUES
 INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
 VALUES
 	(3, 1, TRUE, TRUE, 1),
-	(3, 4, TRUE, FALSE, 2),
-	(4, 4, TRUE, FALSE, 1),
+	(3, 4, TRUE, FALSE, 1),
+	(4, 4, TRUE, FALSE, 2),
 	(4, 5, FALSE, FALSE, NULL);
 
 -- SELECT
