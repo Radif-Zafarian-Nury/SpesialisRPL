@@ -322,8 +322,3 @@ SELECT * FROM lihat_pendaftaran_pasien;
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
 SELECT * FROM list_rekam_medis;
-
-
-
-SELECT * FROM dokter_info;
-SELECT * FROM list_pasien;
