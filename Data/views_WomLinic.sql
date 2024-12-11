@@ -14,7 +14,7 @@ CREATE VIEW lihat_jadwal_dokter AS
 (SELECT
 	jadwal.id_dokter,
 	nama,
-	nama_spesialisasi,
+    nama_spesialisasi,
 	id_jadwal,
 	tanggal,
 	waktu_mulai,
@@ -27,8 +27,38 @@ FROM
 	INNER JOIN spesialisasi_dokter
 	ON spesialisasi_dokter.id_dokter = users.id_user
 	INNER JOIN spesialisasi
-	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi);
-	
+	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi
+);
+
+CREATE VIEW jadwal_dokter_admin_homepage AS
+(SELECT
+	jadwal.id_dokter,
+	nama,
+    STRING_AGG(spesialisasi.nama_spesialisasi, ', ') AS nama_spesialisasi,
+	id_jadwal,
+	tanggal,
+	waktu_mulai,
+	waktu_selesai,
+	kuota_terisi,
+	kuota_max
+FROM
+	users INNER JOIN jadwal
+	ON users.id_user = jadwal.id_dokter
+	INNER JOIN spesialisasi_dokter
+	ON spesialisasi_dokter.id_dokter = users.id_user
+	INNER JOIN spesialisasi
+	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi
+GROUP BY
+	jadwal.id_dokter,
+	nama,
+	id_jadwal,
+	tanggal,
+	waktu_mulai,
+	waktu_selesai,
+	kuota_terisi,
+	kuota_max
+);
+
 
 CREATE VIEW daftar_dokter AS
 (SELECT
@@ -96,6 +126,7 @@ CREATE VIEW dokter_info AS
     id_user,
     nama,
     nik,
+	sip,
     foto_dokter,
     alamat,
     jenis_kelamin
