@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Homepage</title>
     <link rel="stylesheet" type="text/css" th:href="@{/Admin/admin_home_style.css}">
 </head>
+
 <body>
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
@@ -16,10 +18,10 @@
             <span>Jadwal Dokter Hari Ini</span>
             <div class="right">
                 <span>Hi, Admin</span>
-                <a th:href="@{logout}"><button>Logout</button></a>
+                <a th:href="@{/logout}"><button>Logout</button></a>
             </div>
         </header>
-        
+
         <!-- Search Bar -->
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien">
@@ -65,4 +67,5 @@
         </div>
     </div>
 </body>
+
 </html>

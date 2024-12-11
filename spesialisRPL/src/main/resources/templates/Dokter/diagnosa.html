@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Medis Pasien</title>
+    <link rel="stylesheet" th:href="@{/Dokter/stylesDiagnosa.css}">
+</head>
+<body>
+    <div class="medical-card">
+        <h1>Kartu Medis Pasien</h1>
+        
+        <div th:if="${rekamMedisList != null and !rekamMedisList.isEmpty()}">
+            <!-- Informasi Pasien -->
+            <div class="patient-info">
+                <p>Nama: <span th:text="${rekamMedisList[0].nama}">John Doe</span></p>
+                <p>Tanggal Lahir: <span th:text="${rekamMedisList[0].tanggal_lahir}">1990-01-01</span></p>
+                <p>Gender: <span th:text="${rekamMedisList[0].jenis_kelamin}">Laki-laki</span></p>
+            </div>
+            
+            <!-- Riwayat Rekam Medis -->
+            <table id="medical-history">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Informasi Awal (BB, TB, Suhu)</th>
+                        <th>Diagnosa Dokter</th>
+                        <th>Resep Obat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rekam : ${rekamMedisList}">
+                        <td th:text="${rekam.tanggal}"></td>
+                        <td>
+                            BB: <span th:text="${rekam.berat_badan}"></span> kg,
+                            TB: <span th:text="${rekam.tinggi_badan}"></span> cm,
+                            Suhu: <span th:text="${rekam.suhu_tubuh}"></span> °C
+                        </td>
+                        <td th:text="${rekam.diagnosa_dokter}"></td>
+                        <td th:text="${rekam.resep_obat}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${rekamMedisList == null or rekamMedisList.isEmpty()}">
+            <p>Tidak ada riwayat medis</p>
+        </div>
+
+        <!-- Form Tambah Rekam Medis -->
+        <h2>Tambah Rekam Medis Baru</h2>
+        <form th:action="@{/diagnosa/rekam-medis}" method="post">
+            <input type="hidden" name="id_pasien" th:value="${idPasien}">
+            <label for="tanggal">Tanggal:</label>
+            <input type="date" id="tanggal" name="tanggal" required><br>
+            
+            <label for="tinggi_badan">Tinggi Badan (cm):</label>
+            <input type="number" id="tinggi_badan" name="tinggi_badan" step="0.1" required><br>
+            
+            <label for="berat_badan">Berat Badan (kg):</label>
+            <input type="number" id="berat_badan" name="berat_badan" step="0.1" required><br>
+            
+            <label for="suhu_tubuh">Suhu Tubuh (°C):</label>
+            <input type="number" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
+            
+            <label for="diagnosa_dokter">Diagnosa Dokter:</label>
+            <textarea id="diagnosa_dokter" name="diagnosa_dokter" required></textarea><br>
+            
+            <label for="resep_obat">Resep Obat:</label>
+            <textarea id="resep_obat" name="resep_obat" required></textarea><br>
+            
+            <button type="submit">Tambah</button>
+        </form>
+    </div>    
+</body>
+</html>
