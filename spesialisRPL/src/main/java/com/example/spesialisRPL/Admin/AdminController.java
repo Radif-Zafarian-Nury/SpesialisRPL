@@ -122,7 +122,7 @@ public class AdminController {
     public String editDokter(Model model){
         List<DokterCard> listCards = adminRepository.getAllDoctorCards();
         model.addAttribute("dokter_list", listCards);
-        return "Admin/admin_editDokter";
+        return "Admin/admin_editdokter";
     }
 
     @GetMapping("/buatakun")

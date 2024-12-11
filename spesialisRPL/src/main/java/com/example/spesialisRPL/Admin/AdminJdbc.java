@@ -20,7 +20,7 @@ public class AdminJdbc implements AdminRepository{
 
     @Override
     public List<JadwalDokterData> findAll() {
-        String sql = "SELECT * FROM lihat_jadwal_dokter";
+        String sql = "SELECT * FROM jadwal_dokter_admin_homepage";
         return jdbcTemplate.query(sql, this::mapRowToJadwalDokter);
     }
 
@@ -234,7 +234,7 @@ public class AdminJdbc implements AdminRepository{
     public List<JadwalDokterData> findSchedulesByDate(LocalDate tgl) {
         String sql = """
                 SELECT id_jadwal AS idJadwal, nama, nama_spesialisasi, tanggal, waktu_mulai, waktu_selesai
-                FROM lihat_jadwal_dokter
+                FROM jadwal_dokter_admin_homepage
                 WHERE tanggal = ?
                 """;
         return jdbcTemplate.query(sql, (resultSet, rowNum) -> {
