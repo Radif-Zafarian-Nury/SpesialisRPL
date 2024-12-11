@@ -37,7 +37,7 @@ public class RekamMedisController {
         model.addAttribute("rekamMedisList", rekamMedisList);
         model.addAttribute("idPasien", idPasien);
         model.addAttribute("pasienInfo", pasienInfo); 
-        return "Dokter/diagnosa"; 
+        return "TenagaMedis/diagnosa"; 
     }
 
 

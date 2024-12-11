@@ -51,6 +51,8 @@
         <h2>Tambah Rekam Medis Baru</h2>
         <form th:action="@{/diagnosa/rekam-medis}" method="post">
             <input type="hidden" name="id_pasien" th:value="${idPasien}">
+            
+            <!-- Role Perawat -->
             <label for="tanggal">Tanggal:</label>
             <input type="date" id="tanggal" name="tanggal" required><br>
             
@@ -63,6 +65,7 @@
             <label for="suhu_tubuh">Suhu Tubuh (°C):</label>
             <input type="number" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
             
+            <!-- Role Dokter-->
             <label for="diagnosa_dokter">Diagnosa Dokter:</label>
             <textarea id="diagnosa_dokter" name="diagnosa_dokter" required></textarea><br>
             

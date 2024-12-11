@@ -17,7 +17,7 @@ public class PasienController {
         List<Pasien> pasienList = pasienService.getAllpasiens();
 
         model.addAttribute("patients", pasienList);
-        return "Dokter/home";
+        return "TenagaMedis/home";
     }
 
 }
