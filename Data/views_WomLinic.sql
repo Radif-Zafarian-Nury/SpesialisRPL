@@ -1,13 +1,10 @@
 --DROP
 DROP VIEW IF EXISTS lihat_jadwal_dokter;
+DROP VIEW IF EXISTS jadwal_dokter_admin_homepage;
 DROP VIEW IF EXISTS daftar_dokter;
 DROP VIEW IF EXISTS dokter_cards;
-DROP VIEW IF EXISTS nama_Dokter_di_jadwal;
-DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
-
 DROP VIEW IF EXISTS dokter_info;
 DROP VIEW IF EXISTS list_pasien;
-DROP VIEW IF EXISTS list_rekam_medis;
 
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
@@ -86,41 +83,6 @@ GROUP BY
     users.id_user, users.nama, users.foto_dokter
 );
 
-CREATE VIEW nama_Dokter_di_jadwal AS(
-SELECT
-	nama AS nama_dokter,
-	id_user AS id_dokter,
-	id_jadwal
-From
- (Select
-	id_pendaftaran,
-	id_pasien,
-	pendaftaran.id_jadwal,
-	id_dokter
-From
-	pendaftaran INNER JOIN jadwal
-	ON pendaftaran.id_jadwal = jadwal.id_jadwal) AS Ids INNER JOIN users
-	ON Ids.id_dokter = users.id_user
-);
-
-CREATE VIEW lihat_pendaftaran_pasien AS
-(SELECT DISTINCT
-	nama,
-	nama_dokter,
-	waktu_mulai,
-	waktu_selesai,
-	tanggal,
-	status_bayar,
-	status_daftar_ulang,
-	no_antrian
-	
-FROM
-	users INNER JOIN pendaftaran
-	ON users.id_user = pendaftaran.id_pasien
-	INNER JOIN jadwal
-	ON jadwal.id_jadwal = pendaftaran.id_jadwal INNER JOIN nama_Dokter_di_jadwal
-	ON nama_Dokter_di_jadwal.id_dokter = jadwal.id_dokter
-	);
 CREATE VIEW dokter_info AS
 (SELECT
     id_user,
@@ -139,7 +101,6 @@ WHERE
 CREATE VIEW list_pasien AS
 (SELECT
 	jadwal.id_dokter,
-	pendaftaran.id_pasien,
 	no_antrian, 
 	waktu_mulai, 
 	waktu_selesai, 
@@ -156,30 +117,11 @@ FROM
 WHERE
 	no_antrian IS NOT NULL
 );
-
-CREATE VIEW list_rekam_medis AS
-(SELECT 
-	id_pasien,
-	nama,
-	tanggal_lahir,
-	jenis_kelamin,
-	tanggal,
-	tinggi_badan,
-	berat_badan,
-	suhu_tubuh,
-	resep_obat,
-	diagnosa_dokter
-FROM
- 	diagnosa INNER JOIN users ON diagnosa.id_pasien = users.id_user);
 	
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
+SELECT * FROM jadwal_dokter_admin_homepage;
 SELECT * FROM daftar_dokter;
 SELECT * FROM dokter_cards;
-SELECT * FROM nama_Dokter_di_jadwal;
-SELECT * FROM lihat_pendaftaran_pasien;
-
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
-SELECT * FROM list_rekam_medis;
-
