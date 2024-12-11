@@ -9,6 +9,7 @@ DROP VIEW IF EXISTS list_rekam_medis;
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
 (SELECT
+	jadwal.id_dokter,
 	nama,
 	nama_spesialisasi,
 	id_jadwal,
@@ -102,7 +103,6 @@ CREATE VIEW list_rekam_medis AS
 FROM
  	diagnosa INNER JOIN users ON diagnosa.id_pasien = users.id_user);
 	
-	
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
 SELECT * FROM daftar_dokter;
@@ -110,3 +110,4 @@ SELECT * FROM dokter_cards;
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
 SELECT * FROM list_rekam_medis;
+

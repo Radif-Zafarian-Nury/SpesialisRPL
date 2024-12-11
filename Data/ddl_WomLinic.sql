@@ -20,7 +20,7 @@ CREATE TABLE users (
 	status_aktif BOOLEAN,
 	peran VARCHAR(10),
 	sip VARCHAR(30),
-	foto_dokter VARCHAR(60),
+	foto_dokter BYTEA,
 	no_rekam_medis INT,
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );

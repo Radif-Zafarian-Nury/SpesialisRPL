@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
+    <th:block th:insert="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -22,7 +22,7 @@
 
         <div class="form-container">
             <h2>Formulir Pendaftaran</h2>
-            <form id="registerForm">
+            <form id="registerForm" onsubmit="return registerPasien(event);">
                 <div class="form-group">
                     <label for="NIK">NIK</label>
                     <input type="text" id="NIK" name="NIK" placeholder="Masukkan NIK" maxlength="16" oninput="checkNik()" required>
@@ -82,7 +82,7 @@
 
                 <div class="form-actions">
                     <button type="reset" class="reset-btn">Reset</button>
-                    <a th:href="@{daftarpasien}"><button type="submit" class="submit-btn">Daftar</button></a>
+                    <button type="submit" class="submit-btn">Daftar</button>
                 </div>
             </form>
         </div>
@@ -185,7 +185,7 @@
                 jadwalDropdown.innerHTML = '<option value="">Pilih Jadwal</option>';
                 jadwal.forEach(jadwal => {
                     const option = document.createElement("option");
-                    option.value = jadwal.waktu_mulai;
+                    option.value = jadwal.idJadwal
                     option.textContent = `${jadwal.waktu_mulai} - ${jadwal.waktu_selesai}`;
                     jadwalDropdown.appendChild(option);
                 });  
@@ -193,6 +193,52 @@
                 console.error("Error fetching jadwa: ", error);
             }
             
+        }
+
+        async function registerPasien(event) {
+            event.preventDefault();
+
+            const nik = document.getElementById('NIK').value;
+            const idJadwal = document.getElementById('jadwal').value;
+
+            if(!nik || !idJadwal){
+                alert("Harap isi semua kolom.");
+                return false;
+            }
+
+            try {
+                const quotaResponse = await fetch(`/admin/check-quota?idJadwal=${idJadwal}`);
+                const quotaData = await quotaResponse.json();
+
+                if(!quotaResponse.ok){
+                    throw new Error(quotaData.message);
+                }
+
+                if(quotaData.kuotaTerisi >= quotaData.kuotaMax){
+                    alert("Kuota sudah penuh");
+                    return false;
+                }
+
+                const response = await fetch('/admin/register-pasien', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ nik, idJadwal }),
+                });
+
+                const message = await response.text();
+                if(response.ok){
+                    alert(message);
+                    document.getElementById('registerForm').reset();
+                } else {
+                    alert(message);
+                }
+            } catch (error) {
+                alert("Terjadi kesalahan saat mendaftarkan pasien: " + error.message)
+            }
+
+            return false;
         }
     </script>
 

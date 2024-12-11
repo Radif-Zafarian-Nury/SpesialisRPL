@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
@@ -55,9 +59,46 @@ public class AdminController {
         return ResponseEntity.ok(jadwal);
     }
 
+    //CEK KUOTA DOKTER
+    @GetMapping("/check-quota")
+    @ResponseBody
+    public ResponseEntity<?> checkQuota(@RequestParam("idJadwal") int idJadwal){
+        JadwalDokterData jadwal = adminRepository.findScheduleById(idJadwal);
+        if(jadwal == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jadwal tidak ditemukan");
+        }
+
+        return ResponseEntity.ok(new QuotaResponse(jadwal.getKuotaTerisi(), jadwal.getKuotaMax()));
+    }
+
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
+    }
+
+    @PostMapping("/register-pasien")
+    @ResponseBody
+    public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
+        //Validasi nik
+        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
+            return ResponseEntity.badRequest().body("NIK tidak valid.");
+        }
+        
+        //Cek nik di db
+        var pasien = adminRepository.findNik(nik);
+        if(pasien.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pasien belum memilki akun");
+        }
+
+        //Mendaftarkan pasien
+        try {
+            adminRepository.registerPasien(nik, idJadwal);
+            adminRepository.incrementKuotaTerisi(idJadwal);
+            return ResponseEntity.ok("Pasien berhasil didaftarkan");
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal mendaftarkan pasien");
+        }
     }
 
     @GetMapping("/check-nik")
@@ -73,7 +114,9 @@ public class AdminController {
     }
 
     @GetMapping("/editdokter")
-    public String editDokter(){
+    public String editDokter(Model model){
+        List<DokterCard> listCards = adminRepository.getAllDoctorCards();
+        model.addAttribute("dokter_list", listCards);
         return "Admin/admin_editDokter";
     }
 
@@ -82,8 +125,38 @@ public class AdminController {
         return "Admin/admin_buatAkunBaru";
     }
 
-    @GetMapping("/halamanedit")
-    public String halamanEdit(){
+    @GetMapping("/halamanEdit/{id}")
+    public String showEditDoctorForm(@PathVariable("id") int id, Model model) {
+        Dokter dokter = adminRepository.getDokter(id); 
+        List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
+        List<String> spesialisasiList = adminRepository.getAllSpesialisasi();
+
+        model.addAttribute("dokter", dokter);
+        model.addAttribute("spesialisasi_dokter", spesialisasiDokter);
+        model.addAttribute("spesialisasi_list", spesialisasiList);
         return "Admin/admin_halamanEdit";
     }
+
+    @PostMapping("/editdokter")
+    public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
+                                    @RequestParam List<String> specializations,
+                                    @RequestParam(required = false) MultipartFile doctorPhoto) {  
+
+        if (doctorPhoto != null && !doctorPhoto.isEmpty()) {
+            try {
+                // Convert the image to Base64
+                byte[] fotoBytes = doctorPhoto.getBytes();
+                String fotoBase64 = Base64.getEncoder().encodeToString(fotoBytes);
+                dokter.setFoto(fotoBase64);  
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        adminRepository.updateDokter(dokter, specializations);
+
+        return "redirect:/admin/editdokter";
+    }
+
+
 }
