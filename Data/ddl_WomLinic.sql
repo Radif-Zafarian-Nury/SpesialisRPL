@@ -20,7 +20,7 @@ CREATE TABLE users (
 	status_aktif BOOLEAN,
 	peran VARCHAR(10),
 	sip VARCHAR(30),
-	foto_dokter VARCHAR(60),
+	foto_dokter BYTEA,
 	no_rekam_medis INT,
 	UNIQUE(email, nik, sip, no_rekam_medis)
 );
@@ -106,9 +106,11 @@ VALUES
 INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
 VALUES
 	(3, 1, TRUE, TRUE, 1),
-	(3, 4, TRUE, FALSE, 1),
-	(4, 4, TRUE, FALSE, 2),
-	(4, 5, FALSE, FALSE, NULL);
+	(4, 1, FALSE, FALSE, NULL),
+	(3, 2, TRUE, TRUE, 1),
+	(4, 3, TRUE, TRUE, 1),
+	(3, 6, TRUE, FALSE, 1),
+	(4, 6, TRUE, FALSE, 2);
 
 -- SELECT
 SELECT * FROM users;

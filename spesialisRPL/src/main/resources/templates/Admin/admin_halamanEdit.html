@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Data Dokter</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/Admin/halaman_edit_style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/halamanEdit_style.css}">
 </head>
 <body>
     <!-- Sidebar -->
@@ -24,72 +24,68 @@
         <div class="form-container">
             <h2>Formulir Edit Dokter</h2>
             <form id="editDoctorForm" th:action="@{/admin/editdokter}" th:method="post" enctype="multipart/form-data">
+                <!-- Doctor ID -->
+                <input type="hidden" name="id_user" th:value="${dokter.id_user}" />
+                <input type="hidden" name="foto" th:value="${dokter.foto}" />
+
                 <!-- Doctor Name -->
                 <div class="form-group">
                     <label for="doctorName">Nama Dokter</label>
-                    <input type="text" id="doctorName" name="doctorName" value="Dr. Woms" required>
+                    <input type="text" id="doctorName" name="nama" th:value="${dokter.nama}" required>
                 </div>
-
+            
                 <!-- Doctor NIK -->
                 <div class="form-group">
                     <label for="doctorNIK">NIK Dokter</label>
-                    <input type="text" id="doctorNIK" name="doctorNIK" value="123456789" required>
+                    <input type="text" id="doctorNIK" name="nik" th:value="${dokter.nik}" required>
                 </div>
-
+            
                 <!-- Doctor Photo -->
                 <div class="form-group">
                     <label for="doctorPhoto">Foto Dokter</label>
-                    <input type="file" id="dokterPhoto" name="doctorPhoto" accept="image/jpg, image/jpeg, image/png" value=""required>
+                    <input type="file" id="dokterPhoto" name="doctorPhoto" accept="image/jpg, image/jpeg, image/png">
+                    
                 </div>
-                
+            
                 <!-- Doctor Address -->
                 <div class="form-group">
                     <label for="doctorAddress">Alamat</label>
-                    <input type="text" id="doctorAddress" name="doctorAddress" value="Jl. Sehat No. 123, Bandung" required>
+                    <input type="text" id="doctorAddress" name="alamat" th:value="${dokter.alamat}" required>
                 </div>
-
-                <!-- Doctor Specialization -->
+            
+                <!-- Doctor Specialization (Checkboxes) -->
                 <div class="form-group">
                     <label for="doctorSpecialization">Spesialis</label>
-                    <select id="doctorSpecialization" name="doctorSpecialization" required>
-                        <option value="Spesialis Jantung" selected>Spesialis Jantung</option>
-                        <option value="Spesialis Anak">Spesialis Anak</option>
-                        <option value="Spesialis Bedah">Spesialis Bedah</option>
-                    </select>
+                    <div class="spesialisasi_wrapper">
+                        <div class="spesialisasi_box"th:each="spesialisasi : ${spesialisasi_list}">
+                            <label th:for="${spesialisasi}" th:text="${spesialisasi}"></label> <input type="checkbox" th:id="${spesialisasi}" th:name="specializations" 
+                                th:value="${spesialisasi}" 
+                                th:checked="${spesialisasi_dokter.contains(spesialisasi)}" />
+                        </div>
+                    </div>
                 </div>
-
+            
                 <!-- Doctor Gender -->
                 <div class="form-group">
                     <label>Jenis Kelamin</label>
-                    <label>
-                        <input type="radio" name="gender" value="male" checked> Laki-laki
-                    </label>
-                    <label>
-                        <input type="radio" name="gender" value="female"> Perempuan
-                    </label>
-                </div>
+                    <div class="gender_wrapper">
+                        <input type="radio" id="genderL" name="jenis_kelamin" value="L" th:field="${dokter.jenis_kelamin}">
+                        <label for="genderL"> Laki-laki </label>
+                    </div>
+                    <div class="gender_wrapper">
+                        <input type="radio" id="genderP" name="jenis_kelamin" value="P" th:field="${dokter.jenis_kelamin}">
+                        <label for="genderP"> Perempuan </label>
+                    </div>
 
-                <!-- Doctor Schedule -->
-                <div class="form-group">
-                    <label for="doctorSchedule">Jadwal</label>
-                    <select id="doctorSchedule" name="doctorSchedule" required>
-                        <option value="08:00 - 12:00" selected>08:00 - 12:00</option>
-                        <option value="13:00 - 17:00">13:00 - 17:00</option>
-                    </select>
                 </div>
-
-                <!-- Doctor Quota -->
-                <div class="form-group">
-                    <label for="doctorQuota">Kuota</label>
-                    <input type="number" id="doctorQuota" name="doctorQuota" value="10" min="1" max="10" required>
-                </div>
-
+                
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="button" class="cancel-btn" onclick="cancelEdit()">Batal</button>
+                    <button type="button" class="cancel-btn" th:onclick="'window.location.href=\'/admin/editdokter\''">Batal</button>
                     <button type="submit" class="save-btn">Simpan</button>
                 </div>
             </form>
+            
         </div>
         
     </div>
