@@ -25,7 +25,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginView(HttpSession session){
-        if(session.getAttribute("loggedInUser") != null){  //kalo udah login ke user yg loggedin
+        if(session.getAttribute("user") != null){  //kalo udah login ke user yg loggedin
             return "redirect:/user/";
         }
         return "User/login";
@@ -37,23 +37,18 @@ public class LoginController {
 
         UserData user = userService.login(email, password);
         if (user != null) {
-            session.setAttribute("loggedInUser", user);
+            session.setAttribute("user", user);
+            session.setAttribute("role", user.getPeran());
             logger.info("Login successful for user: {}", email);    //logger
-            session.getAttribute(email);
 
             String role = user.getPeran();
-            switch (role) {
-                case "admin":
-                    return "redirect:/admin/";
-                case "dokter":
-                    return "redirect:/doctor/";
-                case "perawat":
-                    return "redirect:/nurse/";
-                case "pasien":
-                    return "redirect:/user/";
-                default:
-                    return "redirect:/user/";
-            }
+            return switch (role) {
+                case "admin" -> "redirect:/admin/";
+                case "dokter" -> "redirect:/doctor/";
+                case "perawat" -> "redirect:/nurse/";
+                case "pasien" -> "redirect:/user/";
+                default -> "redirect:/user/";
+            };
         } 
         else {
             logger.warn("Login failed for email: {}", email);   //logger
