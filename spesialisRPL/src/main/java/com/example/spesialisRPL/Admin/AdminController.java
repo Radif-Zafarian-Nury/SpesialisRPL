@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -29,8 +28,14 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    public String index(Model model){
-        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model){
+        List<JadwalDokterData> jadwalDokter;
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        jadwalDokter = adminRepository.findSchedulesByDate(tgl);
+
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
