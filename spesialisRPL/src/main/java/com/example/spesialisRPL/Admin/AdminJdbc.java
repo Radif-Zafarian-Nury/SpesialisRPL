@@ -161,6 +161,7 @@ public class AdminJdbc implements AdminRepository{
         return new PasienData(
             resultSet.getString("nama"),
             resultSet.getString("nama_dokter"),
+            resultSet.getString("nama_spesialisasi"),
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai"),
             resultSet.getString("tanggal"),

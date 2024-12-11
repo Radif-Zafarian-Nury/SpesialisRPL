@@ -35,8 +35,8 @@
                 <div class="patient-info">
                     <span th:text="${row.nama}"></span>
                     <!-- harus tambahin spesialis ke view -->
-                    <p th:text="'Dokter: ' +${row.nama_dokter}">Spesialis Jantung</p>
-                    <p>Spesialis: Jantung</p>
+                    <p th:text="'Dokter: ' +${row.nama_dokter}"></p>
+                    <p th:text="'Spesialisasi: ' + ${row.nama_spesialisasi} "></p>
                     <p th:text="'Tanggal: ' + ${row.tanggal}"></p>
                     <span th:text="${row.waktu_mulai} + ' - ' + ${row.waktu_selesai}"></span>
                     <p th:if="${row.status_bayar}">Status Pembayaran: Sudah Bayar</p>
@@ -46,14 +46,17 @@
                     <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
                 </div>
                 <div class="button-group">
-                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
-                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
+                    <button class="status-btn" onclick="bayar()">Tandai Sudah Bayar</button>
+                    <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        async function bayar(){
+            
+        }
         async function checkNama() {
             const nama = document.getElementById('searchInput').value;
 
