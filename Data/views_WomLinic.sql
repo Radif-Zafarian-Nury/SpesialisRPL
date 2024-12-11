@@ -4,6 +4,7 @@ DROP VIEW IF EXISTS daftar_dokter;
 DROP VIEW IF EXISTS dokter_cards;
 DROP VIEW IF EXISTS dokter_info;
 DROP VIEW IF EXISTS list_pasien;
+DROP VIEW IF EXISTS list_rekam_medis;
 
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
@@ -69,6 +70,7 @@ WHERE
 CREATE VIEW list_pasien AS
 (SELECT
 	jadwal.id_dokter,
+	pendaftaran.id_pasien,
 	no_antrian, 
 	waktu_mulai, 
 	waktu_selesai, 
@@ -85,6 +87,21 @@ FROM
 WHERE
 	no_antrian IS NOT NULL
 );
+
+CREATE VIEW list_rekam_medis AS
+(SELECT 
+	id_pasien,
+	nama,
+	tanggal_lahir,
+	jenis_kelamin,
+	tanggal,
+	tinggi_badan,
+	berat_badan,
+	suhu_tubuh,
+	resep_obat,
+	diagnosa_dokter
+FROM
+ 	diagnosa INNER JOIN users ON diagnosa.id_pasien = users.id_user);
 	
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
@@ -92,3 +109,5 @@ SELECT * FROM daftar_dokter;
 SELECT * FROM dokter_cards;
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
+SELECT * FROM list_rekam_medis;
+
