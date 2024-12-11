@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pasien</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/Dokter/stylesHome.css}">
+</head>
+<body>
+    <header>
+        <span>Daftar Pasien Hari Ini</span>
+        <div class="right">
+            <span>Hi, Dokter</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
+
+    <div class="search-bar">
+        <form th:action="@{/api/patients/search}" method="get">
+            <input type="text" name="medicalRecordNumber" placeholder="Cari nomor rekam medis pasien">
+            <button type="submit">Cari</button>
+        </form>
+    </div>
+
+    <main>
+        <div class="card-container">
+            <div class="card" th:each="patient : ${patients}">
+                <div class="info">
+                    <h3 th:text="${patient.nama}">John Doe</h3>
+                    <p>Tanggal Lahir: <span th:text="${patient.tanggal_lahir}">1990-01-01</span></p>
+                    <p>Gender: <span th:text="${patient.jenis_kelamin}">Laki-laki</span></p>
+                    <p>Jadwal: <span th:text="${patient.jadwal}"></span></p>
+                    <p>Nomor Antrian: <span th:text="${patient.no_antrian}">3</span></p>
+                </div>
+                <a th:href="@{'/diagnosa/' + ${patient.id_pasien}}">
+                    <button class="edit-btn">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </a>
+                
+                
+            </div>
+        </div>
+    </main>
+</body>
+</html>

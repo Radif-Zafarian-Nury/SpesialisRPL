@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Pasien</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/bayar_style.css}">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <span>Search Pasien</span>
+            <div class="right">
+                <span>Hi, Admin</span>
+                <button th:href="@{logout}">Logout</button>
+            </div>
+        </header>
+
+        <!-- Search bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari Pasien..." onchange="searchPatient()">
+            <button th:href="@{search}">Cari</button>
+        </div>
+
+        <!-- Patient List -->
+        <div class="patient-list" id="patientList">
+            <!-- Patient cards will be displayed here -->
+            <div class="patient-card" th:each="row : ${results}">
+                <div class="patient-info">
+                    <span th:text="${row.nama}"></span>
+                    <!-- harus tambahin spesialis ke view -->
+                    <p th:text="'Dokter: ' +${row.nama_dokter}">Spesialis Jantung</p>
+                    <p>Spesialis: Jantung</p>
+                    <p th:text="'Tanggal: ' + ${row.tanggal}"></p>
+                    <span th:text="${row.waktu_mulai} + ' - ' + ${row.waktu_selesai}"></span>
+                    <p th:if="${row.status_bayar}">Status Pembayaran: Sudah Bayar</p>
+                    <p th:if="${!row.status_bayar}">Status Pembayaran: Belum Bayar</p>
+                    <p th:if="${row.status_daftar_ulang}">Sudah Daftar Ulang</p>
+                    <p th:if="${!row.status_daftar_ulang}">Belum Daftar Ulang</p>
+                    <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
+                </div>
+                <div class="button-group">
+                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
+                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function checkNama() {
+            const nama = document.getElementById('searchInput').value;
+
+            if (nama != null) {
+                try {
+                    const response = await fetch(`/admin/check-nik?nik=${nik}`);
+
+                    if (!response.ok) {
+                        throw new Error('Pasien belum terdaftar');
+                    }
+
+                    const data = await response.json();
+
+                    //isi data ke dalam form
+                    document.getElementById('patientName').value = data.nama || '';
+                    document.getElementById('patientDOB').value = data.tanggalLahir || '';
+                    document.getElementsByName('gender').forEach(radio => {
+                        if (radio.value === (data.jenisKelamin === 'L' ? 'L' : 'P')) {
+                            radio.checked = true;
+                        }
+                    });
+
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
