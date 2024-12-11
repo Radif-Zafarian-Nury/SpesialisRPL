@@ -1,5 +1,6 @@
 --DROP
 DROP VIEW IF EXISTS lihat_jadwal_dokter;
+DROP VIEW IF EXISTS jadwal_dokter_admin_homepage;
 DROP VIEW IF EXISTS daftar_dokter;
 DROP VIEW IF EXISTS dokter_cards;
 DROP VIEW IF EXISTS dokter_info;
@@ -119,6 +120,7 @@ WHERE
 	
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
+SELECT * FROM jadwal_dokter_admin_homepage;
 SELECT * FROM daftar_dokter;
 SELECT * FROM dokter_cards;
 SELECT * FROM dokter_info;
