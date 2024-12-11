@@ -9,6 +9,7 @@ public class Dokter {
     private int id_user; 
     private String nama; 
     private String nik;
+    private String sip;
     private String foto;    //Base64
     private String alamat;
     private char jenis_kelamin;

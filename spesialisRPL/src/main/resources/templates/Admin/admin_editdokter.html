@@ -30,7 +30,7 @@
         <!-- Doctor Cards -->
         <div class="doctor-cards" id="doctorCards">
             <div class="doctor-card" th:each="dokter : ${dokter_list}">
-                <img th:src="'data:image/jpeg;base64,' + ${dokter.foto}" th:alt="${dokter.nama}" onerror="this.src='/assets/FotoDokter/placeholder.jpg'">
+                <img th:src="'data:image/jpeg;base64,' + ${dokter.foto}" th:alt="${dokter.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'">
                 <div class="doctor-info">
                     <h3 th:text="${dokter.nama}" class="nama"></h3>
                     <p th:text="'Spesialis ' + ${dokter.spesialisasi}" class="spesialisasi"></p>
