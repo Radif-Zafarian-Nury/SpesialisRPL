@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Doctor {
     private String nama;
-    private byte[] foto_dokter;
+    private String foto_dokter;
     private String nama_spesialisasi;
 }

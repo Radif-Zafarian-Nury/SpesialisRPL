@@ -41,6 +41,10 @@ public class UserController {
         return "User/LoggedInIndex"; //kalo udh ke yg logged in
     }
 
+    @GetMapping("/form_pilih_dokter")
+    public String showDokterForm() {
+        return "User/form_pesan_dokter";
+    }
     
     @GetMapping("/register")
     public String register(){

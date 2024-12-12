@@ -4,8 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/User/form_pesan_dokter.css}">
 </head>
 <body>
-    
+    <div class="header_container">
+        <header>
+            <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
+            <div class="login_wrapper">
+                <a class="login" th:href="@{/login}">
+                    <p>MASUK</p>
+                </a>
+            </div>
+            <div class="register_wrapper">
+                <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
+            </div>
+        </header>
+    </div>
+    <main>
+        <div class="form-container">
+            <div class="info_dokter">
+                <div class="foto_dokter_container">
+                    <img src="/assets/profile_icon.png" class="foto_dokter"/>
+                </div>
+                <div class="nama_dokter">
+
+                </div>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="tanggal">Pilih Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label for="jadwal">Pilih Jadwal</label>
+                    <select id="jadwal" name="jadwal" required>
+                        <option value="">Pilih Jadwal</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Daftar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script>
+        async function filterJadwal() {
+            try {
+                const jadwalDropdown = document.getElementById("jadwal");
+                jadwalDropdown.innerHTML = '<option value="">Pilih Jadwal</option>';
+                jadwal.forEach(jadwal => {
+                    const option = document.createElement("option");
+                    option.value = jadwal.idJadwal
+                    option.textContent = `${jadwal.waktu_mulai} - ${jadwal.waktu_selesai}`;
+                    jadwalDropdown.appendChild(option);
+                });  
+            } catch (error) {
+                console.error("Error fetching jadwal: ", error);
+            }
+        }
+    </script>
 </body>
 </html>

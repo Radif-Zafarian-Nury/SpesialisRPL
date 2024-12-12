@@ -16,7 +16,7 @@ public class DoctorJdbc implements DoctorRepository {
     private Doctor mapRowToDoctor(ResultSet resultSet, int rowNum) throws SQLException {
         return new Doctor(
             resultSet.getString("nama"),
-            resultSet.getBytes("foto_dokter"),
+            resultSet.getString("foto_dokter"),
             resultSet.getString("nama_spesialisasi")
         );
     }
