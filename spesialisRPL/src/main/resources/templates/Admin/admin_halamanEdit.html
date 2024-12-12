@@ -16,7 +16,7 @@
             <span>Edit Data Dokter</span>
             <div class="right">
                 <span>Hi, Admin</span>
-                <a th:href="@{logout}"><button>Logout</button></a>
+                <a th:href="@{/logout}"><button>Logout</button></a>
             </div>
         </header>
 
@@ -40,6 +40,12 @@
                     <input type="text" id="doctorNIK" name="nik" th:value="${dokter.nik}" required>
                 </div>
             
+                <!-- Doctor SIP -->
+                <div class="form-group">
+                    <label for="doctorSIP">SIP Dokter</label>
+                    <input type="text" id="doctorSIP" name="sip" th:value="${dokter.sip}" required>
+                </div>
+
                 <!-- Doctor Photo -->
                 <div class="form-group">
                     <label for="doctorPhoto">Foto Dokter</label>

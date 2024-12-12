@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -10,15 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
+import com.example.spesialisRPL.RequiredRole;
+import com.example.spesialisRPL.User.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,10 +27,20 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private UserService userService; // Inject UserService
+
+
     //HALAMAN UTAMA
     @GetMapping("/")
-    public String index(Model model){
-        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+    @RequiredRole({"admin"})
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model){
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        List<JadwalDokterData> jadwalDokter = adminRepository.findSchedulesByDate(tgl);
+
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
@@ -70,6 +80,23 @@ public class AdminController {
 
         return ResponseEntity.ok(new QuotaResponse(jadwal.getKuotaTerisi(), jadwal.getKuotaMax()));
     }
+
+    //LIST PASIEN
+    @GetMapping("/list-pasien")
+    public String admin_bayar(Model model){
+        List<PasienData> listPasien = adminRepository.findAllPendaftaran();
+        model.addAttribute("results", listPasien);
+        return "Admin/admin_listPasien";
+    }
+
+    //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
+    @GetMapping("/get-nama_dokter")
+    @ResponseBody
+    public ResponseEntity<List<String>> getNamaDokter(@RequestParam("nama") String nama){
+        List<String> jadwal = adminRepository.findDoctorNameByPatientName(nama);
+        return ResponseEntity.ok(jadwal);
+    }
+
 
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
@@ -117,7 +144,7 @@ public class AdminController {
     public String editDokter(Model model){
         List<DokterCard> listCards = adminRepository.getAllDoctorCards();
         model.addAttribute("dokter_list", listCards);
-        return "Admin/admin_editDokter";
+        return "Admin/admin_editdokter";
     }
 
     @GetMapping("/buatakun")
@@ -159,4 +186,51 @@ public class AdminController {
     }
 
 
+
+    @PostMapping("/buatakun")
+    public String buatAkunUser(
+        @Valid @ModelAttribute UserData userData, 
+        Model model,
+        BindingResult bindingResult){
+            
+        
+        //Check validation
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "Please correct the highlighted errors.");
+            return "User/register";
+        }
+
+        //Check NIK
+        // if (userRepository.findByNik(userData.getNik()).isPresent()) {
+        //     model.addAttribute("error", "NIK sudah terdaftar");
+        //     return "User/register";
+        // }
+        
+        //cek NIK (length & Harus Angka)
+        if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
+            model.addAttribute("error", "NIK harus 16 digit nomor");
+            return "User/register";
+        }
+
+        //Check email
+        if (!userData.getEmail().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            model.addAttribute("error", "Email tidak valid");
+            return "User/register";
+        }
+
+        //Check password
+        if(!userData.getKata_sandi().equals(userData.getConfpassword())){
+            model.addAttribute("error", "Passwords do not match!");
+            return "User/register";
+        }
+
+        boolean isRegistered = userService.register(userData);
+        if (!isRegistered) {
+            model.addAttribute("error", "Registration failed. Please try again.");
+            return "User/register";
+        }
+        // userData.setPeran("pasien");
+        // userRepository.saveUser(userData);
+        return "redirect:/login";
+    }
 }

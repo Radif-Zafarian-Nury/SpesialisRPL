@@ -1,5 +1,6 @@
 package com.example.spesialisRPL.Admin;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,10 @@ public interface AdminRepository {
     List<JadwalDokterData> findAll();
     JadwalDokterData findScheduleById(int idJadwal);
     void incrementKuotaTerisi(int idJadwal);
+    List<PasienData> findAllPendaftaran();
+    List<String> findDoctorNameByPatientName(String name);
     Dokter getDokter(int id);
     List<String> getAllSpesialisasi();
     void updateDokter(Dokter dokter, List<String> spesialisasi);
+    List<JadwalDokterData> findSchedulesByDate(LocalDate tgl);
 }
