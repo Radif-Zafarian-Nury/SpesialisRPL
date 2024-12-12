@@ -54,23 +54,23 @@
             
             <!-- Role Perawat -->
             <label for="tanggal">Tanggal:</label>
-            <input type="date" id="tanggal" name="tanggal" required><br>
+            <input th:disabled="${role != 'perawat'}" type="date" id="tanggal" name="tanggal" required><br>
             
             <label for="tinggi_badan">Tinggi Badan (cm):</label>
-            <input type="number" id="tinggi_badan" name="tinggi_badan" step="0.1" required><br>
+            <input th:disabled="${role != 'perawat'}" type="number" id="tinggi_badan" name="tinggi_badan" step="0.1" required><br>
             
             <label for="berat_badan">Berat Badan (kg):</label>
-            <input type="number" id="berat_badan" name="berat_badan" step="0.1" required><br>
+            <input th:disabled="${role != 'perawat'}" type="number" id="berat_badan" name="berat_badan" step="0.1" required><br>
             
             <label for="suhu_tubuh">Suhu Tubuh (°C):</label>
-            <input type="number" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
+            <input th:disabled="${role != 'perawat'}" type="number" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
             
             <!-- Role Dokter-->
             <label for="diagnosa_dokter">Diagnosa Dokter:</label>
-            <textarea id="diagnosa_dokter" name="diagnosa_dokter" required></textarea><br>
+            <textarea th:disabled="${role != 'dokter'}" id="diagnosa_dokter" name="diagnosa_dokter" required></textarea><br>
             
             <label for="resep_obat">Resep Obat:</label>
-            <textarea id="resep_obat" name="resep_obat" required></textarea><br>
+            <textarea th:disabled="${role != 'dokter'}" id="resep_obat" name="resep_obat" required></textarea><br>
             
             <button type="submit">Tambah</button>
         </form>
