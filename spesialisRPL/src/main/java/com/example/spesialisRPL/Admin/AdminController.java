@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -39,8 +40,13 @@ public class AdminController {
     //HALAMAN UTAMA
     @GetMapping("/")
     @RequiredRole({"admin"})
-    public String index(Model model){
-        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model){
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        List<JadwalDokterData> jadwalDokter = adminRepository.findSchedulesByDate(tgl);
+
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
@@ -144,7 +150,7 @@ public class AdminController {
     public String editDokter(Model model){
         List<DokterCard> listCards = adminRepository.getAllDoctorCards();
         model.addAttribute("dokter_list", listCards);
-        return "Admin/admin_editDokter";
+        return "Admin/admin_editdokter";
     }
 
     @GetMapping("/buatakun")
