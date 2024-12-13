@@ -33,6 +33,13 @@
             </div>
             <div class="big_title">
                 <h1>Dokter Spesialis Mata</h1>
+                <div class="filter_container">
+                    <form th:action="@{/user/spesialisMata}" method="GET">
+                        <h1 class="search_label">Pilih Tanggal Konsultasi:</h1>
+                        <input type="date" id="date" name="date">
+                        <button type="submit" class="filter_button">Cari</button>
+                    </form>
+                </div>
             </div>
             <div class="element_divider">
                 <div class="element_divider_separator"> </div>
@@ -41,10 +48,18 @@
         <div class="doctors_container">
             <div th:each="doctor : ${dokter_mata}" class="doctor_card">
                 <div class="doctor_profile_pic">
-                    <img th:src="${doctor.foto_dokter != null ? doctor.foto_dokter : '/assets/profile_icon.png'}" class="doctor_img" />
+                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'" />
                 </div>
                 <div class="doctor_name">
                     <h2 th:text="${doctor.nama}">Doctor Name</h2>
+                </div>
+                <div class="doctor_schedule">
+                    <h3>Jadwal:</h3>
+                    <div class="list_jadwal_dokter">
+                        <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
+                            <span th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"></span>
+                        </div>
+                    </div>>
                 </div>
             </div>
         </div>

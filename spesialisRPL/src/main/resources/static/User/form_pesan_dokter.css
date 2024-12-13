@@ -70,15 +70,15 @@ main {
 .form-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Elemen di dalam formulir tetap vertikal */
+    justify-content: center;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 600px; /* Perlebar kotak formulir */
+    width: 600px; 
     max-width: 90%;
-    margin: 0 auto; /* Pastikan kotak tetap rata tengah */
-    height: auto; /* Hindari konflik dengan tinggi */
-    padding: 40px; /* Tambahkan jarak internal lebih besar */
+    margin: 0 auto; 
+    height: auto; 
+    padding: 40px; 
 }
 
 .form-group {
@@ -130,4 +130,9 @@ main {
 .foto_dokter {
     width: 7rem;
     height: 7rem;
+}
+
+.info_dokter {
+    display: flex;
+    justify-content: center;
 }
