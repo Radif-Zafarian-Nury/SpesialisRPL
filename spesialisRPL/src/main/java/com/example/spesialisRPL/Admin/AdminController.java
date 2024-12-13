@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -39,8 +39,9 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    @RequiredRole({"admin"})
-    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model){
+    //@RequiredRole({"admin"})
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
+        
         if(tgl==null){
             tgl = LocalDate.now();
         }
@@ -89,10 +90,28 @@ public class AdminController {
 
     //LIST PASIEN
     @GetMapping("/list-pasien")
-    public String admin_bayar(Model model){
-        List<PasienData> listPasien = adminRepository.findAllPendaftaran();
-        model.addAttribute("results", listPasien);
-        return "Admin/admin_listPasien";
+    public String admin_bayar(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "search", required = false) String search, Model model){
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        
+        //gatau kenapa model sama return harus masuk ke if else, padahal harusnya list pasien doang yg di if else tapi yaudahlah jadi redundant aja
+        //kepada yang baca ini saya minta maaf :pray:
+        if(search==null){
+            List<PasienData> listPasien = adminRepository.findPendaftaranByDate(tgl);
+            model.addAttribute("tgl", tgl);
+            model.addAttribute("results", listPasien);
+            return "Admin/admin_listPasien";
+        }
+        else{
+            List<PasienData> listPasien = adminRepository.findPendaftaranByDate(tgl, search);
+            model.addAttribute("tgl", tgl);
+            model.addAttribute("search", search);
+            model.addAttribute("results", listPasien);
+            return "Admin/admin_listPasien";
+        }
+        
+        
     }
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
