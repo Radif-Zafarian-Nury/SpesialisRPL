@@ -91,14 +91,17 @@
                     <!-- Kalo spesialis, peran = dokter terus tambahin spesialis-->
                     <label for="userRole">Peran</label>
                     <select id="userRole" name="peran">
-                        <option value="Spesialis Jantung">Spesialis Jantung</option>
-                        <option value="Spesialis Mata">Spesialis Mata</option>
-                        <option value="Spesialis Gigi">Spesialis Gigi</option>
-                        <option value="Spesialis THT">Spesialis THT</option>
-                        <option value="Perawat">Perawat</option>
-                        <option value="Admin">Admin</option>
                         <option value="Pasien">Pasien</option>
+                        <option value="Perawat">Perawat</option>
+                        <option value="Dokter">Dokter</option>
+                        <option value="Admin">Admin</option>
                     </select>
+                </div>
+
+                <!-- input SIP -->
+                <div class="form-group" id="sipContainer" style="display: none;">
+                    <label for="noSIP">Nomor SIP</label>
+                    <input type="text" id="noSIP" name="sip" placeholder="Masukkan Nomor SIP">
                 </div>
 
                 <!-- Gender -->
@@ -112,8 +115,6 @@
                     </label>
                 </div>
 
-
-
                 <!-- Form Actions -->
                 <div class="form-actions">
                     <button type="submit" class="save-btn">Simpan</button>
@@ -122,5 +123,29 @@
         </div>
     </div>
 </body>
+
+<script>
+    // Dapatkan elemen-elemen terkait
+    const userRole = document.getElementById('userRole');
+    const sipContainer = document.getElementById('sipContainer');
+
+    // Daftar peran yang memerlukan nomor SIP
+    const rolesWithSIP = 'Dokter'
+
+    // Event listener untuk perubahan peran
+    userRole.addEventListener('change', function () {
+        if (rolesWithSIP.includes(userRole.value)) {
+            // Tampilkan input SIP jika peran adalah spesialis
+            sipContainer.style.display = 'block';
+            // Tambahkan atribut required
+            document.getElementById('noSIP').required = true;
+        } else {
+            // Sembunyikan input SIP jika peran bukan spesialis
+            sipContainer.style.display = 'none';
+            // Hapus atribut required
+            document.getElementById('noSIP').required = false;
+        }
+    });
+</script>
 
 </html>

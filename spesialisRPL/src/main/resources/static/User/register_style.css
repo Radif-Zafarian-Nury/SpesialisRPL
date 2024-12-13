@@ -1,155 +1,110 @@
+* {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-*{
-    font-family: system-ui;
-    font-size: 2.5vh;
-}
-body{
-    height:100vh;
+body {
+    height: 100vh;
     width: 100vw;
-}
-label{
     display: flex;
-    align-items: center;
-}
-.wrapper{
-    height: 100%;
-    width: auto;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.home_logo{
-    top:2%;
-    left:2%;
-}
-form {
-    width:30vw;
-    height: auto;
-    border: 3px solid #f1f1f1;
-    border-radius: 10px;
+    background-color: #f4f4f9;
 }
 
-.register_container{
-    display: grid;
-    left:50%;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(10, auto);
+.wrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
 }
 
-input[type=text], input[type=password] {
-    border-radius: 10px;
-    padding: 12px 20px;
-    margin: 8px 10px;
-    display: inline-block;
+.home_logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    cursor: pointer;
+}
+
+.register_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register_form label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.register_form input {
+    margin-bottom: 15px;
+    padding: 10px;
     border: 1px solid #ccc;
-    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
 }
-label[for=nama]{
-    grid-column: 1;
-    grid-row:1;
-    margin-top: 20px;
-    margin-bottom:10px;
-    margin-left:10px;
-    align-items: center;
-}
-label[for=nik]{
-    grid-column: 1;
-    grid-row:2;
-    margin:10px;
-}
-label[for=email]{
-    grid-column: 1;
-    grid-row:3;
-    margin:10px;
-}
-label[for=alamat]{
-    grid-column: 1;
-    grid-row:4;
-    margin:10px;
-}
-label[for=password]{
-    grid-column: 1;
-    grid-row:5;
-    margin:10px;
-}
-label[for=confpassword]{
-    grid-column: 1;
-    grid-row:6;
-    margin:10px;
-}
-.label_jnskelamin{
-    margin-left: 10px;
-    grid-column: 1;
-    grid-row:7;
-}
-input[name="nama"]{
-    grid-column: 2/-1;
-    margin-top: 20px;
-    grid-row:1;
-}
-input[name="nik"]{
-    grid-column: 2/-1;
-    grid-row:2;
-}
-input[name="email"]{
-    grid-column: 2/-1;
-    grid-row:3;
-}
-input[name="alamat"]{
-    grid-column: 2/-1;
-    grid-row:4;
-}
-input[name="password"]{
-    grid-column: 2/-1;
-    grid-row:5;
-}
-input[name="confpassword"]{
-    grid-column: 2/-1;
-    grid-row:6;
-}
-input[type="radio"]{
-    margin-left: 10px;
-    height: 75%;
-    width: 10%;
-}
-.wrapper_p{
+
+.wrapper_p,
+.wrapper_l {
     display: flex;
-    align-items: center;
-    grid-column: 2;
-    grid-row:7;
+    align-items: flex-start; 
+    margin-bottom: 15px;
+    margin-left: 0; 
+    text-align: left; 
 }
-.wrapper_l{
-    display: flex;
-    align-items: center;
-    grid-column: 2;
-    grid-row:8;
+
+input[type="radio"] {
+    margin: 0;
+    padding: 0; 
 }
-button {
-    grid-row:9;
-    grid-column: 1/-1;
-    border-radius: 10px;
+
+.wrapper_p label,
+.wrapper_l label {
+    margin-left: 10px;
+}
+
+.register_form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
     background-color: #950707;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
+    font-weight: bold;
     cursor: pointer;
-    width: auto;
-    margin:10px;
-    box-sizing: border-box;
-}
-button:hover {
-    opacity: 0.8;
-}
-.wrapper_ask{
-    text-align: right;
-    grid-row: 10;
-    grid-column: 1/-1;
-    margin-bottom:20px;
-    margin-right: 10px;
+    transition: background-color 0.3s;
 }
 
-@media only screen and (min-width: 412px) {
+.register_form button:hover {
+    background-color: #c50c0c;
+}
 
+.wrapper_ask {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.wrapper_ask a {
+    color: #950707;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.wrapper_ask a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .wrapper {
+        padding: 15px;
+    }
 }

@@ -37,4 +37,7 @@ public class UserData {
     private String tanggal_lahir; 
     
     private boolean status_aktif; 
+
+    private int no_rekam_medis;
+    private String sip;
 }

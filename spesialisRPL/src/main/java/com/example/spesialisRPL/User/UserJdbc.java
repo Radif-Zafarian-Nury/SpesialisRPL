@@ -16,7 +16,9 @@ public class UserJdbc implements UserRepository{
 
     @Override
     public void saveUser(UserData userData, Date tanggal) {
-        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)";
+        String query = "SELECT * FROM ambil_last_rekam_medis";
+        Integer rekamMedis = jdbcTemplate.queryForObject(query, Integer.class) + 1;
+        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif, no_rekam_medis) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
         jdbcTemplate.update(
             sql, 
             userData.getNama(), 
@@ -28,12 +30,15 @@ public class UserJdbc implements UserRepository{
             "pasien",
             userData.getTempat_lahir(), 
             tanggal,
-            true);
+            true,
+            rekamMedis);
     }
 
     @Override
     public void saveUserDariAdmin(UserData userData, Date tanggal) {
+        String sip = null;
         String peran = "dokter";
+        Integer rekamMedis = null;
         if (userData.getPeran().equals("Admin")){
             peran = "Admin";
         }
@@ -42,8 +47,13 @@ public class UserJdbc implements UserRepository{
         }
         else if(userData.getPeran().equals("Pasien")){
             peran = "Pasien";
+            String query = "SELECT * FROM ambil_last_rekam_medis";
+            rekamMedis = jdbcTemplate.queryForObject(query, Integer.class) + 1;
         }
-        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)";
+        else{
+            sip = userData.getSip();
+        }
+        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif, no_rekam_medis, sip) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
         jdbcTemplate.update(
             sql, 
             userData.getNama(), 
@@ -55,7 +65,9 @@ public class UserJdbc implements UserRepository{
             peran,
             userData.getTempat_lahir(), 
             tanggal,
-            true);
+            true,
+            rekamMedis,
+            sip);
     }
 
     @Override
