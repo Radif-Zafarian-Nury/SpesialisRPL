@@ -34,9 +34,9 @@
             <div class="big_title">
                 <h1>Dokter Spesialis Mata</h1>
                 <div class="filter_container">
-                    <form th:action="@{/user/spesialisMata}" method="GET">
+                    <form th:action="@{/user/spesialisMata}" method="GET" class="filter_form">
                         <h1 class="search_label">Pilih Tanggal Konsultasi:</h1>
-                        <input type="date" id="date" name="date">
+                        <input type="date" id="date" name="date" class="date_input">
                         <button type="submit" class="filter_button">Cari</button>
                     </form>
                 </div>
@@ -57,9 +57,14 @@
                     <h3>Jadwal:</h3>
                     <div class="list_jadwal_dokter">
                         <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
-                            <span th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"></span>
+                            <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
                         </div>
                     </div>>
+                </div>
+                <div class="book_button_container">
+                    <a th:href="@{form_pilih_dokter}" class="go_to_order_page_button">
+                        <div class="book_button">Pilih</div>
+                    </a>
                 </div>
             </div>
         </div>

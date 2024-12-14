@@ -23,11 +23,19 @@
     <main>
         <div class="form-container">
             <div class="info_dokter">
-                <div class="foto_dokter_container">
-                    <img src="/assets/profile_icon.png" class="foto_dokter"/>
+                <div class="doctor_profile_pic">
+                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'" />
                 </div>
-                <div class="nama_dokter">
-                    
+                <div class="doctor_name">
+                    <h2 th:text="${doctor.nama}">Doctor Name</h2>
+                </div>
+                <div class="doctor_schedule">
+                    <h3>Jadwal:</h3>
+                    <div class="list_jadwal_dokter">
+                        <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
+                            <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
+                        </div>
+                    </div>>
                 </div>
             </div>
             <form>
