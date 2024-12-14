@@ -10,15 +10,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.example.spesialisRPL.RequiredRole;
+import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
@@ -33,8 +39,9 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    @RequiredRole({"admin"})
-    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model){
+    //@RequiredRole({"admin"})
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
+        
         if(tgl==null){
             tgl = LocalDate.now();
         }
@@ -83,10 +90,34 @@ public class AdminController {
 
     //LIST PASIEN
     @GetMapping("/list-pasien")
-    public String admin_bayar(Model model){
-        List<PasienData> listPasien = adminRepository.findAllPendaftaran();
+    public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
+        if(tgl==null){
+            tgl = LocalDate.now();
+
+        }
+        List<PasienData> listPasien;
+
+        if (namaPasien == null) {
+            listPasien = adminRepository.findPendaftaranByDate(tgl);
+        } else {
+            listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
+            model.addAttribute("name", namaPasien); // Add name to model if it's provided
+        }
+        
+        // Add common attributes to the model
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", listPasien);
-        return "Admin/admin_listPasien";
+    
+        return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
+    @GetMapping("/get-nama_pasien")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> getNamaPasien(@RequestParam("name") String name){
+        LocalDate tgl = LocalDate.of(2024, 12, 20);
+        List<PasienData> listPasien = adminRepository.findPendaftaranByDateAndName(tgl, name);
+        return ResponseEntity.ok(listPasien);
     }
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN

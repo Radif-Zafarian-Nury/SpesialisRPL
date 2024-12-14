@@ -24,12 +24,6 @@ public class AdminJdbc implements AdminRepository{
         return jdbcTemplate.query(sql, this::mapRowToJadwalDokter);
     }
 
-    @Override
-    public List<PasienData> findAllPendaftaran() {
-        String sql = "SELECT * FROM lihat_pendaftaran_pasien";
-        return jdbcTemplate.query(sql, this::mapRowToListPasien);
-    }
-
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
     @Override
     public List<String> findDoctorNameByPatientName(String nama) {
@@ -123,6 +117,7 @@ public class AdminJdbc implements AdminRepository{
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
+    @Override
     public void incrementKuotaTerisi(int idJadwal){
         String sql = "UPDATE jadwal SET kuota_terisi = kuota_terisi + 1 WHERE id_jadwal = ?";
         jdbcTemplate.update(sql, idJadwal);
@@ -158,18 +153,6 @@ public class AdminJdbc implements AdminRepository{
             );
     }
 
-    public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
-        return new PasienData(
-            resultSet.getString("nama"),
-            resultSet.getString("nama_dokter"),
-            resultSet.getString("waktu_mulai"),
-            resultSet.getString("waktu_selesai"),
-            resultSet.getString("tanggal"),
-            resultSet.getBoolean("status_bayar"),
-            resultSet.getBoolean("status_daftar_ulang"),
-            resultSet.getInt("no_antrian")
-            );
-    }
 
     @Override
     public List<DokterCard> getAllDoctorCards() {
@@ -280,8 +263,42 @@ public class AdminJdbc implements AdminRepository{
         }, tgl);
     }
 
+    @Override
+    public List<PasienData> findPendaftaranByDate(LocalDate tgl) {
+        String sql = """
+                SELECT * 
+                FROM (SELECT * FROM lihat_pendaftaran_pasien
+                WHERE tanggal = ?
+                ORDER BY waktu_mulai)
+                ORDER BY no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl);
+    }
 
+    public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
+        return new PasienData(
+            resultSet.getString("nama"),
+            resultSet.getString("nama_dokter"),
+            resultSet.getString("nama_spesialisasi"),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai"),
+            resultSet.getString("tanggal"),
+            resultSet.getBoolean("status_bayar"),
+            resultSet.getBoolean("status_daftar_ulang"),
+            resultSet.getInt("no_antrian")
+            );
+    }
 
-
-
+    @Override
+    public List<PasienData> findPendaftaranByDateAndName(LocalDate tgl, String name) {
+        String sql = """
+                SELECT * 
+                FROM (SELECT * FROM lihat_pendaftaran_pasien
+                WHERE tanggal = ?
+                AND (nama LIKE ?)
+                ORDER BY waktu_mulai)
+                ORDER BY no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
+    }
 }
