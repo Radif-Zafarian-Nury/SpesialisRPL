@@ -25,10 +25,13 @@
         <!-- Search bar -->
         <div class="search-bar">
             <form method="GET" th:action="@{/admin/list-pasien}" id="searchForm">
-                <input type="text" id="searchInput" placeholder="Cari nomor rekam medis pasien" onkeydown="checkKey()">
+                <input type="hidden" name="tgl" th:value="${tgl}">
+                <input type="text" name="namaPasien" id="searchInput" th:value="${namaPasien}"
+                    placeholder="Cari nomor rekam medis pasien" onkeydown="checkKey(event, this.form)">
+
                 <button onclick="this.form.submit()">Cari</button>
             </form>
-            
+
         </div>
 
         <!-- Filter Tanggal -->
@@ -67,40 +70,15 @@
     </div>
 
     <script>
-        async function checkKey(){
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    this.form.submit();
-                }
-            })
+        async function checkKey(event, form) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submission
+                form.submit(); // Submit the form
+                console.log("Function is called");
+            }
         }
 
-        // async function search(){
-        //     const nik = document.getElementById
-        //     if (nik != null) {
-        //         try {
-        //             const response = await fetch(`/admin/check-nik?nik=${nik}`);
 
-        //             if (!response.ok) {
-        //                 throw new Error('Pasien belum terdaftar');
-        //             }
-
-        //             const data = await response.json();
-
-        //             //isi data ke dalam form
-        //             document.getElementById('patientName').value = data.nama || '';
-        //             document.getElementById('patientDOB').value = data.tanggalLahir || '';
-        //             document.getElementsByName('gender').forEach(radio => {
-        //                 if (radio.value === (data.jenisKelamin === 'L' ? 'L' : 'P')) {
-        //                     radio.checked = true;
-        //                 }
-        //             });
-
-        //         } catch (error) {
-        //             alert(error.message);
-        //         }
-        //     }
-        // }
         async function bayar() {
             //sama kaya check nik rangsek, tapi pas manggil controller di controllernya ganti status dari database
 

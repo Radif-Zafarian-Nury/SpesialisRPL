@@ -16,7 +16,7 @@ public interface AdminRepository {
     JadwalDokterData findScheduleById(int idJadwal);
     void incrementKuotaTerisi(int idJadwal);
     List<PasienData> findPendaftaranByDate(LocalDate tgl);
-    List<PasienData> findPendaftaranByDate(LocalDate tgl, String name);
+    List<PasienData> findPendaftaranByDateAndName(LocalDate tgl, String name);
     List<String> findDoctorNameByPatientName(String name);
     Dokter getDokter(int id);
     List<String> getAllSpesialisasi();

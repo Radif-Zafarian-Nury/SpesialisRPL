@@ -290,7 +290,7 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
-    public List<PasienData> findPendaftaranByDate(LocalDate tgl, String name) {
+    public List<PasienData> findPendaftaranByDateAndName(LocalDate tgl, String name) {
         String sql = """
                 SELECT * 
                 FROM (SELECT * FROM lihat_pendaftaran_pasien

@@ -90,28 +90,34 @@ public class AdminController {
 
     //LIST PASIEN
     @GetMapping("/list-pasien")
-    public String admin_bayar(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "search", required = false) String search, Model model){
+    public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
         if(tgl==null){
             tgl = LocalDate.now();
+
+        }
+        List<PasienData> listPasien;
+
+        if (namaPasien == null) {
+            listPasien = adminRepository.findPendaftaranByDate(tgl);
+        } else {
+            listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
+            model.addAttribute("name", namaPasien); // Add name to model if it's provided
         }
         
-        //gatau kenapa model sama return harus masuk ke if else, padahal harusnya list pasien doang yg di if else tapi yaudahlah jadi redundant aja
-        //kepada yang baca ini saya minta maaf :pray:
-        if(search==null){
-            List<PasienData> listPasien = adminRepository.findPendaftaranByDate(tgl);
-            model.addAttribute("tgl", tgl);
-            model.addAttribute("results", listPasien);
-            return "Admin/admin_listPasien";
-        }
-        else{
-            List<PasienData> listPasien = adminRepository.findPendaftaranByDate(tgl, search);
-            model.addAttribute("tgl", tgl);
-            model.addAttribute("search", search);
-            model.addAttribute("results", listPasien);
-            return "Admin/admin_listPasien";
-        }
-        
-        
+        // Add common attributes to the model
+        model.addAttribute("tgl", tgl);
+        model.addAttribute("results", listPasien);
+    
+        return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
+    @GetMapping("/get-nama_pasien")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> getNamaPasien(@RequestParam("name") String name){
+        LocalDate tgl = LocalDate.of(2024, 12, 20);
+        List<PasienData> listPasien = adminRepository.findPendaftaranByDateAndName(tgl, name);
+        return ResponseEntity.ok(listPasien);
     }
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
