@@ -7,17 +7,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.spesialisRPL.RequiredRole;
+
 @Controller
 public class PasienController {
     @Autowired
     private PasienService pasienService;
 
     @GetMapping("/listPasien")
+    @RequiredRole({"dokter", "perawat"})
     public String listPatients(Model model) {
         List<Pasien> pasienList = pasienService.getAllpasiens();
 
         model.addAttribute("patients", pasienList);
-        return "Dokter/home";
+        return "TenagaMedis/home";
     }
 
 }
