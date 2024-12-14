@@ -38,6 +38,6 @@ public class UserData {
     
     private boolean status_aktif; 
 
-    private int no_rekam_medis;
+    private Integer no_rekam_medis;
     private String sip;
 }
