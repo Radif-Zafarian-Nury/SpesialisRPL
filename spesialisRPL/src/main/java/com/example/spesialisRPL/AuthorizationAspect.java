@@ -22,6 +22,10 @@ public class AuthorizationAspect {
 
     @Before("@annotation(requiredRole)")
     public void checkAuthorization(RequiredRole requiredRole) throws Exception {
+        if(requiredRole == null){
+            throw new SecurityException("RequiredRole annotation is missing");
+        }
+        
         String[] roles = requiredRole.value();
         String role = (String) session.getAttribute("role");
 

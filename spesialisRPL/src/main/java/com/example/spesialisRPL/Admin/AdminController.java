@@ -26,6 +26,7 @@ import com.example.spesialisRPL.User.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
+@RequiredRole({"admin"})
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
