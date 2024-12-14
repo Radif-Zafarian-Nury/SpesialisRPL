@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Pasien</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/Admin/bayar_style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/Admin/listPasien.css}">
 </head>
 
 <body>
@@ -18,14 +18,31 @@
             <span>Search Pasien</span>
             <div class="right">
                 <span>Hi, Admin</span>
-                <button th:href="@{logout}">Logout</button>
+                <a th:href="@{/logout}"><button>Logout</button></a>
             </div>
         </header>
 
         <!-- Search bar -->
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Cari Pasien..." onchange="searchPatient()">
-            <button th:href="@{search}">Cari</button>
+            <form method="GET" th:action="@{/admin/list-pasien}" id="searchForm">
+                <input type="hidden" name="tgl" th:value="${tgl}">
+                <input type="text" name="namaPasien" id="searchInput" th:value="${namaPasien}"
+                    placeholder="Cari nomor rekam medis pasien" onkeydown="checkKey(event, this.form)">
+
+                <button onclick="this.form.submit()">Cari</button>
+            </form>
+
+        </div>
+
+        <!-- Filter Tanggal -->
+        <div class="tanggal-wrapper">
+            <div class="filter-tanggal">
+                <form method="GET" th:action="@{/admin/list-pasien}" id="filterForm">
+                    <div class="tanggal">
+                        <input type="date" name="tgl" th:value="${tgl}" onchange="this.form.submit()" />
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Patient List -->
@@ -34,10 +51,9 @@
             <div class="patient-card" th:each="row : ${results}">
                 <div class="patient-info">
                     <span th:text="${row.nama}"></span>
-                    <!-- harus tambahin spesialis ke view -->
-                    <p th:text="'Dokter: ' +${row.nama_dokter}">Spesialis Jantung</p>
-                    <p>Spesialis: Jantung</p>
-                    <p th:text="'Tanggal: ' + ${row.tanggal}"></p>
+                    <p th:text="'Dokter: ' +${row.nama_dokter}"></p>
+                    <p th:text="'Spesialisasi: ' + ${row.nama_spesialisasi} "></p>
+                    <!-- <p th:text="'Tanggal: ' + ${row.tanggal}"></p> -->
                     <span th:text="${row.waktu_mulai} + ' - ' + ${row.waktu_selesai}"></span>
                     <p th:if="${row.status_bayar}">Status Pembayaran: Sudah Bayar</p>
                     <p th:if="${!row.status_bayar}">Status Pembayaran: Belum Bayar</p>
@@ -46,40 +62,26 @@
                     <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
                 </div>
                 <div class="button-group">
-                    <a th:href="@{bayar}"><button class="status-btn">Tandai Sudah Bayar</button></a>
-                    <a th:href="@{daftarUlang}"><button class="reregister-btn">Daftar Ulang</button></a>
+                    <button class="status-btn" onclick="bayar()">Tandai Sudah Bayar</button>
+                    <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        async function checkNama() {
-            const nama = document.getElementById('searchInput').value;
-
-            if (nama != null) {
-                try {
-                    const response = await fetch(`/admin/check-nik?nik=${nik}`);
-
-                    if (!response.ok) {
-                        throw new Error('Pasien belum terdaftar');
-                    }
-
-                    const data = await response.json();
-
-                    //isi data ke dalam form
-                    document.getElementById('patientName').value = data.nama || '';
-                    document.getElementById('patientDOB').value = data.tanggalLahir || '';
-                    document.getElementsByName('gender').forEach(radio => {
-                        if (radio.value === (data.jenisKelamin === 'L' ? 'L' : 'P')) {
-                            radio.checked = true;
-                        }
-                    });
-
-                } catch (error) {
-                    alert(error.message);
-                }
+        async function checkKey(event, form) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submission
+                form.submit(); // Submit the form
+                console.log("Function is called");
             }
+        }
+
+
+        async function bayar() {
+            //sama kaya check nik rangsek, tapi pas manggil controller di controllernya ganti status dari database
+
         }
     </script>
 </body>
