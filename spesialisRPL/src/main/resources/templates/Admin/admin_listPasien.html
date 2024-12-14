@@ -12,15 +12,15 @@
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
+    <header>
+        <span>Search Pasien</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <button th:href="@{logout}">Logout</button>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Search Pasien</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <button th:href="@{logout}">Logout</button>
-            </div>
-        </header>
 
         <!-- Search bar -->
         <div class="search-bar">

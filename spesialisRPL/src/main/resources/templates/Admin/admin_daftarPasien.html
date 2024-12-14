@@ -10,15 +10,15 @@
     <!-- Sidebar -->
     <th:block th:insert="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
+    <header>
+        <span>Mendaftarkan Pasien</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Mendaftarkan Pasien</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <a th:href="@{/logout}"><button>Logout</button></a>
-            </div>
-        </header>
 
         <div class="form-container">
             <h2>Formulir Pendaftaran</h2>
