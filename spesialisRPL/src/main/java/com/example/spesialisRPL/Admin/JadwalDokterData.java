@@ -1,8 +1,10 @@
 package com.example.spesialisRPL.Admin;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class JadwalDokterData {
     private int idJadwal;
     private String nama;

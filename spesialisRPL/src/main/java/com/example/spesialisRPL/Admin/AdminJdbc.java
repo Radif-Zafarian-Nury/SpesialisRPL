@@ -152,7 +152,7 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getString("tanggal"),
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
-            );
+        );
     }
 
 
@@ -174,7 +174,7 @@ public class AdminJdbc implements AdminRepository{
         return new DokterCard(
             resultSet.getInt("id_user"),
             resultSet.getString("nama"),
-            fotoBase64, 
+            fotoBase64,
             resultSet.getString("nama_spesialisasi")
         );
     }

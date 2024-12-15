@@ -1,0 +1,174 @@
+.womlinic_logo {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+}
+
+header {
+    display: flex;
+    background-color: rgb(181, 4, 4);
+    align-items: center;
+    width: 100%;
+    height: 9vh;
+}
+
+.header_container {
+    position: fixed; 
+    top: 0;
+    left: 0; 
+    width: 100%; 
+    z-index: 1000;
+}
+
+.login_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}
+
+.register_wrapper {
+    padding-right: 15px;
+}
+
+.logout_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}
+
+.login {
+    margin-left: auto;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(181, 4, 4);
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    width: 80px;
+}
+
+.login:hover {
+    background-color: white;
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: rgb(216, 215, 215);
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 600px; 
+    max-width: 90%;
+    margin: 0 auto; 
+    height: auto; 
+    padding: 40px; 
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+}
+.form-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.form-actions .submit-btn {
+    background-color: rgb(181, 4, 4);
+    color: white;
+}
+.form-actions .submit-btn:hover {
+    background-color: rgb(255, 0, 0);
+}
+.form-actions .reset-btn {
+    background-color: #535252;
+    color: white;
+}
+.form-actions .reset-btn:hover {
+    background-color: #bbb;
+}
+
+.info_dokter {
+    display: grid;
+    grid-template-areas: 
+    "foto info"
+    ;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    margin-bottom: 2vh;
+}
+
+.foto_dokter_container {
+    grid-area: foto;
+}
+
+.list_jadwal_dokter {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.jadwal_dokter {
+    display: flex;
+    gap: 1000px;
+}
+
+.jadwal_dokter > div {
+    background-color: #eaeaea;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+    width: 10rem;
+}
+
+.container_jadwal_dokter {
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
