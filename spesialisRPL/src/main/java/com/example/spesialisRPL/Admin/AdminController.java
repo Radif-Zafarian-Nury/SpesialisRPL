@@ -1,11 +1,10 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -21,16 +20,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserRepository;
-import com.example.spesialisRPL.User.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -280,7 +276,7 @@ public class AdminController {
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date tanggal = sdf.parse(userData.getTanggal_lahir());
+        Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
 
         userData.setKata_sandi(passwordEncoder.encode(userData.getKata_sandi()));
         userRepository.saveUserDariAdmin(userData, tanggal);

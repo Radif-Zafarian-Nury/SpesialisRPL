@@ -2,19 +2,15 @@ package com.example.spesialisRPL.User;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.spesialisRPL.Admin.JadwalDokterData;
 import com.example.spesialisRPL.Doctor.Doctor;
 import com.example.spesialisRPL.Doctor.DoctorJdbc;
 import com.example.spesialisRPL.Doctor.DokterCardSelection;

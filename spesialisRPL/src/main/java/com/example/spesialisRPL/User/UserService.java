@@ -1,6 +1,6 @@
 package com.example.spesialisRPL.User;
 
-import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

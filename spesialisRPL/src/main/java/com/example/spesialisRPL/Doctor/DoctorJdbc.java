@@ -12,11 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.example.spesialisRPL.Admin.JadwalDokterData;
 
 @Repository
 public class DoctorJdbc implements DoctorRepository {
