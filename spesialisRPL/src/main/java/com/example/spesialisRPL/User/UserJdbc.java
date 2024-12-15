@@ -1,5 +1,6 @@
 package com.example.spesialisRPL.User;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,10 @@ public class UserJdbc implements UserRepository{
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void saveUser(UserData userData) {
-        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void saveUser(UserData userData, Date tanggal) {
+        String query = "SELECT * FROM ambil_last_rekam_medis";
+        Integer rekamMedis = jdbcTemplate.queryForObject(query, Integer.class) + 1;
+        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif, no_rekam_medis) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
         jdbcTemplate.update(
             sql, 
             userData.getNama(), 
@@ -24,7 +27,47 @@ public class UserJdbc implements UserRepository{
             userData.getAlamat(), 
             userData.getKata_sandi(), 
             userData.getJenis_kelamin(),
-            "pasien");
+            "pasien",
+            userData.getTempat_lahir(), 
+            tanggal,
+            true,
+            rekamMedis);
+    }
+
+    @Override
+    public void saveUserDariAdmin(UserData userData, Date tanggal) {
+        String sip = null;
+        String peran = "dokter";
+        Integer rekamMedis = null;
+        if (userData.getPeran().equals("Admin")){
+            peran = "Admin";
+        }
+        else if(userData.getPeran().equals("Perawat")){
+            peran = "Perawat";
+        }
+        else if(userData.getPeran().equals("Pasien")){
+            peran = "Pasien";
+            String query = "SELECT * FROM ambil_last_rekam_medis";
+            rekamMedis = jdbcTemplate.queryForObject(query, Integer.class) + 1;
+        }
+        else{
+            sip = userData.getSip();
+        }
+        String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif, no_rekam_medis, sip) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+        jdbcTemplate.update(
+            sql, 
+            userData.getNama(), 
+            userData.getNik(), 
+            userData.getEmail(), 
+            userData.getAlamat(), 
+            userData.getKata_sandi(), 
+            userData.getJenis_kelamin(),
+            peran,
+            userData.getTempat_lahir(), 
+            tanggal,
+            true,
+            rekamMedis,
+            sip);
     }
 
     @Override
