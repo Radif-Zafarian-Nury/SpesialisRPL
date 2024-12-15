@@ -4,7 +4,6 @@ DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
 DROP VIEW IF EXISTS lihat_jadwal_dokter;
 DROP VIEW IF EXISTS daftar_dokter;
 DROP VIEW IF EXISTS dokter_cards;
-DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
 DROP VIEW IF EXISTS jadwal_dokter_admin_homepage;
 DROP VIEW IF EXISTS dokter_info;
 DROP VIEW IF EXISTS list_pasien;
@@ -108,6 +107,7 @@ From
 
 CREATE VIEW lihat_pendaftaran_pasien AS
 (SELECT DISTINCT
+	id_pendaftaran,
 	users.nama,
 	nama_dokter,
 	nama_spesialisasi,

@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserRepository;
+import com.example.spesialisRPL.User.UserService;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -99,7 +101,6 @@ public class AdminController {
     public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
         if(tgl==null){
             tgl = LocalDate.now();
-
         }
         List<PasienData> listPasien;
 
@@ -107,14 +108,21 @@ public class AdminController {
             listPasien = adminRepository.findPendaftaranByDate(tgl);
         } else {
             listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
-            model.addAttribute("name", namaPasien); // Add name to model if it's provided
+            model.addAttribute("name", namaPasien); 
         }
         
-        // Add common attributes to the model
         model.addAttribute("tgl", tgl);
         model.addAttribute("results", listPasien);
     
         return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    @GetMapping("/check-id_pendaftaran")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> checkIdPendaftaran(@RequestParam("id") int id){
+        
+        List<PasienData> pendaftaran = adminRepository.updatePembayaran(id);
+        return ResponseEntity.ok(pendaftaran);
     }
 
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
@@ -283,5 +291,4 @@ public class AdminController {
 
         return "redirect:/admin/";
     }
-
 }
