@@ -1,7 +1,9 @@
 package com.example.spesialisRPL.User;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,17 +37,13 @@ public class UserController {
    
     @GetMapping("/")
     public String index(HttpSession session){
-        if(session.getAttribute("user") == null){   //kalo belom login ke index
-            return "User/index";
-        }
-        
-        //UserData loggedInUser  = (UserData) session.getAttribute("loggedInUser ");
-        //logger.info("User  role: {}", loggedInUser.getPeran()); // Log the user's role
-        return "User/LoggedInIndex"; //kalo udh ke yg logged in
+        return "User/index";
     }
 
     @GetMapping("/form_pilih_dokter")
-    public String showDokterForm() {
+    public String showDokterForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+        Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterMataById(id_dokter, tanggal);
+        model.addAttribute("doctor", foundDokter.get());
         return "User/form_pesan_dokter";
     }
     
@@ -59,6 +58,11 @@ public class UserController {
         model.addAttribute("dokter_mata", listDokterMata);
         return "User/spesialis_mata";
     }
+
+    // @PostMapping("/pesan_dokter")
+    // public String submitOrderDokterForm(@RequestMapping ) {
+
+    // }
 
     @PostMapping("/register")
     public String registerUser(
@@ -104,5 +108,16 @@ public class UserController {
         userData.setPeran("pasien");
         // userRepository.saveUser(userData);
         return "redirect:/login";
+    }
+
+    @PostMapping("/pesan_dokter")
+    public String pesanDokter(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+        if(session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        int idPasien = this.userRepository.getPatientIdByNikAndIdJadwal(nik, id_jadwal);
+        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        return "redirect:/user/spesialisMata";
     }
 }

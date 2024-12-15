@@ -1,11 +1,13 @@
 package com.example.spesialisRPL.User;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -62,6 +64,12 @@ public class UserJdbc implements UserRepository{
     }
 
     @Override
+    public Optional<DokterCardSelection> findDokterMataById(int id_dokter, Date tanggal) {
+        Optional<DokterCardSelection> dokterMata = this.dokterJdbc.getScheduledDoctorById(id_dokter, tanggal);
+        return dokterMata;
+    }
+
+    @Override
     public Optional<UserData> findByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
         List<UserData> users = jdbcTemplate.query(
@@ -71,4 +79,32 @@ public class UserJdbc implements UserRepository{
             );
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
+
+    @Override
+    public int getPatientIdByNikAndIdJadwal(String nik, int id_jadwal) {
+        String sql = """
+                SELECT 
+                    id_pasien 
+                FROM 
+                    pendaftaran JOIN users 
+                    ON pendaftaran.id_pasien = users.id_user 
+                WHERE 
+                    nik = ? AND id_jadwal = ?
+                """;
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, nik, id_jadwal);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public void daftarPasien(int id_pasien, int id_jadwal) {
+        String sql = """
+                INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
+                VALUES (?, ?, ?, ?, ?)
+                """;
+        jdbcTemplate.update(sql, id_pasien, id_jadwal, false, false, null);
+    }
+
 }

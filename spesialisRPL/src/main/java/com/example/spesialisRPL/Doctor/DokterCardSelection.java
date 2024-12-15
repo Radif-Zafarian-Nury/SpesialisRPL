@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.Doctor;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,12 +15,14 @@ public class DokterCardSelection {
     private String nama;
     private String nama_spesialisasi;
     private String foto_dokter;
+    private Date tanggal;
     private List<Jadwal> jadwal = new ArrayList<>();
 
-    public DokterCardSelection(int id_dokter, String nama, String nama_spesialisasi, String foto_dokter) {
+    public DokterCardSelection(int id_dokter, String nama, String nama_spesialisasi, String foto_dokter, Date tanggal) {
         this.id_dokter = id_dokter;
         this.nama = nama;
         this.nama_spesialisasi = nama_spesialisasi;
         this.foto_dokter = foto_dokter;
+        this.tanggal = tanggal;
     }
 }

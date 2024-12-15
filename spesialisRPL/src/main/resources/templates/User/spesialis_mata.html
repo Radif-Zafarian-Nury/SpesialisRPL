@@ -10,11 +10,20 @@
     <div class="header_container">
         <header>
             <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
-            <div class="login_wrapper">
-                <a class="login" th:href="@{login}"><p>MASUK</p></a>
+            <div class="login_wrapper" th:unless="${session.user != null}">
+                <a class="login" th:href="@{/login}">
+                    <p>MASUK</p>
+                </a>
             </div>
-            <div class="register_wrapper">
-                <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
+            <div class="register_wrapper" th:unless="${session.user != null}">
+                <a class="login" th:href="@{register}">
+                    <p>DAFTAR</p>
+                </a>
+            </div>
+            <div class="logout_wrapper" th:if="${session.user != null}">
+                <a class="login" th:href="@{/logout}">
+                    <p>KELUAR</p>
+                </a>
             </div>
         </header>
     </div>
@@ -56,13 +65,13 @@
                 <div class="doctor_schedule">
                     <h3>Jadwal:</h3>
                     <div class="list_jadwal_dokter">
-                        <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
+                        <div class="jadwal_dokter" th:value="${jadwal.id_jadwal}" th:each="jadwal : ${doctor.jadwal}">
                             <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
                         </div>
-                    </div>>
+                    </div>
                 </div>
                 <div class="book_button_container">
-                    <a th:href="@{form_pilih_dokter}" class="go_to_order_page_button">
+                    <a th:href="@{form_pilih_dokter(id_dokter=${doctor.id_dokter}, tanggal=${doctor.tanggal})}" class="go_to_order_page_button">
                         <div class="book_button">Pilih</div>
                     </a>
                 </div>

@@ -264,3 +264,8 @@ body {
     transition-duration: 200ms;
     color: rgb(50, 50, 50);
 }
+
+.logout_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}

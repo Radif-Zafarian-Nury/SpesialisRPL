@@ -29,6 +29,11 @@ header {
     padding-right: 15px;
 }
 
+.logout_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}
+
 .login {
     margin-left: auto;
     font-weight: bold;
@@ -127,12 +132,43 @@ main {
     background-color: #bbb;
 }
 
-.foto_dokter {
-    width: 7rem;
-    height: 7rem;
+.info_dokter {
+    display: grid;
+    grid-template-areas: 
+    "foto info"
+    ;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+    margin-bottom: 2vh;
 }
 
-.info_dokter {
+.foto_dokter_container {
+    grid-area: foto;
+}
+
+.list_jadwal_dokter {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.jadwal_dokter {
+    display: flex;
+    gap: 1000px;
+}
+
+.jadwal_dokter > div {
+    background-color: #eaeaea;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+    width: 10rem;
+}
+
+.container_jadwal_dokter {
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }

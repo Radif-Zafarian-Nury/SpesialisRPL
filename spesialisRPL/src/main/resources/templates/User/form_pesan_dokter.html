@@ -3,74 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Form Pesan Dokter</title>
     <link rel="stylesheet" type="text/css" th:href="@{/User/form_pesan_dokter.css}">
 </head>
 <body>
     <div class="header_container">
         <header>
             <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
-            <div class="login_wrapper">
+            <div class="login_wrapper" th:unless="${session.user != null}">
                 <a class="login" th:href="@{/login}">
                     <p>MASUK</p>
                 </a>
             </div>
-            <div class="register_wrapper">
-                <a class="login" th:href="@{register}"><p>DAFTAR</p></a>
+            <div class="register_wrapper" th:unless="${session.user != null}">
+                <a class="login" th:href="@{register}">
+                    <p>DAFTAR</p>
+                </a>
+            </div>
+            <div class="logout_wrapper" th:if="${session.user != null}">
+                <a class="login" th:href="@{/logout}">
+                    <p>KELUAR</p>
+                </a>
             </div>
         </header>
     </div>
     <main>
         <div class="form-container">
             <div class="info_dokter">
-                <div class="doctor_profile_pic">
-                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'" />
+                <div class="foto_dokter_container">
+                    <div class="doctor_profile_pic">
+                        <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'" />
+                    </div>
                 </div>
-                <div class="doctor_name">
-                    <h2 th:text="${doctor.nama}">Doctor Name</h2>
-                </div>
-                <div class="doctor_schedule">
-                    <h3>Jadwal:</h3>
-                    <div class="list_jadwal_dokter">
-                        <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
-                            <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
+                <div class="container_jadwal_dokter">
+                    <div class="doctor_name">
+                        <h2 th:text="${doctor.nama}">Doctor Name</h2>
+                    </div>
+                    <div class="doctor_schedule">
+                        <h3>Jadwal Yang Tersedia:</h3>
+                        <div class="list_jadwal_dokter">
+                            <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
+                                <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
+                            </div>
                         </div>
-                    </div>>
+                    </div>
                 </div>
             </div>
-            <form>
+            <form th:action="@{/user/pesan_dokter}" method="POST">
                 <div class="form-group">
-                    <label for="tanggal">Pilih Tanggal</label>
-                    <input type="date" id="tanggal" name="tanggal" required>
-                </div>
-                <div class="form-group">
+                    <input type="hidden" name="nik" th:value="${session.user.nik}" />
                     <label for="jadwal">Pilih Jadwal</label>
-                    <select id="jadwal" name="jadwal" required>
-                        <option value="">Pilih Jadwal</option>
+                    <select id="jadwal" name="id_jadwal" required>
+                        <option value="" disabled selected>Pilih Jadwal</option>
+                        <option th:each="jadwal : ${doctor.jadwal}" th:value="${jadwal.id_jadwal}" th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"></option>
                     </select>
                 </div>
                 <div class="form-actions">
-                    <button type="reset" class="reset-btn">Reset</button>
                     <button type="submit" class="submit-btn">Daftar</button>
                 </div>
             </form>
         </div>
     </main>
-    <script>
-        async function filterJadwal() {
-            try {
-                const jadwalDropdown = document.getElementById("jadwal");
-                jadwalDropdown.innerHTML = '<option value="">Pilih Jadwal</option>';
-                jadwal.forEach(jadwal => {
-                    const option = document.createElement("option");
-                    option.value = jadwal.idJadwal
-                    option.textContent = `${jadwal.waktu_mulai} - ${jadwal.waktu_selesai}`;
-                    jadwalDropdown.appendChild(option);
-                });  
-            } catch (error) {
-                console.error("Error fetching jadwal: ", error);
-            }
-        }
-    </script>
 </body>
 </html>

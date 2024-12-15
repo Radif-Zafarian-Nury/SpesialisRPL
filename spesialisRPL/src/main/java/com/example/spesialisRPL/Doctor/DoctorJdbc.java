@@ -9,8 +9,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -31,17 +33,6 @@ public class DoctorJdbc implements DoctorRepository {
         );
     }
 
-    private DokterCardSelection mapRowToDokterCardSelection(ResultSet resultSet, int rowNum) throws SQLException {
-        byte[] fotoBytes = resultSet.getBytes("foto_dokter");
-        String fotoBase64 = fotoBytes != null ? Base64.getEncoder().encodeToString(fotoBytes) : null;
-        return new DokterCardSelection(
-            resultSet.getInt("id_dokter"),
-            resultSet.getString("nama"),
-            resultSet.getString("nama_spesialisasi"),
-            fotoBase64
-        );
-    }
-
     @Override
     public List<Doctor> getAllDokterMata() {
         String sql = "SELECT * FROM daftar_dokter WHERE nama_spesialisasi = 'Mata' OR nama_spesialisasi = 'Umum'";
@@ -56,7 +47,8 @@ public class DoctorJdbc implements DoctorRepository {
                         id_dokter, 
                         users.nama, 
                         nama_spesialisasi, 
-                        id_jadwal, waktu_mulai, 
+                        id_jadwal, 
+                        waktu_mulai, 
                         waktu_selesai, 
                         kuota_terisi, 
                         kuota_max, 
@@ -81,12 +73,14 @@ public class DoctorJdbc implements DoctorRepository {
                     id_dokter,
                     (String) row.get("nama"),
                     (String) row.get("nama_spesialisasi"),
-                    fotoBase64
+                    fotoBase64,
+                    (Date) row.get("tanggal")
                 );
                 return newDokterCard;
             });
 
             Jadwal jadwal = new Jadwal(
+                (int) row.get("id_jadwal"),
                 (String) row.get("waktu_mulai"),
                 (String) row.get("waktu_selesai"),
                 (Date) row.get("tanggal")
@@ -97,4 +91,53 @@ public class DoctorJdbc implements DoctorRepository {
         return new ArrayList<>(dokterMap.values());
     }
 
+    @Override
+    public Optional<DokterCardSelection> getScheduledDoctorById(int id_dokter, Date tanggal) {
+        String sql = """
+                    SELECT 
+                    id_dokter,
+                    users.nama,
+                    nama_spesialisasi,
+                    id_jadwal,
+                    waktu_mulai,
+                    waktu_selesai,
+                    kuota_terisi,
+                    kuota_max,
+                    foto_dokter,
+                    tanggal
+                FROM 
+                    lihat_jadwal_dokter
+                    INNER JOIN users
+                    ON lihat_jadwal_dokter.id_dokter=users.id_user
+                WHERE 
+                    nama_spesialisasi = 'Mata' AND id_dokter = ? AND tanggal = ?
+                """;
+        List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(sql, id_dokter, tanggal);
+        Map<Integer, DokterCardSelection> dokterMap = new HashMap<>();
+        
+        for(Map<String, Object> row : resultSet) {
+            DokterCardSelection dokter = dokterMap.computeIfAbsent(id_dokter, id -> {
+                byte[] fotoBytes = (byte[]) row.get("foto_dokter");
+                String fotoBase64 = fotoBytes != null ? Base64.getEncoder().encodeToString(fotoBytes) : null;
+                DokterCardSelection newDokterCard = new DokterCardSelection(
+                    id_dokter,
+                    (String) row.get("nama"),
+                    (String) row.get("nama_spesialisasi"),
+                    fotoBase64,
+                    (Date) row.get("tanggal")
+                );
+                return newDokterCard;
+            });
+
+            Jadwal jadwal = new Jadwal(
+                (int) row.get("id_jadwal"),
+                (String) row.get("waktu_mulai"),
+                (String) row.get("waktu_selesai"),
+                (Date) row.get("tanggal")
+            );
+            dokter.getJadwal().add(jadwal);
+        }
+
+        return Optional.of(dokterMap.get(id_dokter));
+    }
 }

@@ -129,7 +129,6 @@ public class AdminController {
         return ResponseEntity.ok(jadwal);
     }
 
-
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
