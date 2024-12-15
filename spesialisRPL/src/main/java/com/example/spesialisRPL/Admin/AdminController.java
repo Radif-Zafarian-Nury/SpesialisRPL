@@ -1,13 +1,19 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,11 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
+import com.example.spesialisRPL.User.UserRepository;
 import com.example.spesialisRPL.User.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-@RequiredRole({"admin"})
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -35,8 +42,10 @@ public class AdminController {
     private AdminRepository adminRepository;
 
     @Autowired
-    private UserService userService; // Inject UserService
+    private UserRepository userRepository; // Inject UserService
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //HALAMAN UTAMA
     @GetMapping("/")
@@ -138,7 +147,7 @@ public class AdminController {
     @ResponseBody
     public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
         //Validasi nik
-        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
+        if (nik == null || nik.length() != 16 || !nik.matches("[a-zA-Z]+")) {
             return ResponseEntity.badRequest().body("NIK tidak valid.");
         }
         
@@ -189,20 +198,30 @@ public class AdminController {
         List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
         List<String> spesialisasiList = adminRepository.getAllSpesialisasi();
 
+        LocalDate tgl = LocalDate.now();
+        ArrayList<JadwalDokterData> jadwalList = adminRepository.getFutureJadwalByDoctorID(id, tgl); 
+        if (jadwalList == null) {
+            jadwalList = new ArrayList<>();
+        }
+
+        JadwalDokterDataWrapper wrapper = new JadwalDokterDataWrapper(jadwalList);
+
         model.addAttribute("dokter", dokter);
         model.addAttribute("spesialisasi_dokter", spesialisasiDokter);
         model.addAttribute("spesialisasi_list", spesialisasiList);
+        model.addAttribute("wrapper", wrapper);
         return "Admin/admin_halamanEdit";
     }
 
     @PostMapping("/editdokter")
     public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
                                     @RequestParam List<String> specializations,
-                                    @RequestParam(required = false) MultipartFile doctorPhoto) {  
-
+                                    @RequestParam(required = false) MultipartFile doctorPhoto,
+                                    @ModelAttribute JadwalDokterDataWrapper wrapper,
+                                    @RequestParam(required = false) List<Integer> idsToDelete) {
+                                
         if (doctorPhoto != null && !doctorPhoto.isEmpty()) {
             try {
-                // Convert the image to Base64
                 byte[] fotoBytes = doctorPhoto.getBytes();
                 String fotoBase64 = Base64.getEncoder().encodeToString(fotoBytes);
                 dokter.setFoto(fotoBase64);  
@@ -211,24 +230,29 @@ public class AdminController {
             }
         }
 
-        adminRepository.updateDokter(dokter, specializations);
+        List<JadwalDokterData> listJadwal = wrapper.getListJadwal();
+        
+        adminRepository.updateDokter(dokter, specializations, listJadwal);
 
+        if (idsToDelete != null && !idsToDelete.isEmpty()) {
+            for (Integer id : idsToDelete) {
+                adminRepository.deleteJadwalById(id); 
+            }
+        }
         return "redirect:/admin/editdokter";
     }
-
-
 
     @PostMapping("/buatakun")
     public String buatAkunUser(
         @Valid @ModelAttribute UserData userData, 
         Model model,
-        BindingResult bindingResult){
+        BindingResult bindingResult) throws ParseException{
             
-        
         //Check validation
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error", "Please correct the highlighted errors.");
-            return "User/register";
+            model.addAttribute("error", "Silakan perbaiki kesalahan berikut:");
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "Admin/admin_buatAkunBaru"; // Ganti dengan nama file HTML yang sesuai
         }
 
         //Check NIK
@@ -255,13 +279,13 @@ public class AdminController {
             return "User/register";
         }
 
-        boolean isRegistered = userService.register(userData);
-        if (!isRegistered) {
-            model.addAttribute("error", "Registration failed. Please try again.");
-            return "User/register";
-        }
-        // userData.setPeran("pasien");
-        // userRepository.saveUser(userData);
-        return "redirect:/login";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date tanggal = sdf.parse(userData.getTanggal_lahir());
+
+        userData.setKata_sandi(passwordEncoder.encode(userData.getKata_sandi()));
+        userRepository.saveUserDariAdmin(userData, tanggal);
+
+        return "redirect:/admin/";
     }
+
 }

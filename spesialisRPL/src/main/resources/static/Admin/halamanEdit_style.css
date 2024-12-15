@@ -7,6 +7,11 @@ body {
 }
 /* Main content styling */
 header {
+    position: fixed;
+    height:60px;
+    width: 83vw;
+    box-sizing: border-box;
+    margin-left: 17vw;
     background-color: rgb(243, 243, 243);
     color: white;
     padding: 10px 20px;
@@ -37,6 +42,8 @@ header button:hover {
 
 .main-content {
     flex: 1;
+    margin-top: 80px;
+    margin-left:17vw;
     display: flex;
     flex-direction: column;
 }
@@ -48,9 +55,10 @@ header button:hover {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 600px;
+    width: 50%;
     max-width: 90%;
     margin: auto;
+    margin-bottom: 50px;
     padding: 20px;
 }
 
@@ -159,4 +167,65 @@ a{
 .gender_wrapper label{
     font-weight: normal;
     margin-bottom: 0px;
+}
+
+/* Jadwal*/
+/* Schedule Input Container */
+.schedule-input {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Input Group for Labels and Inputs */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Label Styling */
+.input-group label {
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Input Styling */
+.input-group input {
+    display: flex;
+    align-items:end;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Minus Button Styling */
+.schedule-input img {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+}
+
+#plus-button{
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+}
+
+input:disabled{
+    background-color: #cdcdcd;
+}
+
+
+/*Disable input menit*/
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button {
+    display: none;
 }

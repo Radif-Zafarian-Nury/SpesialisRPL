@@ -30,4 +30,14 @@ public class UserData {
 
     @Transient
     private String confpassword;
+
+    @NotEmpty(message = "Tempat lahir tidak boleh kosong")
+    private String tempat_lahir; 
+    @NotEmpty(message = "Tanggal lahir tidak boleh kosong")
+    private String tanggal_lahir; 
+    
+    private boolean status_aktif; 
+
+    private Integer no_rekam_medis;
+    private String sip;
 }

@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +72,7 @@ public class UserController {
     public String registerUser(
         @Valid @ModelAttribute UserData userData, 
         Model model,
-        BindingResult bindingResult){
+        BindingResult bindingResult) throws ParseException{
         
         //Check validation
         if (bindingResult.hasErrors()) {
@@ -100,12 +104,15 @@ public class UserController {
             return "User/register";
         }
 
-        boolean isRegistered = userService.register(userData);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date tanggal = sdf.parse(userData.getTanggal_lahir());
+
+        boolean isRegistered = userService.register(userData, tanggal);
         if (!isRegistered) {
             model.addAttribute("error", "Registration failed. Please try again.");
             return "User/register";
         }
-        userData.setPeran("pasien");
+        // userData.setPeran("pasien");
         // userRepository.saveUser(userData);
         return "redirect:/login";
     }

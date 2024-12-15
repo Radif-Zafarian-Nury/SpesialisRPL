@@ -15,6 +15,9 @@ public class JadwalDokterData {
     private int kuotaMax;
     private int kuotaTerisi;
 
+    public JadwalDokterData() {
+    }
+    
     public JadwalDokterData(String nama, String nama_spesialisasi, String tanggal, String waktu_mulai, String waktu_selesai) {
         this.nama = nama;
         this.nama_spesialisasi = nama_spesialisasi;
@@ -37,4 +40,21 @@ public class JadwalDokterData {
         this.kuotaMax = kuotaMax;
         this.kuotaTerisi = kuotaTerisi;
     }
+
+    public JadwalDokterData(String tanggal, String waktu_mulai, String waktu_selesai, int kuotaMax) {
+        this.tanggal = tanggal;
+        this.waktu_mulai = waktu_mulai;
+        this.waktu_selesai = waktu_selesai;
+        this.kuotaMax = kuotaMax;
+    }
+    
+    public JadwalDokterData(int idJadwal, String tanggal, String waktu_mulai, String waktu_selesai, int kuotaMax, int kuotaTerisi) {
+        this.idJadwal = idJadwal;
+        this.tanggal = tanggal;
+        this.waktu_mulai = waktu_mulai;
+        this.waktu_selesai = waktu_selesai;
+        this.kuotaMax = kuotaMax;
+        this.kuotaTerisi = kuotaTerisi;
+    }
+
 }
