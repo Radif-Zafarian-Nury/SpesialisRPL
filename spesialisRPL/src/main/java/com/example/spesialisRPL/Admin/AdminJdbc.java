@@ -2,6 +2,9 @@ package com.example.spesialisRPL.Admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +22,8 @@ public class AdminJdbc implements AdminRepository{
 
     @Override
     public List<JadwalDokterData> findAll() {
-        String sql = "SELECT * FROM lihat_jadwal_dokter";
+        String sql = "SELECT * FROM jadwal_dokter_admin_homepage";
         return jdbcTemplate.query(sql, this::mapRowToJadwalDokter);
-    }
-
-    @Override
-    public List<PasienData> findAllPendaftaran() {
-        String sql = "SELECT * FROM lihat_pendaftaran_pasien";
-        return jdbcTemplate.query(sql, this::mapRowToListPasien);
     }
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
@@ -122,6 +119,7 @@ public class AdminJdbc implements AdminRepository{
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
+    @Override
     public void incrementKuotaTerisi(int idJadwal){
         String sql = "UPDATE jadwal SET kuota_terisi = kuota_terisi + 1 WHERE id_jadwal = ?";
         jdbcTemplate.update(sql, idJadwal);
@@ -157,18 +155,6 @@ public class AdminJdbc implements AdminRepository{
             );
     }
 
-    public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
-        return new PasienData(
-            resultSet.getString("nama"),
-            resultSet.getString("nama_dokter"),
-            resultSet.getString("waktu_mulai"),
-            resultSet.getString("waktu_selesai"),
-            resultSet.getString("tanggal"),
-            resultSet.getBoolean("status_bayar"),
-            resultSet.getBoolean("status_daftar_ulang"),
-            resultSet.getInt("no_antrian")
-            );
-    }
 
     @Override
     public List<DokterCard> getAllDoctorCards() {
@@ -196,7 +182,7 @@ public class AdminJdbc implements AdminRepository{
     @Override
     public Dokter getDokter(int id) {
         String sql = """
-            SELECT id_user, nama, nik, foto_dokter, alamat, jenis_kelamin
+            SELECT id_user, nama, nik, sip, foto_dokter, alamat, jenis_kelamin
             FROM dokter_info
             WHERE id_user = ?
             """;
@@ -212,6 +198,7 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getInt("id_user"),
             resultSet.getString("nama"), 
             resultSet.getString("nik"),
+            resultSet.getString("sip"),
             fotoBase64, 
             resultSet.getString("alamat"),
             resultSet.getString("jenis_kelamin").charAt(0) 
@@ -228,16 +215,17 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
-    public void updateDokter(Dokter dokter, List<String> listSpesialisasi) {
+    public void updateDokter(Dokter dokter, List<String> listSpesialisasi, List<JadwalDokterData> listJadwal) {
         byte[] fotoDokterBytes = Base64.getDecoder().decode(dokter.getFoto());
         String sql = """
             UPDATE users 
-            SET nama = ?, nik = ?, foto_dokter = ?, alamat = ?, jenis_kelamin = ? 
+            SET nama = ?, nik = ?, sip = ?, foto_dokter = ?, alamat = ?, jenis_kelamin = ? 
             WHERE id_user = ?
         """;
         jdbcTemplate.update(sql, 
             dokter.getNama(),
             dokter.getNik(),
+            dokter.getSip(),
             fotoDokterBytes,
             dokter.getAlamat(),
             dokter.getJenis_kelamin(),
@@ -255,9 +243,128 @@ public class AdminJdbc implements AdminRepository{
         for (String spesialisasi : listSpesialisasi) {
             jdbcTemplate.update(spesialisasiSql, dokter.getId_user(), spesialisasi);
         }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Jadwal Dokter
+        String updateJadwalSql = """
+            UPDATE jadwal 
+            SET tanggal = ?, waktu_mulai = ?, waktu_selesai = ?, kuota_max = ?
+            WHERE id_jadwal = ?
+        """;
+
+        String insertJadwalSql = """
+            INSERT INTO jadwal (id_dokter, tanggal, waktu_mulai, waktu_selesai, kuota_max, kuota_terisi) 
+            VALUES (?, ?, ?, ?, ?, 0)
+        """;
+
+        for (JadwalDokterData jadwal : listJadwal) {
+            if(jadwal.getTanggal() != null){
+                LocalDate localDate_tanggal = LocalDate.parse(jadwal.getTanggal(), dateFormatter);
+                if (jadwal.getIdJadwal() == -1) {
+                    jdbcTemplate.update(insertJadwalSql, 
+                        dokter.getId_user(), 
+                        localDate_tanggal, 
+                        jadwal.getWaktu_mulai(), 
+                        jadwal.getWaktu_selesai(), 
+                        jadwal.getKuotaMax()
+                    );
+                } else {
+                    jdbcTemplate.update(updateJadwalSql, 
+                        localDate_tanggal, 
+                        jadwal.getWaktu_mulai(), 
+                        jadwal.getWaktu_selesai(), 
+                        jadwal.getKuotaMax(), 
+                        jadwal.getIdJadwal()
+                    );
+                }
+            }
+            
+        }
     }
 
 
+    @Override
+    public List<JadwalDokterData> findSchedulesByDate(LocalDate tgl) {
+        String sql = """
+                SELECT id_jadwal AS idJadwal, nama, nama_spesialisasi, tanggal, waktu_mulai, waktu_selesai
+                FROM jadwal_dokter_admin_homepage
+                WHERE tanggal = ?
+                """;
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> {
+            JadwalDokterData jadwal = new JadwalDokterData(
+                resultSet.getInt("idJadwal"),
+                resultSet.getString("nama"),
+                resultSet.getString("nama_spesialisasi"),
+                resultSet.getString("tanggal"),
+                resultSet.getString("waktu_mulai"),
+                resultSet.getString("waktu_selesai")
+            );
+            return jadwal;
+        }, tgl);
+    }
 
+    @Override
+    public ArrayList<JadwalDokterData> getFutureJadwalByDoctorID(int id, LocalDate tgl) {
+        String sql = """
+            SELECT id_jadwal, tanggal, waktu_mulai, waktu_selesai, kuota_max, kuota_terisi
+            FROM jadwal
+            WHERE id_dokter=? AND tanggal >= ? 
+            ORDER BY tanggal, waktu_mulai
+        """;
+        return (ArrayList<JadwalDokterData>) jdbcTemplate.query(sql, this::mapRowToJadwal, id, tgl);
+    }
 
+    public JadwalDokterData mapRowToJadwal(ResultSet resultSet, int rowNum) throws SQLException {
+        return new JadwalDokterData(
+            resultSet.getInt("id_jadwal"),
+            resultSet.getDate("tanggal").toString(),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai"),
+            resultSet.getInt("kuota_max"),
+            resultSet.getInt("kuota_terisi")
+            );
+    }
+
+    @Override
+    public void deleteJadwalById(int idJadwal) {
+        String deleteSql = "DELETE FROM jadwal WHERE id_jadwal = ?";
+        jdbcTemplate.update(deleteSql, idJadwal);
+    }
+    public List<PasienData> findPendaftaranByDate(LocalDate tgl) {
+        String sql = """
+            SELECT * 
+            FROM lihat_pendaftaran_pasien
+            WHERE tanggal = ?
+            ORDER BY waktu_mulai, no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl);
+    }
+
+    public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
+        return new PasienData(
+            resultSet.getString("nama"),
+            resultSet.getString("nama_dokter"),
+            resultSet.getString("nama_spesialisasi"),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai"),
+            resultSet.getString("tanggal"),
+            resultSet.getBoolean("status_bayar"),
+            resultSet.getBoolean("status_daftar_ulang"),
+            resultSet.getInt("no_antrian")
+            );
+    }
+
+    @Override
+    public List<PasienData> findPendaftaranByDateAndName(LocalDate tgl, String name) {
+        String sql = """
+                SELECT * 
+                FROM (SELECT * FROM lihat_pendaftaran_pasien
+                WHERE tanggal = ?
+                AND (nama LIKE ?)
+                ORDER BY waktu_mulai)
+                ORDER BY no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
+    }
 }

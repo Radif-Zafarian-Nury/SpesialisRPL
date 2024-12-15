@@ -1,21 +1,23 @@
 --DROP
-DROP VIEW IF EXISTS lihat_jadwal_dokter CASCADE;
-DROP VIEW IF EXISTS daftar_dokter CASCADE;
-DROP VIEW IF EXISTS dokter_cards CASCADE;
-DROP VIEW IF EXISTS nama_Dokter_di_jadwal CASCADE;
-DROP VIEW IF EXISTS lihat_pendaftaran_pasien CASCADE;
-
-DROP VIEW IF EXISTS dokter_info CASCADE;
-DROP VIEW IF EXISTS list_pasien CASCADE;
-DROP VIEW IF EXISTS list_rekam_medis CASCADE;
 DROP VIEW IF EXISTS ambil_last_rekam_medis CASCADE;
+DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
+DROP VIEW IF EXISTS lihat_jadwal_dokter;
+DROP VIEW IF EXISTS daftar_dokter;
+DROP VIEW IF EXISTS dokter_cards;
+DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
+DROP VIEW IF EXISTS jadwal_dokter_admin_homepage;
+DROP VIEW IF EXISTS dokter_info;
+DROP VIEW IF EXISTS list_pasien;
+DROP VIEW IF EXISTS list_rekam_medis;
+DROP VIEW IF EXISTS nama_dokter_di_jadwal;
+
 
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
 (SELECT
 	jadwal.id_dokter,
 	nama,
-	nama_spesialisasi,
+    nama_spesialisasi,
 	id_jadwal,
 	tanggal,
 	waktu_mulai,
@@ -28,8 +30,38 @@ FROM
 	INNER JOIN spesialisasi_dokter
 	ON spesialisasi_dokter.id_dokter = users.id_user
 	INNER JOIN spesialisasi
-	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi);
-	
+	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi
+);
+
+CREATE VIEW jadwal_dokter_admin_homepage AS
+(SELECT
+	jadwal.id_dokter,
+	nama,
+    STRING_AGG(spesialisasi.nama_spesialisasi, ', ') AS nama_spesialisasi,
+	id_jadwal,
+	tanggal,
+	waktu_mulai,
+	waktu_selesai,
+	kuota_terisi,
+	kuota_max
+FROM
+	users INNER JOIN jadwal
+	ON users.id_user = jadwal.id_dokter
+	INNER JOIN spesialisasi_dokter
+	ON spesialisasi_dokter.id_dokter = users.id_user
+	INNER JOIN spesialisasi
+	ON spesialisasi_dokter.id_spesialisasi = spesialisasi.id_spesialisasi
+GROUP BY
+	jadwal.id_dokter,
+	nama,
+	id_jadwal,
+	tanggal,
+	waktu_mulai,
+	waktu_selesai,
+	kuota_terisi,
+	kuota_max
+);
+
 
 CREATE VIEW daftar_dokter AS
 (SELECT
@@ -76,22 +108,27 @@ From
 
 CREATE VIEW lihat_pendaftaran_pasien AS
 (SELECT DISTINCT
-	nama,
+	users.nama,
 	nama_dokter,
+	nama_spesialisasi,
 	waktu_mulai,
 	waktu_selesai,
 	tanggal,
 	status_bayar,
 	status_daftar_ulang,
 	no_antrian
-	
 FROM
-	users INNER JOIN pendaftaran
+	users 
+	INNER JOIN pendaftaran
 	ON users.id_user = pendaftaran.id_pasien
 	INNER JOIN jadwal
-	ON jadwal.id_jadwal = pendaftaran.id_jadwal INNER JOIN nama_Dokter_di_jadwal
-	ON nama_Dokter_di_jadwal.id_dokter = jadwal.id_dokter
+	ON jadwal.id_jadwal = pendaftaran.id_jadwal 
+	INNER JOIN nama_Dokter_di_jadwal
+	ON nama_Dokter_di_jadwal.id_dokter = jadwal.id_dokter 
+	INNER JOIN daftar_dokter
+	ON nama_Dokter_di_jadwal.nama_dokter = daftar_dokter.nama
 	);
+
 CREATE VIEW dokter_info AS
 (SELECT
     id_user,
@@ -142,6 +179,7 @@ CREATE VIEW list_rekam_medis AS
 FROM
  	diagnosa INNER JOIN users ON diagnosa.id_pasien = users.id_user);
 
+
 CREATE VIEW ambil_last_rekam_medis
 AS(
 	select no_rekam_medis
@@ -151,17 +189,13 @@ AS(
 	LIMIT 1
 );
 
-
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
 SELECT * FROM daftar_dokter;
 SELECT * FROM dokter_cards;
-SELECT * FROM nama_Dokter_di_jadwal;
+SELECT * FROM nama_dokter_di_jadwal;
 SELECT * FROM lihat_pendaftaran_pasien;
-
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
 SELECT * FROM list_rekam_medis;
-
 SELECT * FROM ambil_last_rekam_medis;
-

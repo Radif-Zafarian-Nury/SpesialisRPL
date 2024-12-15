@@ -8,6 +8,7 @@ import lombok.Data;
 public class PasienData {
     private  String nama;
     private String nama_dokter;
+    private String nama_spesialisasi;
     private String waktu_mulai;
     private String waktu_selesai;
     private String tanggal;

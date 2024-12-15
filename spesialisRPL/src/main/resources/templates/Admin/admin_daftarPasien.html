@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Mendaftarkan Pasien</title>
     <link rel="stylesheet" type="text/css" th:href="@{/Admin/daftarPasien_style.css}">
 </head>
+
 <body>
     <!-- Sidebar -->
     <th:block th:insert="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
+    <header>
+        <span>Mendaftarkan Pasien</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Mendaftarkan Pasien</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <a th:href="@{/logout}"><button>Logout</button></a>
-            </div>
-        </header>
 
         <div class="form-container">
             <h2>Formulir Pendaftaran</h2>
             <form id="registerForm" onsubmit="return registerPasien(event);">
                 <div class="form-group">
                     <label for="NIK">NIK</label>
-                    <input type="text" id="NIK" name="NIK" placeholder="Masukkan NIK" maxlength="16" oninput="checkNik()" required>
+                    <input type="text" id="NIK" name="NIK" placeholder="Masukkan NIK" maxlength="16"
+                        oninput="checkNik()" required>
                 </div>
-                
+
                 <!--  -->
                 <div class="form-group">
                     <label for="patientName">Nama Pasien</label>
                     <input type="text" id="patientName" name="patientName" placeholder="Masukkan nama pasien" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="NIK">NIK</label>
-                    <input type="text" id="NIK" name="NIK" placeholder="Masukkan NIK" required>
                 </div>
                 <div class="form-group">
                     <label for="patientDOB">Tanggal Lahir</label>
@@ -88,11 +86,11 @@
         </div>
     </div>
 
-    <script>  
-        async function checkNik(){
+    <script>
+        async function checkNik() {
             const nik = document.getElementById('NIK').value;
 
-            if(nik.length === 16){
+            if (nik.length === 16) {
                 try {
                     const response = await fetch(`/admin/check-nik?nik=${nik}`);
 
@@ -110,54 +108,54 @@
                             radio.checked = true;
                         }
                     });
-    
-                } catch (error){
+
+                } catch (error) {
                     alert(error.message);
                 }
             }
         }
-      
+
 
         async function filterDokter() {
             const tanggal = document.getElementById("tanggal").value;
             if (!tanggal) return;
-            
+
             try {
                 const response = await fetch(`/admin/get-dokter?tanggal=${tanggal}`);
-                if(!response.ok) {
+                if (!response.ok) {
                     throw new Error(`Failed to fetch dokter: ${response.status}`)
                 }
-                
+
                 const dokter = await response.json();
                 const dokterDropdown = document.getElementById("dokter");
                 dokterDropdown.innerHTML = '<option value="">Pilih Dokter</option>';
-                
+
                 dokter.forEach(dokter => {
                     const option = document.createElement("option");
                     option.value = dokter;
                     option.text = dokter;
                     dokterDropdown.appendChild(option);
-                });    
+                });
             } catch (error) {
-                console.error("Error fetching dokter: ", error);   
+                console.error("Error fetching dokter: ", error);
             }
-            
+
         }
 
         async function filterSpesialisasi() {
             const dokter = document.getElementById("dokter").value;
             if (!dokter) return;
-            
-            try{
+
+            try {
                 const response = await fetch(`/admin/get-spesialisasi?dokter=${dokter}`);
-                if(!response.ok){
+                if (!response.ok) {
                     throw new Error(`Failed to fetch spesialisasi: @{response.status}`)
                 }
-                
+
                 const spesialisasi = await response.json();
                 const spesialisasiDropdown = document.getElementById("spesialisasi");
                 spesialisasiDropdown.innerHTML = `<option value="">Pilih Spesialisasi</option>`;
-                
+
                 spesialisasi.forEach(spec => {
                     const option = document.createElement("option");
                     option.value = spec;
@@ -167,7 +165,7 @@
             } catch (error) {
                 console.error("error fetching spesialisasi: ", error);
             }
-            
+
         }
 
         async function filterJadwal() {
@@ -176,7 +174,7 @@
 
             try {
                 const response = await fetch(`/admin/get-jadwal?spesialisasi=${spesialisasi}`);
-                if(!response.ok){
+                if (!response.ok) {
                     throw new Error(`Failed to fetch jadwal: ${response.status}`);
                 }
 
@@ -188,11 +186,11 @@
                     option.value = jadwal.idJadwal
                     option.textContent = `${jadwal.waktu_mulai} - ${jadwal.waktu_selesai}`;
                     jadwalDropdown.appendChild(option);
-                });  
+                });
             } catch (error) {
                 console.error("Error fetching jadwa: ", error);
             }
-            
+
         }
 
         async function registerPasien(event) {
@@ -201,7 +199,7 @@
             const nik = document.getElementById('NIK').value;
             const idJadwal = document.getElementById('jadwal').value;
 
-            if(!nik || !idJadwal){
+            if (!nik || !idJadwal) {
                 alert("Harap isi semua kolom.");
                 return false;
             }
@@ -210,11 +208,11 @@
                 const quotaResponse = await fetch(`/admin/check-quota?idJadwal=${idJadwal}`);
                 const quotaData = await quotaResponse.json();
 
-                if(!quotaResponse.ok){
+                if (!quotaResponse.ok) {
                     throw new Error(quotaData.message);
                 }
 
-                if(quotaData.kuotaTerisi >= quotaData.kuotaMax){
+                if (quotaData.kuotaTerisi >= quotaData.kuotaMax) {
                     alert("Kuota sudah penuh");
                     return false;
                 }
@@ -228,7 +226,7 @@
                 });
 
                 const message = await response.text();
-                if(response.ok){
+                if (response.ok) {
                     alert(message);
                     document.getElementById('registerForm').reset();
                 } else {
@@ -243,4 +241,5 @@
     </script>
 
 </body>
+
 </html>

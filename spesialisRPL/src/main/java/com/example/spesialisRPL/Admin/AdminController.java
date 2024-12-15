@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserRepository;
-
+import com.example.spesialisRPL.User.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -44,9 +49,15 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    @RequiredRole({"admin"})
-    public String index(Model model){
-        List<JadwalDokterData> jadwalDokter = adminRepository.findAll();
+    //@RequiredRole({"admin"})
+    public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
+        
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        List<JadwalDokterData> jadwalDokter = adminRepository.findSchedulesByDate(tgl);
+
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", jadwalDokter);
         return "Admin/admin";
     }
@@ -89,10 +100,34 @@ public class AdminController {
 
     //LIST PASIEN
     @GetMapping("/list-pasien")
-    public String admin_bayar(Model model){
-        List<PasienData> listPasien = adminRepository.findAllPendaftaran();
+    public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
+        if(tgl==null){
+            tgl = LocalDate.now();
+
+        }
+        List<PasienData> listPasien;
+
+        if (namaPasien == null) {
+            listPasien = adminRepository.findPendaftaranByDate(tgl);
+        } else {
+            listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
+            model.addAttribute("name", namaPasien); // Add name to model if it's provided
+        }
+        
+        // Add common attributes to the model
+        model.addAttribute("tgl", tgl);
         model.addAttribute("results", listPasien);
-        return "Admin/admin_listPasien";
+    
+        return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
+    @GetMapping("/get-nama_pasien")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> getNamaPasien(@RequestParam("name") String name){
+        LocalDate tgl = LocalDate.of(2024, 12, 20);
+        List<PasienData> listPasien = adminRepository.findPendaftaranByDateAndName(tgl, name);
+        return ResponseEntity.ok(listPasien);
     }
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
@@ -150,7 +185,7 @@ public class AdminController {
     public String editDokter(Model model){
         List<DokterCard> listCards = adminRepository.getAllDoctorCards();
         model.addAttribute("dokter_list", listCards);
-        return "Admin/admin_editDokter";
+        return "Admin/admin_editdokter";
     }
 
     @GetMapping("/buatakun")
@@ -164,20 +199,30 @@ public class AdminController {
         List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
         List<String> spesialisasiList = adminRepository.getAllSpesialisasi();
 
+        LocalDate tgl = LocalDate.now();
+        ArrayList<JadwalDokterData> jadwalList = adminRepository.getFutureJadwalByDoctorID(id, tgl); 
+        if (jadwalList == null) {
+            jadwalList = new ArrayList<>();
+        }
+
+        JadwalDokterDataWrapper wrapper = new JadwalDokterDataWrapper(jadwalList);
+
         model.addAttribute("dokter", dokter);
         model.addAttribute("spesialisasi_dokter", spesialisasiDokter);
         model.addAttribute("spesialisasi_list", spesialisasiList);
+        model.addAttribute("wrapper", wrapper);
         return "Admin/admin_halamanEdit";
     }
 
     @PostMapping("/editdokter")
     public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
                                     @RequestParam List<String> specializations,
-                                    @RequestParam(required = false) MultipartFile doctorPhoto) {  
-
+                                    @RequestParam(required = false) MultipartFile doctorPhoto,
+                                    @ModelAttribute JadwalDokterDataWrapper wrapper,
+                                    @RequestParam(required = false) List<Integer> idsToDelete) {
+                                
         if (doctorPhoto != null && !doctorPhoto.isEmpty()) {
             try {
-                // Convert the image to Base64
                 byte[] fotoBytes = doctorPhoto.getBytes();
                 String fotoBase64 = Base64.getEncoder().encodeToString(fotoBytes);
                 dokter.setFoto(fotoBase64);  
@@ -186,8 +231,15 @@ public class AdminController {
             }
         }
 
-        adminRepository.updateDokter(dokter, specializations);
+        List<JadwalDokterData> listJadwal = wrapper.getListJadwal();
+        
+        adminRepository.updateDokter(dokter, specializations, listJadwal);
 
+        if (idsToDelete != null && !idsToDelete.isEmpty()) {
+            for (Integer id : idsToDelete) {
+                adminRepository.deleteJadwalById(id); 
+            }
+        }
         return "redirect:/admin/editdokter";
     }
 

@@ -27,11 +27,11 @@
         <div class="card-container">
             <div class="card" th:each="patient : ${patients}">
                 <div class="info">
-                    <h3 th:text="${patient.nama}">John Doe</h3>
-                    <p>Tanggal Lahir: <span th:text="${patient.tanggal_lahir}">1990-01-01</span></p>
-                    <p>Gender: <span th:text="${patient.jenis_kelamin}">Laki-laki</span></p>
+                    <h3 th:text="${patient.nama}"></h3>
+                    <p>Tanggal Lahir: <span th:text="${patient.tanggal_lahir}"></span></p>
+                    <p>Gender: <span th:text="${patient.jenis_kelamin}"></span></p>
                     <p>Jadwal: <span th:text="${patient.jadwal}"></span></p>
-                    <p>Nomor Antrian: <span th:text="${patient.no_antrian}">3</span></p>
+                    <p>Nomor Antrian: <span th:text="${patient.no_antrian}"></span></p>
                 </div>
                 <a th:href="@{'/diagnosa/' + ${patient.id_pasien}}">
                     <button class="edit-btn">
