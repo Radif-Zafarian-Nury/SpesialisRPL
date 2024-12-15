@@ -44,8 +44,8 @@ public class LoginController {
             String role = user.getPeran();
             return switch (role) {
                 case "admin" -> "redirect:/admin/";
-                case "dokter" -> "redirect:/doctor/";
-                case "perawat" -> "redirect:/nurse/";
+                case "dokter" -> "redirect:/listPasien";
+                case "perawat" -> "redirect:/listPasien";
                 case "pasien" -> "redirect:/user/";
                 default -> "redirect:/user/";
             };

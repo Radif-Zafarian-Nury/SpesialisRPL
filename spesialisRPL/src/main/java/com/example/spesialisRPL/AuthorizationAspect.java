@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Aspect
@@ -16,8 +17,15 @@ public class AuthorizationAspect {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    private HttpServletResponse response;
+
     @Before("@annotation(requiredRole)")
-    public void checkAuthorization(RequiredRole requiredRole) {
+    public void checkAuthorization(RequiredRole requiredRole) throws Exception {
+        if(requiredRole == null){
+            throw new SecurityException("RequiredRole annotation is missing");
+        }
+        
         String[] roles = requiredRole.value();
         String role = (String) session.getAttribute("role");
 
@@ -26,7 +34,8 @@ public class AuthorizationAspect {
         }
 
         if (session.getAttribute("user") == null) {
-            throw new RuntimeException("Pengguna belum login!");
+            response.sendRedirect("/login");
+            return;
         }
         
         if (!Arrays.asList(roles).contains(role)) {
