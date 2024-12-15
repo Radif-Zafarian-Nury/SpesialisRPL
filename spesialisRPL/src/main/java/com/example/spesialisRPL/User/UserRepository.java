@@ -16,6 +16,6 @@ public interface UserRepository {
     List<DokterCardSelection> findFilteredDokterMata(LocalDate date);
     Optional<UserData> findByEmail(String email);
     Optional<DokterCardSelection> findDokterMataById(int id_dokter, Date tanggal);
-    int getPatientIdByNikAndIdJadwal(String nik, int id_jadwal);
+    int getPatientIdByNik(String nik);
     void daftarPasien(int id_pasien, int id_jadwal);
 }

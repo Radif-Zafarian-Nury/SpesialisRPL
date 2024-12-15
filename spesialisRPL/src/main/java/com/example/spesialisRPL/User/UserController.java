@@ -116,7 +116,7 @@ public class UserController {
             return "redirect:/login";
         }
 
-        int idPasien = this.userRepository.getPatientIdByNikAndIdJadwal(nik, id_jadwal);
+        int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
         return "redirect:/user/spesialisMata";
     }

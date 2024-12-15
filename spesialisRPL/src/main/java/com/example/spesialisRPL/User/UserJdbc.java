@@ -81,18 +81,17 @@ public class UserJdbc implements UserRepository{
     }
 
     @Override
-    public int getPatientIdByNikAndIdJadwal(String nik, int id_jadwal) {
+    public int getPatientIdByNik(String nik) {
         String sql = """
                 SELECT 
-                    id_pasien 
-                FROM 
-                    pendaftaran JOIN users 
-                    ON pendaftaran.id_pasien = users.id_user 
-                WHERE 
-                    nik = ? AND id_jadwal = ?
+                    id_user
+                FROM
+                    users
+                WHERE
+                    nik = ?
                 """;
         try {
-            return jdbcTemplate.queryForObject(sql, Integer.class, nik, id_jadwal);
+            return jdbcTemplate.queryForObject(sql, Integer.class, nik);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
