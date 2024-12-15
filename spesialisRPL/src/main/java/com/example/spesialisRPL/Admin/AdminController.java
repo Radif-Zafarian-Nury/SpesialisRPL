@@ -93,7 +93,6 @@ public class AdminController {
     public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
         if(tgl==null){
             tgl = LocalDate.now();
-
         }
         List<PasienData> listPasien;
 
@@ -101,10 +100,9 @@ public class AdminController {
             listPasien = adminRepository.findPendaftaranByDate(tgl);
         } else {
             listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
-            model.addAttribute("name", namaPasien); // Add name to model if it's provided
+            model.addAttribute("name", namaPasien); 
         }
         
-        // Add common attributes to the model
         model.addAttribute("tgl", tgl);
         model.addAttribute("results", listPasien);
     
@@ -264,4 +262,16 @@ public class AdminController {
         // userRepository.saveUser(userData);
         return "redirect:/login";
     }
+
+    @PostMapping("/bayar")
+    public ResponseEntity<String> bayar(@RequestParam int pasienId) {
+    // Call your service method to update the payment status
+    boolean success = adminService.updatePaymentStatus(pasienId);
+    
+    if (success) {
+        return ResponseEntity.ok("Payment status updated successfully.");
+    } else {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update payment status.");
+    }
+}
 }
