@@ -58,6 +58,7 @@ CREATE TABLE pendaftaran(
 	id_pendaftaran SERIAL, 
 	id_pasien INT REFERENCES users(id_user),
 	id_jadwal INT REFERENCES jadwal(id_jadwal),
+	id_spesialisasi INT REFERENCES spesialisasi(id_spesialisasi),
 	status_daftar_ulang BOOLEAN,
 	status_bayar BOOLEAN,
 	no_antrian INT,
@@ -103,15 +104,15 @@ VALUES
 	(2, '09:00', '10:00', '2024-12-20', 8, 2),  
 	(2, '13:00', '15:00', '2024-12-20', 7, 0),  
 	(2, '13:00', '15:00', '2024-12-21', 9, 0);
-INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
+INSERT INTO pendaftaran (id_pasien, id_jadwal, id_spesialisasi, status_daftar_ulang, status_bayar, no_antrian)
 VALUES
-	(3, 1, TRUE, TRUE, 1),
+	(3, 1, 1, TRUE, TRUE, 1), --1
 	--Ceritanya belom daftar ulang
-	(4, 1, FALSE, FALSE, NULL),
-	(3, 2, TRUE, TRUE, 1),
-	(4, 3, TRUE, TRUE, 1),
-	(3, 6, TRUE, FALSE, 1),
-	(4, 6, TRUE, FALSE, 2);
+	(4, 1, 2, FALSE, FALSE, NULL), --1
+	(3, 2, 3, TRUE, TRUE, 1), --2
+	(4, 3, 2, TRUE, TRUE, 1), --1
+	(3, 6, 4, TRUE, FALSE, 1), --2
+	(4, 6, 5, TRUE, FALSE, 2); --2
 
 -- SELECT
 SELECT * FROM users;
