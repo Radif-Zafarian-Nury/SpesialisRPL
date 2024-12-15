@@ -50,6 +50,7 @@
             <!-- Patient cards will be displayed here -->
             <div class="patient-card" th:each="row : ${results}">
                 <div class="patient-info">
+
                     <span th:text="${row.nama}"></span>
                     <p th:text="'Dokter: ' +${row.nama_dokter}"></p>
                     <p th:text="'Spesialisasi: ' + ${row.nama_spesialisasi} "></p>
@@ -62,8 +63,9 @@
                     <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
                 </div>
                 <div class="button-group">
-                    <button class="status-btn" onclick="bayar()">Tandai Sudah Bayar</button>
+                    <button class="status-btn" th:onclick="bayar(${row.id})">Tandai Sudah Bayar</button>
                     <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
+                    
                 </div>
             </div>
         </div>
@@ -79,9 +81,19 @@
         }
 
 
-        async function bayar() {
+        async function bayar(id) {
             //sama kaya check nik rangsek, tapi pas manggil controller di controllernya ganti status dari database
-
+            console.log('ID:', id);
+            try {
+                const response = await fetch(`/admin/check-id_pendaftaran?id=${id}`);
+                if (!response.ok) {
+                    console.error('Response status:', response.status);
+                    throw new Error('Network response was not ok');
+                }
+                alert('Payment status updated successfully!'); // Or update the UI accordingly
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
         }
     </script>
 </body>

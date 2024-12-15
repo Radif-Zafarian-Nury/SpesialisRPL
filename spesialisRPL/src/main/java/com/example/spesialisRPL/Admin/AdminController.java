@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserService;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -108,6 +109,14 @@ public class AdminController {
         model.addAttribute("results", listPasien);
     
         return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    @GetMapping("/check-id_pendaftaran")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> checkIdPendaftaran(@RequestParam("id") int id){
+        
+        List<PasienData> pendaftaran = adminRepository.updatePembayaran(id);
+        return ResponseEntity.ok(pendaftaran);
     }
 
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
@@ -264,15 +273,15 @@ public class AdminController {
         return "redirect:/login";
     }
 
-    @PostMapping("/bayar")
-    public ResponseEntity<String> bayar(@RequestParam int pasienId) {
-    // Call your service method to update the payment status
-    boolean success = adminService.updatePaymentStatus(pasienId);
+//     @PostMapping("/bayar")
+//     public ResponseEntity<String> bayar(@RequestParam int pasienId) {
+//     // Call your service method to update the payment status
+//     boolean success = adminService.updatePaymentStatus(pasienId);
     
-    if (success) {
-        return ResponseEntity.ok("Payment status updated successfully.");
-    } else {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update payment status.");
-    }
-}
+//     if (success) {
+//         return ResponseEntity.ok("Payment status updated successfully.");
+//     } else {
+//         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update payment status.");
+//     }
+// }
 }

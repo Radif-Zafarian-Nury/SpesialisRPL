@@ -28,7 +28,6 @@ public class UserController {
         if(session.getAttribute("user") == null){   //kalo belom login ke index
             return "User/index";
         }
-        
         //UserData loggedInUser  = (UserData) session.getAttribute("loggedInUser ");
         //logger.info("User  role: {}", loggedInUser.getPeran()); // Log the user's role
         return "User/LoggedInIndex"; //kalo udh ke yg logged in

@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PasienData {
+public class PasienData{
+    private int id_pendaftaran;
     private  String nama;
     private String nama_dokter;
     private String nama_spesialisasi;

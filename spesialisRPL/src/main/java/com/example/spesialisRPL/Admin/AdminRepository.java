@@ -22,4 +22,5 @@ public interface AdminRepository {
     List<String> getAllSpesialisasi();
     void updateDokter(Dokter dokter, List<String> spesialisasi);
     List<JadwalDokterData> findSchedulesByDate(LocalDate tgl);
+    List<PasienData> updatePembayaran(int id);
 }
