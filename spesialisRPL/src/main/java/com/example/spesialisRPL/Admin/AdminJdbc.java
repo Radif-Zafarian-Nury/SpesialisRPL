@@ -266,11 +266,10 @@ public class AdminJdbc implements AdminRepository{
     @Override
     public List<PasienData> findPendaftaranByDate(LocalDate tgl) {
         String sql = """
-                SELECT * 
-                FROM (SELECT * FROM lihat_pendaftaran_pasien
-                WHERE tanggal = ?
-                ORDER BY waktu_mulai)
-                ORDER BY no_antrian
+            SELECT * 
+            FROM lihat_pendaftaran_pasien
+            WHERE tanggal = ?
+            ORDER BY waktu_mulai, no_antrian
                 """;
         return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl);
     }
