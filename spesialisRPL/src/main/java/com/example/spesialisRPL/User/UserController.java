@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.User;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -98,10 +99,10 @@ public class UserController {
             return "User/register";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
+        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // LocalDate tanggal = userData.getTanggal_lahir();
 
-        boolean isRegistered = userService.register(userData, tanggal);
+        boolean isRegistered = userService.register(userData);
         if (!isRegistered) {
             model.addAttribute("error", "Registration failed. Please try again.");
             return "User/register";

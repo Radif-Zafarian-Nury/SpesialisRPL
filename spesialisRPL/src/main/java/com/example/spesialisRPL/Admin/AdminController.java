@@ -275,11 +275,11 @@ public class AdminController {
             return "User/register";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
+        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
 
         userData.setKata_sandi(passwordEncoder.encode(userData.getKata_sandi()));
-        userRepository.saveUserDariAdmin(userData, tanggal);
+        userRepository.saveUserDariAdmin(userData);
 
         return "redirect:/admin/";
     }
