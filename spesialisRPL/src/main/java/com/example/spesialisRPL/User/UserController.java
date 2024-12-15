@@ -1,15 +1,29 @@
 package com.example.spesialisRPL.User;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.spesialisRPL.Doctor.DokterCardSelection;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -22,29 +36,43 @@ public class UserController {
     private UserService userService; // Inject UserService
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
+    private UserRepository userRepository;
    
     @GetMapping("/")
     public String index(HttpSession session){
-        if(session.getAttribute("user") == null){   //kalo belom login ke index
-            return "User/index";
-        }
-        //UserData loggedInUser  = (UserData) session.getAttribute("loggedInUser ");
-        //logger.info("User  role: {}", loggedInUser.getPeran()); // Log the user's role
-        return "User/LoggedInIndex"; //kalo udh ke yg logged in
+        return "User/index";
     }
 
+    @GetMapping("/form_pilih_dokter")
+    public String showDokterForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+        Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterMataById(id_dokter, tanggal);
+        model.addAttribute("doctor", foundDokter.get());
+        return "User/form_pesan_dokter";
+    }
     
     @GetMapping("/register")
     public String register(){
         return "User/register";
     }
 
-    
+    @GetMapping("/spesialisMata")
+    public String spesialisMata(@RequestParam(value = "date", required = false) LocalDate date, Model model) {
+        List<DokterCardSelection> listDokterMata = this.userRepository.findFilteredDokterMata(date);
+        model.addAttribute("dokter_mata", listDokterMata);
+        return "User/spesialis_mata";
+    }
+
+    // @PostMapping("/pesan_dokter")
+    // public String submitOrderDokterForm(@RequestMapping ) {
+
+    // }
+
     @PostMapping("/register")
     public String registerUser(
         @Valid @ModelAttribute UserData userData, 
         Model model,
-        BindingResult bindingResult){
+        BindingResult bindingResult) throws ParseException{
         
         //Check validation
         if (bindingResult.hasErrors()) {
@@ -76,13 +104,27 @@ public class UserController {
             return "User/register";
         }
 
-        boolean isRegistered = userService.register(userData);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date tanggal = sdf.parse(userData.getTanggal_lahir());
+
+        boolean isRegistered = userService.register(userData, tanggal);
         if (!isRegistered) {
             model.addAttribute("error", "Registration failed. Please try again.");
             return "User/register";
         }
-        userData.setPeran("pasien");
+        // userData.setPeran("pasien");
         // userRepository.saveUser(userData);
         return "redirect:/login";
+    }
+
+    @PostMapping("/pesan_dokter")
+    public String pesanDokter(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+        if(session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        int idPasien = this.userRepository.getPatientIdByNik(nik);
+        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        return "redirect:/user/spesialisMata";
     }
 }

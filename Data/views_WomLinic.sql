@@ -1,4 +1,5 @@
 --DROP
+DROP VIEW IF EXISTS ambil_last_rekam_medis CASCADE;
 DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
 DROP VIEW IF EXISTS lihat_jadwal_dokter;
 DROP VIEW IF EXISTS daftar_dokter;
@@ -8,6 +9,7 @@ DROP VIEW IF EXISTS dokter_info;
 DROP VIEW IF EXISTS list_pasien;
 DROP VIEW IF EXISTS list_rekam_medis;
 DROP VIEW IF EXISTS nama_dokter_di_jadwal;
+
 
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
@@ -178,7 +180,15 @@ FROM
  	diagnosa INNER JOIN users ON diagnosa.id_pasien = users.id_user);
 
 
-	
+CREATE VIEW ambil_last_rekam_medis
+AS(
+	select no_rekam_medis
+	from users
+	where peran = 'pasien'
+	order by no_rekam_medis DESC
+	LIMIT 1
+);
+
 --SELECT
 SELECT * FROM lihat_jadwal_dokter;
 SELECT * FROM daftar_dokter;
@@ -188,3 +198,4 @@ SELECT * FROM lihat_pendaftaran_pasien;
 SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
 SELECT * FROM list_rekam_medis;
+SELECT * FROM ambil_last_rekam_medis;

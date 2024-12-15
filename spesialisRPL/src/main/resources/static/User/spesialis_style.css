@@ -1,0 +1,257 @@
+.womlinic_logo {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+}
+
+header {
+    display: flex;
+    background-color: rgb(181, 4, 4);
+    align-items: center;
+    width: 100%;
+    height: 9vh;
+}
+
+.header_container {
+    position: fixed; 
+    top: 0;
+    left: 0; 
+    width: 100%; 
+    z-index: 1000;
+}
+
+.login_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}
+
+.register_wrapper {
+    padding-right: 15px;
+}
+
+.logout_wrapper {
+    margin-left: auto;
+    padding: 15px;
+}
+
+.login {
+    margin-left: auto;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(181, 4, 4);
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    width: 80px;
+}
+
+.login:hover {
+    background-color: white;
+    transition-duration: 200ms;
+    cursor: pointer;
+    color: rgb(216, 215, 215);
+}
+
+body {
+    margin: 0%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 100%;
+}
+
+.banner_image {
+    height: 110vh;
+    width:100%;
+    margin-top: -100px;
+    filter: brightness(40%);
+}
+
+.banner {
+    height: 50vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner_texts {
+    display: flex;
+    position: absolute;
+    align-items: top;
+    width: 60vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main_text {
+    margin-bottom: 0px;
+}
+
+.actual_text {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 90px;
+    color: white;
+    margin: 0px;
+    margin-bottom: 0px;
+}
+
+.main_container {
+    padding: 6rem;
+}
+
+.element_divider_separator {
+    height: 0.3rem;
+    width: 20.5rem;
+    background-color: rgb(181, 4, 4);
+}
+
+.small_title > h3 {
+    margin: 0;
+}
+
+.big_title {
+    display: flex;
+    gap: 50px;
+}
+
+.search_label {
+    margin-top: 1vh;
+    margin-bottom: 0;
+}
+
+.big_title > h1 {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.doctors_container {
+    display: flex;
+    margin-top: 3vh;
+    gap: 30px;
+}
+
+.doctor_card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    grid-template-areas: 
+    "photo"
+    "name"
+    "schedule"
+    "button"
+    ;
+    align-items: center;
+    width: 14vw;
+    height: auto;
+}
+
+.doctor_profile_pic {
+    display: flex;
+    justify-content: center;
+}
+
+.doctor_schedule {
+    grid-area: schedule;
+    margin-bottom: 3vh;
+}
+
+.doctor_img {
+    grid-area: photo;
+    width: 8vw;
+    height: 15vh;
+}
+
+.doctor_name {
+    grid-area: name;
+    display: flex;
+    justify-content: center;
+}
+
+.list_jadwal_dokter {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.jadwal_dokter {
+    display: flex;
+}
+
+.jadwal_dokter > div {
+    background-color: #eaeaea;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+    width: 10rem;
+}
+
+.book_button_container {
+    background-color: rgb(181, 4, 4);
+    border-radius: 10px;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book_button_container:hover {
+    background-color:rgb(225, 24, 24);
+    transition-duration: 200ms;
+    cursor: pointer;
+}
+
+.go_to_order_page_button {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.date_input {
+    width: 10rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-color: rgb(181, 4, 4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.filter_button {
+    width: 7rem;
+    height: 3rem;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(181, 4, 4);
+    color: white;
+    font-weight: bold;
+}
+
+.filter_button:hover {
+    background-color:rgb(225, 24, 24);
+    transition-duration: 200ms;
+    cursor: pointer;
+}
+
+.filter_form {
+    display: flex;
+    gap: 20px;
+}
+
+.book_button_container {
+    grid-area: button;
+}

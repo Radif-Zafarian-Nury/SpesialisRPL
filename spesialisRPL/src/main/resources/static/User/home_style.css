@@ -8,11 +8,17 @@ header {
     display: flex;
     background-color: rgb(181, 4, 4);
     align-items: center;
+    width: 100%;
+    height: 9vh;
 }
 
 .login_wrapper {
     margin-left: auto;
     padding: 15px;
+}
+
+.register_wrapper {
+    padding-right: 15px;
 }
 
 .login {
@@ -39,14 +45,14 @@ header {
 
 .banner_image {
     height: 110vh;
-    width:100vw;
+    width:100%;
     margin-top: -100px;
     filter: brightness(40%);
 }
 
 .banner {
-    height: 70vh;
-    width: 100vw;
+    height: 80vh;
+    width: 100%;
     overflow: hidden;
     display: flex;
 }
@@ -173,11 +179,93 @@ header {
     margin-left: 5rem;
 }
 
+.doctor_img {
+    border-radius: 20px;
+}
+
+.header_container {
+    position: fixed; 
+    top: 0;
+    left: 0; 
+    width: 100%; 
+    z-index: 1000;
+}
+
 body {
     margin: 0%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 100%;
 }
 
-@media only screen and (min-width: 412px) {
+.specialist_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.specialist_name > p {
+    font-weight: bold;
+    font-size: 1vw;
+}
+
+.specialists_section_container {
+    display: grid;
+    grid-template-areas: 
+    "title"
+    "main"
+    ;
+    grid-template-columns: 1fr;
+    background-color: rgb(246, 246, 246);
+    height: 35vh;
+}
+
+.specialist_choices {
+    display: flex;
+    gap: 5vw;
+}
+
+.specialist_choice_img {
+    width: 9rem;
+    height: 16vh;
+}
+
+.specialist_main {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.specialist_section_title {
+    grid-area: title;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.specialist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 30vh;
+    width: 16vw;
+}
+
+.choice_of_specialist {
+    text-decoration: none;
+    color: rgb(50, 50, 50);
+}
+
+.specialist:hover {
+    background-color: rgb(208, 208, 208);
+    transition-duration: 200ms;
+    color: rgb(50, 50, 50);
+}
+
+.logout_wrapper {
+    margin-left: auto;
+    padding: 15px;
 }
