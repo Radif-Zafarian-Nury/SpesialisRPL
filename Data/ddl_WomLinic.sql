@@ -106,6 +106,7 @@ VALUES
 INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
 VALUES
 	(3, 1, TRUE, TRUE, 1),
+	--Ceritanya belom daftar ulang
 	(4, 1, FALSE, FALSE, NULL),
 	(3, 2, TRUE, TRUE, 1),
 	(4, 3, TRUE, TRUE, 1),

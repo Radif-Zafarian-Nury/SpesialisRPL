@@ -2,6 +2,8 @@ package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -164,20 +167,30 @@ public class AdminController {
         List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
         List<String> spesialisasiList = adminRepository.getAllSpesialisasi();
 
+        LocalDate tgl = LocalDate.now();
+        ArrayList<JadwalDokterData> jadwalList = adminRepository.getFutureJadwalByDoctorID(id, tgl); 
+        if (jadwalList == null) {
+            jadwalList = new ArrayList<>();
+        }
+
+        JadwalDokterDataWrapper wrapper = new JadwalDokterDataWrapper(jadwalList);
+
         model.addAttribute("dokter", dokter);
         model.addAttribute("spesialisasi_dokter", spesialisasiDokter);
         model.addAttribute("spesialisasi_list", spesialisasiList);
+        model.addAttribute("wrapper", wrapper);
         return "Admin/admin_halamanEdit";
     }
 
     @PostMapping("/editdokter")
     public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
                                     @RequestParam List<String> specializations,
-                                    @RequestParam(required = false) MultipartFile doctorPhoto) {  
-
+                                    @RequestParam(required = false) MultipartFile doctorPhoto,
+                                    @ModelAttribute JadwalDokterDataWrapper wrapper,
+                                    @RequestParam(required = false) List<Integer> idsToDelete) {
+                                
         if (doctorPhoto != null && !doctorPhoto.isEmpty()) {
             try {
-                // Convert the image to Base64
                 byte[] fotoBytes = doctorPhoto.getBytes();
                 String fotoBase64 = Base64.getEncoder().encodeToString(fotoBytes);
                 dokter.setFoto(fotoBase64);  
@@ -186,8 +199,15 @@ public class AdminController {
             }
         }
 
-        adminRepository.updateDokter(dokter, specializations);
+        List<JadwalDokterData> listJadwal = wrapper.getListJadwal();
+        
+        adminRepository.updateDokter(dokter, specializations, listJadwal);
 
+        if (idsToDelete != null && !idsToDelete.isEmpty()) {
+            for (Integer id : idsToDelete) {
+                adminRepository.deleteJadwalById(id); 
+            }
+        }
         return "redirect:/admin/editdokter";
     }
 

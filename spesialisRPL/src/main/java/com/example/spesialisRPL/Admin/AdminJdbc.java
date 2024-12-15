@@ -3,6 +3,8 @@ package com.example.spesialisRPL.Admin;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -230,7 +232,7 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
-    public void updateDokter(Dokter dokter, List<String> listSpesialisasi) {
+    public void updateDokter(Dokter dokter, List<String> listSpesialisasi, List<JadwalDokterData> listJadwal) {
         byte[] fotoDokterBytes = Base64.getDecoder().decode(dokter.getFoto());
         String sql = """
             UPDATE users 
@@ -258,7 +260,46 @@ public class AdminJdbc implements AdminRepository{
         for (String spesialisasi : listSpesialisasi) {
             jdbcTemplate.update(spesialisasiSql, dokter.getId_user(), spesialisasi);
         }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Jadwal Dokter
+        String updateJadwalSql = """
+            UPDATE jadwal 
+            SET tanggal = ?, waktu_mulai = ?, waktu_selesai = ?, kuota_max = ?
+            WHERE id_jadwal = ?
+        """;
+
+        String insertJadwalSql = """
+            INSERT INTO jadwal (id_dokter, tanggal, waktu_mulai, waktu_selesai, kuota_max, kuota_terisi) 
+            VALUES (?, ?, ?, ?, ?, 0)
+        """;
+
+        for (JadwalDokterData jadwal : listJadwal) {
+            if(jadwal.getTanggal() != null){
+                LocalDate localDate_tanggal = LocalDate.parse(jadwal.getTanggal(), dateFormatter);
+                if (jadwal.getIdJadwal() == -1) {
+                    jdbcTemplate.update(insertJadwalSql, 
+                        dokter.getId_user(), 
+                        localDate_tanggal, 
+                        jadwal.getWaktu_mulai(), 
+                        jadwal.getWaktu_selesai(), 
+                        jadwal.getKuotaMax()
+                    );
+                } else {
+                    jdbcTemplate.update(updateJadwalSql, 
+                        localDate_tanggal, 
+                        jadwal.getWaktu_mulai(), 
+                        jadwal.getWaktu_selesai(), 
+                        jadwal.getKuotaMax(), 
+                        jadwal.getIdJadwal()
+                    );
+                }
+            }
+            
+        }
     }
+
 
     @Override
     public List<JadwalDokterData> findSchedulesByDate(LocalDate tgl) {
@@ -280,7 +321,33 @@ public class AdminJdbc implements AdminRepository{
         }, tgl);
     }
 
+    @Override
+    public ArrayList<JadwalDokterData> getFutureJadwalByDoctorID(int id, LocalDate tgl) {
+        String sql = """
+            SELECT id_jadwal, tanggal, waktu_mulai, waktu_selesai, kuota_max, kuota_terisi
+            FROM jadwal
+            WHERE id_dokter=? AND tanggal >= ? 
+            ORDER BY tanggal, waktu_mulai
+        """;
+        return (ArrayList<JadwalDokterData>) jdbcTemplate.query(sql, this::mapRowToJadwal, id, tgl);
+    }
 
+    public JadwalDokterData mapRowToJadwal(ResultSet resultSet, int rowNum) throws SQLException {
+        return new JadwalDokterData(
+            resultSet.getInt("id_jadwal"),
+            resultSet.getDate("tanggal").toString(),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai"),
+            resultSet.getInt("kuota_max"),
+            resultSet.getInt("kuota_terisi")
+            );
+    }
+
+    @Override
+    public void deleteJadwalById(int idJadwal) {
+        String deleteSql = "DELETE FROM jadwal WHERE id_jadwal = ?";
+        jdbcTemplate.update(deleteSql, idJadwal);
+    }
 
 
 
