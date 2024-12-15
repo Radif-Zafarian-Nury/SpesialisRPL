@@ -11,16 +11,16 @@
 <body>
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
-
+    
+    <header>
+        <span>Buat Akun Baru</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Buat Akun Baru</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <a th:href="@{/logout}"><button>Logout</button></a>
-            </div>
-        </header>
 
         <!-- Error msg -->
         <div th:if="${error}" style="color: red;">

@@ -1,6 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ public interface AdminRepository {
     List<String> findDoctorNameByPatientName(String name);
     Dokter getDokter(int id);
     List<String> getAllSpesialisasi();
-    void updateDokter(Dokter dokter, List<String> spesialisasi);
+    void updateDokter(Dokter dokter, List<String> spesialisasi, List<JadwalDokterData> jadwal);
     List<JadwalDokterData> findSchedulesByDate(LocalDate tgl);
+    ArrayList<JadwalDokterData> getFutureJadwalByDoctorID(int id, LocalDate tgl);
+    void deleteJadwalById(int idJadwal);
 }

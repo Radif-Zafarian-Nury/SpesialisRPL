@@ -1,7 +1,9 @@
 package com.example.spesialisRPL.RekamMedis;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 public class RekamMedis {
     private int id_pasien;
