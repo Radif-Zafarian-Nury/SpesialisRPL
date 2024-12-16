@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WomLinic+ Pilih Spesialis</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/User/spesialis_style.css}">
+</head>
+<body>
+    <div class="header_container">
+        <header>
+            <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
+            <div class="login_wrapper" th:unless="${session.user != null}">
+                <a class="login" th:href="@{/login}">
+                    <p>MASUK</p>
+                </a>
+            </div>
+            <div class="register_wrapper" th:unless="${session.user != null}">
+                <a class="login" th:href="@{register}">
+                    <p>DAFTAR</p>
+                </a>
+            </div>
+            <div class="logout_wrapper" th:if="${session.user != null}">
+                <a class="login" th:href="@{/logout}">
+                    <p>KELUAR</p>
+                </a>
+            </div>
+        </header>
+    </div>
+    <div class="banner">
+        <img src="/assets/—Pngtree—hospital inpatient room with bed_4090048.jpg" class="banner_image" />
+        <div class="banner_texts">
+            <div class="main_text">
+                <p class="actual_text">Dokter Spesialis Mata</p>
+            </div>
+        </div>
+    </div>
+    <main class="main_container">
+        <div class="body_title_text">
+            <div class="small_title">
+                <h3>Dokter Kami</h3>
+            </div>
+            <div class="big_title">
+                <h1>Dokter Spesialis Mata</h1>
+                <div class="filter_container">
+                    <form th:action="@{/user/spesialisMata}" method="GET" class="filter_form">
+                        <h1 class="search_label">Pilih Tanggal Konsultasi:</h1>
+                        <input type="date" id="date" name="date" class="date_input">
+                        <button type="submit" class="filter_button">Cari</button>
+                    </form>
+                </div>
+            </div>
+            <div class="element_divider">
+                <div class="element_divider_separator"> </div>
+            </div>
+        </div>
+        <div class="doctors_container">
+            <div th:each="doctor : ${dokter_mata}" class="doctor_card">
+                <div class="doctor_profile_pic">
+                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder.jpg'" />
+                </div>
+                <div class="doctor_name">
+                    <h2 th:text="${doctor.nama}">Doctor Name</h2>
+                </div>
+                <div class="doctor_schedule">
+                    <h3>Jadwal:</h3>
+                    <div class="list_jadwal_dokter">
+                        <div class="jadwal_dokter" th:value="${jadwal.id_jadwal}" th:each="jadwal : ${doctor.jadwal}">
+                            <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="book_button_container">
+                    <a th:href="@{form_pilih_dokter(id_dokter=${doctor.id_dokter}, tanggal=${doctor.tanggal})}" class="go_to_order_page_button">
+                        <div class="book_button">Pilih</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

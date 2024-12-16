@@ -1,6 +1,9 @@
 package com.example.spesialisRPL.User;
 
 import lombok.Data;
+
+import java.time.LocalDate;
+
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -30,4 +33,13 @@ public class UserData {
 
     @Transient
     private String confpassword;
+
+    @NotEmpty(message = "Tempat lahir tidak boleh kosong")
+    private String tempat_lahir; 
+    private LocalDate tanggal_lahir; 
+    
+    private boolean status_aktif; 
+
+    private Integer no_rekam_medis;
+    private String sip;
 }

@@ -24,5 +24,5 @@ public class QuotaResponse {
     public void setKuotaMax(int kuotaMax) {
         this.kuotaMax = kuotaMax;
     }
-
+    
 }

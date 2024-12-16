@@ -152,7 +152,7 @@ public class AdminJdbc implements AdminRepository{
             resultSet.getString("tanggal"),
             resultSet.getString("waktu_mulai"),
             resultSet.getString("waktu_selesai")
-            );
+        );
     }
 
 
@@ -174,7 +174,7 @@ public class AdminJdbc implements AdminRepository{
         return new DokterCard(
             resultSet.getInt("id_user"),
             resultSet.getString("nama"),
-            fotoBase64, 
+            fotoBase64,
             resultSet.getString("nama_spesialisasi")
         );
     }
@@ -343,6 +343,7 @@ public class AdminJdbc implements AdminRepository{
 
     public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
         return new PasienData(
+            resultSet.getInt("id_pendaftaran"),
             resultSet.getString("nama"),
             resultSet.getString("nama_dokter"),
             resultSet.getString("nama_spesialisasi"),
@@ -359,12 +360,30 @@ public class AdminJdbc implements AdminRepository{
     public List<PasienData> findPendaftaranByDateAndName(LocalDate tgl, String name) {
         String sql = """
                 SELECT * 
-                FROM (SELECT * FROM lihat_pendaftaran_pasien
+                FROM lihat_pendaftaran_pasien
                 WHERE tanggal = ?
-                AND (nama LIKE ?)
-                ORDER BY waktu_mulai)
-                ORDER BY no_antrian
+                AND (nama iLIKE ?)
+                ORDER BY waktu_mulai, no_antrian
                 """;
         return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
+    }
+ 
+    @Override
+    public List<PasienData> updatePembayaran(int id){
+        String sql = """
+                UPDATE pendaftaran
+                SET status_bayar = true
+                WHERE id_pendaftaran = ?
+                """;
+        jdbcTemplate.update(sql,id);
+
+        sql = """
+            SELECT * 
+                FROM lihat_pendaftaran_pasien
+                WHERE id_pendaftaran = ?
+                ORDER BY waktu_mulai, no_antrian
+            """;
+
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, id);
     }
 }

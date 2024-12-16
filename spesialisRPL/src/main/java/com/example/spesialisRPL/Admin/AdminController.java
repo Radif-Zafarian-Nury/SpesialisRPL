@@ -1,8 +1,10 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,15 +20,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
+import com.example.spesialisRPL.User.UserRepository;
 import com.example.spesialisRPL.User.UserService;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -37,8 +40,10 @@ public class AdminController {
     private AdminRepository adminRepository;
 
     @Autowired
-    private UserService userService; // Inject UserService
+    private UserRepository userRepository; // Inject UserService
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //HALAMAN UTAMA
     @GetMapping("/")
@@ -96,7 +101,6 @@ public class AdminController {
     public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
         if(tgl==null){
             tgl = LocalDate.now();
-
         }
         List<PasienData> listPasien;
 
@@ -104,14 +108,21 @@ public class AdminController {
             listPasien = adminRepository.findPendaftaranByDate(tgl);
         } else {
             listPasien = adminRepository.findPendaftaranByDateAndName(tgl, namaPasien);
-            model.addAttribute("name", namaPasien); // Add name to model if it's provided
+            model.addAttribute("name", namaPasien); 
         }
         
-        // Add common attributes to the model
         model.addAttribute("tgl", tgl);
         model.addAttribute("results", listPasien);
     
         return "Admin/admin_listPasien"; // Return the view name
+    }
+
+    @GetMapping("/check-id_pendaftaran")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> checkIdPendaftaran(@RequestParam("id") int id){
+        
+        List<PasienData> pendaftaran = adminRepository.updatePembayaran(id);
+        return ResponseEntity.ok(pendaftaran);
     }
 
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
@@ -131,7 +142,6 @@ public class AdminController {
         return ResponseEntity.ok(jadwal);
     }
 
-
     @GetMapping("/daftarpasien")
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
@@ -141,7 +151,7 @@ public class AdminController {
     @ResponseBody
     public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
         //Validasi nik
-        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
+        if (nik == null || nik.length() != 16 || !nik.matches("[a-zA-Z]+")) {
             return ResponseEntity.badRequest().body("NIK tidak valid.");
         }
         
@@ -236,19 +246,17 @@ public class AdminController {
         return "redirect:/admin/editdokter";
     }
 
-
-
     @PostMapping("/buatakun")
     public String buatAkunUser(
         @Valid @ModelAttribute UserData userData, 
         Model model,
-        BindingResult bindingResult){
+        BindingResult bindingResult) throws ParseException{
             
-        
         //Check validation
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error", "Please correct the highlighted errors.");
-            return "User/register";
+            model.addAttribute("error", "Silakan perbaiki kesalahan berikut:");
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "Admin/admin_buatAkunBaru"; // Ganti dengan nama file HTML yang sesuai
         }
 
         //Check NIK
@@ -275,13 +283,12 @@ public class AdminController {
             return "User/register";
         }
 
-        boolean isRegistered = userService.register(userData);
-        if (!isRegistered) {
-            model.addAttribute("error", "Registration failed. Please try again.");
-            return "User/register";
-        }
-        // userData.setPeran("pasien");
-        // userRepository.saveUser(userData);
-        return "redirect:/login";
+        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
+
+        userData.setKata_sandi(passwordEncoder.encode(userData.getKata_sandi()));
+        userRepository.saveUserDariAdmin(userData);
+
+        return "redirect:/admin/";
     }
 }
