@@ -47,7 +47,6 @@ public class AdminController {
     @GetMapping("/")
     @RequiredRole({"admin"})
     public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
-        
         if(tgl==null){
             tgl = LocalDate.now();
         }
@@ -60,6 +59,7 @@ public class AdminController {
 
     //AMBIL NILAI DOKTER BERDASARKAN HARI
     @GetMapping("/get-dokter")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<String>> getDoctorsByDay(@RequestParam("tanggal") String tanggal){
         List<String> daftarDokter = adminRepository.findDoctorsByDay(tanggal);
@@ -68,6 +68,7 @@ public class AdminController {
 
     //AMBIL NILAI DOKTER SPESIALISASI BERDASARKAN DOKTER
     @GetMapping("/get-spesialisasi")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<String>> getSpesialisasi(
         @RequestParam("dokter") String dokter,
@@ -79,6 +80,7 @@ public class AdminController {
 
     //AMBIL NILAI JADWAL BERDASARKAN SPESIALIASI
     @GetMapping("/get-jadwal")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<JadwalDokterData>> getJadwal(
         @RequestParam("spesialisasi") String spesialisasi,
@@ -91,6 +93,7 @@ public class AdminController {
 
     //CEK KUOTA DOKTER
     @GetMapping("/check-quota")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<?> checkQuota(@RequestParam("idJadwal") int idJadwal){
         JadwalDokterData jadwal = adminRepository.findScheduleById(idJadwal);
@@ -103,6 +106,7 @@ public class AdminController {
 
     //LIST PASIEN
     @GetMapping("/list-pasien")
+    @RequiredRole({"admin"})
     public String adminListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
         if(tgl==null){
             tgl = LocalDate.now();
@@ -123,6 +127,7 @@ public class AdminController {
     }
 
     @GetMapping("/check-id_pendaftaran")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<PasienData>> checkIdPendaftaran(@RequestParam("id") int id){
         
@@ -131,6 +136,7 @@ public class AdminController {
     }
 
     @GetMapping("/daftar-ulang")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<PasienData>> daftarUlang(@RequestParam("id") int id){
         
@@ -140,6 +146,7 @@ public class AdminController {
 
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
     @GetMapping("/get-nama_pasien")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<PasienData>> getNamaPasien(@RequestParam("name") String name){
         LocalDate tgl = LocalDate.of(2024, 12, 20);
@@ -149,6 +156,7 @@ public class AdminController {
 
     //AMBIL NAMA DOKTER BERDASARKAN NAMA PASIEN
     @GetMapping("/get-nama_dokter")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<List<String>> getNamaDokter(@RequestParam("nama") String nama){
         List<String> jadwal = adminRepository.findDoctorNameByPatientName(nama);
@@ -156,11 +164,13 @@ public class AdminController {
     }
 
     @GetMapping("/daftarpasien")
+    @RequiredRole({"admin"})
     public String daftarPasien(){
         return "Admin/admin_daftarPasien";
     }
 
     @PostMapping("/register-pasien")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<String> registerPasien(
         @RequestParam("nik") String nik, 
@@ -190,6 +200,7 @@ public class AdminController {
     }
 
     @GetMapping("/check-nik")
+    @RequiredRole({"admin"})
     @ResponseBody
     public ResponseEntity<?> checkNik(@RequestParam("nik") String nik){
         //Coba ganti jangan var
@@ -202,6 +213,7 @@ public class AdminController {
     }
 
     @GetMapping("/editdokter")
+    @RequiredRole({"admin"})
     public String editDokter(Model model){
         List<DokterCard> listCards = adminRepository.getAllDoctorCards();
         model.addAttribute("dokter_list", listCards);
@@ -209,11 +221,13 @@ public class AdminController {
     }
 
     @GetMapping("/buatakun")
+    @RequiredRole({"admin"})
     public String buatAkun(){
         return "Admin/admin_buatAkunBaru";
     }
 
     @GetMapping("/halamanEdit/{id}")
+    @RequiredRole({"admin"})
     public String showEditDoctorForm(@PathVariable("id") int id, Model model) {
         Dokter dokter = adminRepository.getDokter(id); 
         List<String> spesialisasiDokter = adminRepository.findSpecializationsByDoctorID(id);
@@ -235,6 +249,7 @@ public class AdminController {
     }
 
     @PostMapping("/editdokter")
+    @RequiredRole({"admin"})
     public String saveDataEditDokter(@ModelAttribute Dokter dokter, 
                                     @RequestParam List<String> specializations,
                                     @RequestParam(required = false) MultipartFile doctorPhoto,
@@ -264,6 +279,7 @@ public class AdminController {
     }
 
     @PostMapping("/buatakun")
+    @RequiredRole({"admin"})
     public String buatAkunUser(
         @Valid @ModelAttribute UserData userData, 
         Model model,
