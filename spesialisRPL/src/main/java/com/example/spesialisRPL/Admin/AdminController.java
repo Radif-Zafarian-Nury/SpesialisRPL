@@ -1,9 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -25,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserRepository;
-import com.example.spesialisRPL.User.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -47,7 +45,7 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    //@RequiredRole({"admin"})
+    @RequiredRole({"admin"})
     public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
         
         if(tgl==null){

@@ -31,7 +31,7 @@
         <img src="/assets/—Pngtree—hospital inpatient room with bed_4090048.jpg" class="banner_image" />
         <div class="banner_texts">
             <div class="main_text">
-                <p class="actual_text">Dokter Spesialis Mata</p>
+                <p class="actual_text">Dokter Spesialis Gigi</p>
             </div>
         </div>
     </div>
@@ -41,9 +41,9 @@
                 <h3>Dokter Kami</h3>
             </div>
             <div class="big_title">
-                <h1>Dokter Spesialis Mata</h1>
+                <h1>Dokter Spesialis Gigi</h1>
                 <div class="filter_container">
-                    <form th:action="@{/user/spesialisMata}" method="GET" class="filter_form">
+                    <form th:action="@{/user/spesialisGigi}" method="GET" class="filter_form">
                         <h1 class="search_label">Pilih Tanggal Konsultasi:</h1>
                         <input type="date" id="date" name="date" class="date_input">
                         <button type="submit" class="filter_button">Cari</button>
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="doctors_container">
-            <div th:each="doctor : ${dokter_mata}" class="doctor_card">
+            <div th:each="doctor : ${dokter_gigi}" class="doctor_card">
                 <div class="doctor_profile_pic">
                     <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder.jpg'" />
                 </div>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="book_button_container">
-                    <a th:href="@{form_pilih_dokter_mata(id_dokter=${doctor.id_dokter}, tanggal=${doctor.tanggal})}" class="go_to_order_page_button">
+                    <a th:href="@{form_pilih_dokter_gigi(id_dokter=${doctor.id_dokter}, tanggal=${doctor.tanggal})}" class="go_to_order_page_button">
                         <div class="book_button">Pilih</div>
                     </a>
                 </div>

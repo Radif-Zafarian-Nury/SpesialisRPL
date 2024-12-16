@@ -1,7 +1,6 @@
 package com.example.spesialisRPL.User;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -99,14 +98,50 @@ public class UserJdbc implements UserRepository{
 
     @Override
     public List<DokterCardSelection> findFilteredDokterMata(LocalDate date) {
-        List<DokterCardSelection> listFilteredDokter = this.dokterJdbc.getDoctorScheduleByDate(date);
+        List<DokterCardSelection> listFilteredDokter = this.dokterJdbc.getDoctorMataScheduleByDate(date);
+        return listFilteredDokter;
+    }
+
+    @Override
+    public List<DokterCardSelection> findFilteredDokterGigi(LocalDate date) {
+        List<DokterCardSelection> listFilteredDokter = this.dokterJdbc.getDoctorGigiScheduleByDate(date);
+        return listFilteredDokter;
+    }
+
+    @Override
+    public List<DokterCardSelection> findFilteredDokterTht(LocalDate date) {
+        List<DokterCardSelection> listFilteredDokter = this.dokterJdbc.getDoctorThtScheduleByDate(date);
+        return listFilteredDokter;
+    }
+
+    @Override
+    public List<DokterCardSelection> findFilteredDokterJantung(LocalDate date) {
+        List<DokterCardSelection> listFilteredDokter = this.dokterJdbc.getDoctorJantungScheduleByDate(date);
         return listFilteredDokter;
     }
 
     @Override
     public Optional<DokterCardSelection> findDokterMataById(int id_dokter, Date tanggal) {
-        Optional<DokterCardSelection> dokterMata = this.dokterJdbc.getScheduledDoctorById(id_dokter, tanggal);
+        Optional<DokterCardSelection> dokterMata = this.dokterJdbc.getScheduledDoctorMataById(id_dokter, tanggal);
         return dokterMata;
+    }
+
+    @Override
+    public Optional<DokterCardSelection> findDokterGigiById(int id_dokter, Date tanggal) {
+        Optional<DokterCardSelection> dokterGigi = this.dokterJdbc.getScheduledDoctorGigiById(id_dokter, tanggal);
+        return dokterGigi;
+    }
+
+    @Override
+    public Optional<DokterCardSelection> findDokterThtById(int id_dokter, Date tanggal) {
+        Optional<DokterCardSelection> dokterTht = this.dokterJdbc.getScheduledDoctorThtById(id_dokter, tanggal);
+        return dokterTht;
+    }
+
+    @Override
+    public Optional<DokterCardSelection> findDokterJantungById(int id_dokter, Date tanggal) {
+        Optional<DokterCardSelection> dokterJantung = this.dokterJdbc.getScheduledDoctorJantungById(id_dokter, tanggal);
+        return dokterJantung;
     }
 
     @Override
@@ -145,5 +180,4 @@ public class UserJdbc implements UserRepository{
                 """;
         jdbcTemplate.update(sql, id_pasien, id_jadwal, false, false, null);
     }
-
 }
