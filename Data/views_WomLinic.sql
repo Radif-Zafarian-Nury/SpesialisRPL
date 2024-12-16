@@ -178,7 +178,7 @@ CREATE VIEW list_rekam_medis AS
 	suhu_tubuh,
 	tekanan_darah,
 	keluhan,
-	catatan_tambahan,
+	informasi_tambahan,
 	resep_obat,
 	diagnosa_dokter
 FROM

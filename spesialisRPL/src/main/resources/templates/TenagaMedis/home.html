@@ -18,24 +18,23 @@
     </header>
 
     <div class="main-content">
-        <!-- Search bar -->
-        <div class="search-bar">
-            <form method="GET" th:action="@{/listPasien}" id="searchForm">
-                <input type="hidden" name="tgl" th:value="${tgl}">
-                <input type="text" name="namaPasien" id="searchInput" th:value="${nama}"
-                    placeholder="Cari nama pasien" onkeydown="checkKey(event, this.form)">
-                <button onclick="this.form.submit()">Cari</button> 
-            </form>
-
-        </div>
-
-        <!-- Filter Tanggal -->
-        <div class="tanggal-wrapper">
+        <div class="filters">
+            
+            <!-- Filter Tanggal -->
             <div class="filter-tanggal">
                 <form method="GET" th:action="@{listPasien}" id="filterForm">
                     <div class="tanggal">
                         <input type="date" name="tgl" th:value="${tgl}" onchange="this.form.submit()" />
                     </div>
+                </form>
+            </div>
+            <!-- Search bar -->
+            <div class="search-bar">
+                <form method="GET" th:action="@{/listPasien}" id="searchForm">
+                    <input type="hidden" name="tgl" th:value="${tgl}">
+                    <input type="text" name="namaPasien" id="searchInput" th:value="${nama}"
+                        placeholder="Cari nama pasien" onkeydown="checkKey(event, this.form)">
+                    <button onclick="this.form.submit()">Cari</button> 
                 </form>
             </div>
         </div>

@@ -18,7 +18,7 @@ header {
     align-items: center;
     display: flex;
     box-sizing: border-box;
-    
+    z-index: 1;
 }
 img {
     height: 50px;
@@ -139,7 +139,6 @@ main {
     display: flex;
     justify-content: center;
     padding: 20px;
-    background-color: white;
 }
 
 .search-bar input {
@@ -175,4 +174,20 @@ main {
     align-items: center;
     font-size: larger;
     font-weight: bold;
+}
+.filter-tanggal{
+    left: 30px;
+    position: absolute;
+}
+.search-bar{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    left: 15vw;
+    position: relative;
+}
+.filters{
+    align-items: center;
+    background-color: white;
+    display: flex;
 }
