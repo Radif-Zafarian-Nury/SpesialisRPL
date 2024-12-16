@@ -142,12 +142,9 @@ public class AdminJdbc implements AdminRepository{
         // Tambahkan pasien ke tabel pendaftaran
         String sql = """
             INSERT INTO pendaftaran (id_pasien, id_jadwal, id_spesialisasi, status_daftar_ulang, status_bayar, no_antrian)
-            VALUES (?, ?, ?, FALSE, FALSE, NULL
-                FROM pendaftaran
-                WHERE id_jadwal = ?
-            ))
+            VALUES (?, ?, ?, ?, ?, ?)
         """;
-        jdbcTemplate.update(sql, idUser, idJadwal, idSpesialisasi, idJadwal);
+        jdbcTemplate.update(sql, idUser, idJadwal, idSpesialisasi, false, false, null);
     }
 
     public JadwalDokterData mapRowToJadwalDokter(ResultSet resultSet, int rowNum) throws SQLException {
