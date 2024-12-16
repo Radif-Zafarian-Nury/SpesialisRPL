@@ -67,7 +67,8 @@
                         th:disabled="${row.status_bayar}" th:classappend="${row.status_bayar} ? 'disabled' : ''">
                         Tandai Sudah Bayar
                     </button>
-                    <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
+                    <button class="reregister-btn" th:onclick="|daftarUlang('${row.id_pendaftaran}');|"
+                    th:disabled="${row.status_daftar_ulang}" th:classappend="${row.status_daftar_ulang} ? 'disabled' : ''">Daftar Ulang</button>
 
                 </div>
             </div>
@@ -85,8 +86,24 @@
 
 
         async function bayar(id) {
-            //sama kaya check nik rangsek, tapi pas manggil controller di controllernya ganti status dari database
-            console.log('ID: ', id);
+            
+            try {
+                const response = await fetch(`/admin/check-id_pendaftaran?id=${id}`);
+                if (!response.ok) {
+                    console.error('Response status:', response.status);
+                    throw new Error('Network response was not ok');
+                }
+                alert('Payment status updated successfully!'); // Or update the UI accordingly
+                location.reload();
+            }
+            catch (error) {
+                console.log("error");
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function daftarUlang(id) {
+            
             try {
                 const response = await fetch(`/admin/check-id_pendaftaran?id=${id}`);
                 if (!response.ok) {
