@@ -336,7 +336,7 @@ public class AdminJdbc implements AdminRepository{
             SELECT * 
             FROM lihat_pendaftaran_pasien
             WHERE tanggal = ?
-            ORDER BY waktu_mulai, no_antrian
+            ORDER BY status_bayar, waktu_mulai, no_antrian
                 """;
         return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl);
     }

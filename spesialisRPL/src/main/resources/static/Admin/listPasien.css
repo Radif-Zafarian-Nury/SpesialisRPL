@@ -5,10 +5,11 @@ body {
     height: 100vh;
     background-color: #ffffff;
 }
+
 /* Main content styling */
 header {
     position: fixed;
-    height:60px;
+    height: 60px;
     width: 83vw;
     box-sizing: border-box;
     margin-left: 17vw;
@@ -19,11 +20,13 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+
 header .right {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 header span {
     color: rgb(181, 4, 4);
 }
@@ -36,6 +39,7 @@ header button {
     cursor: pointer;
     border-radius: 5px;
 }
+
 header button:hover {
     background-color: rgb(255, 0, 0);
 }
@@ -56,6 +60,7 @@ header button:hover {
     padding: 20px;
     background-color: white;
 }
+
 .search-bar input {
     width: 300px;
     padding: 10px;
@@ -64,6 +69,7 @@ header button:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
 .search-bar button {
     padding: 10px 15px;
     font-size: 16px;
@@ -73,6 +79,7 @@ header button:hover {
     cursor: pointer;
     border-radius: 5px;
 }
+
 .search-bar button:hover {
     background-color: rgb(255, 0, 0);
 }
@@ -84,6 +91,7 @@ header button:hover {
     flex-direction: column;
     gap: 15px;
 }
+
 .patient-card {
     display: flex;
     justify-content: space-between;
@@ -108,7 +116,8 @@ header button:hover {
     margin: 0;
 }
 
-.status-btn, .reregister-btn {
+.status-btn,
+.reregister-btn {
     padding: 10px 20px;
     background-color: rgb(181, 4, 4);
     color: white;
@@ -116,7 +125,16 @@ header button:hover {
     cursor: pointer;
     border-radius: 5px;
 }
-.status-btn:hover, .reregister-btn:hover {
+
+.disabled {
+    background-color: rgb(181, 4, 4); /* Keep the same background color */
+    color: #a1a1a1; /* Gray text */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+    opacity: 0.6; /* Make it slightly transparent */
+}
+
+.status-btn:hover,
+.reregister-btn:hover {
     background-color: rgb(255, 0, 0);
 }
 
@@ -125,7 +143,7 @@ header button:hover {
     gap: 10px;
 }
 
-a{
+a {
     text-decoration: none;
     color: white;
 }

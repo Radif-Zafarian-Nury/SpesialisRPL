@@ -27,7 +27,7 @@
             <form method="GET" th:action="@{/admin/list-pasien}" id="searchForm">
                 <input type="hidden" name="tgl" th:value="${tgl}">
                 <input type="text" name="namaPasien" id="searchInput" th:value="${namaPasien}"
-                    placeholder="Cari nomor rekam medis pasien" onkeydown="checkKey(event, this.form)">
+                    placeholder="Cari nama pasien" onkeydown="checkKey(event, this.form)">
 
                 <button onclick="this.form.submit()">Cari</button>
             </form>
@@ -63,9 +63,12 @@
                     <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
                 </div>
                 <div class="button-group">
-                    <button class="status-btn" th:onclick="bayar(${row.id})">Tandai Sudah Bayar</button>
+                    <button class="status-btn" th:onclick="|bayar('${row.id_pendaftaran}');|"
+                        th:disabled="${row.status_bayar}" th:classappend="${row.status_bayar} ? 'disabled' : ''">
+                        Tandai Sudah Bayar
+                    </button>
                     <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
-                    
+
                 </div>
             </div>
         </div>
@@ -83,7 +86,7 @@
 
         async function bayar(id) {
             //sama kaya check nik rangsek, tapi pas manggil controller di controllernya ganti status dari database
-            console.log('ID:', id);
+            console.log('ID: ', id);
             try {
                 const response = await fetch(`/admin/check-id_pendaftaran?id=${id}`);
                 if (!response.ok) {
@@ -91,10 +94,15 @@
                     throw new Error('Network response was not ok');
                 }
                 alert('Payment status updated successfully!'); // Or update the UI accordingly
-            } catch (error) {
+                location.reload();
+            }
+            catch (error) {
+                console.log("error");
                 alert(`Error: ${error.message}`);
             }
         }
+
+
     </script>
 </body>
 
