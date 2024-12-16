@@ -366,10 +366,10 @@ public class AdminJdbc implements AdminRepository{
                 SELECT * 
                 FROM lihat_pendaftaran_pasien
                 WHERE tanggal = ?
-                AND (nama iLIKE ?)
+                AND (nama ILIKE ?)
                 ORDER BY waktu_mulai, no_antrian
                 """;
-        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl, ("%"+name+"%"));
     }
  
     @Override
