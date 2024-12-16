@@ -9,39 +9,43 @@
 </head>
 <body>
     <header>
+        <a th:href="@{/listPasien}"><img src="/assets/WomLinic Fix Logo.png" alt="Logo"></a>
         <span>Daftar Pasien Hari Ini</span>
         <div class="right">
-            <span>Hi, Dokter</span>
+            <span th:text="'Hi, ' + ${role}"></span>
             <a th:href="@{/logout}"><button>Logout</button></a>
         </div>
     </header>
 
-    <div class="search-bar">
-        <form th:action="@{/api/patients/search}" method="get">
-            <input type="text" name="medicalRecordNumber" placeholder="Cari nomor rekam medis pasien">
-            <button type="submit">Cari</button>
-        </form>
-    </div>
-
-    <main>
-        <div class="card-container">
-            <div class="card" th:each="patient : ${patients}">
-                <div class="info">
-                    <h3 th:text="${patient.nama}"></h3>
-                    <p>Tanggal Lahir: <span th:text="${patient.tanggal_lahir}"></span></p>
-                    <p>Gender: <span th:text="${patient.jenis_kelamin}"></span></p>
-                    <p>Jadwal: <span th:text="${patient.jadwal}"></span></p>
-                    <p>Nomor Antrian: <span th:text="${patient.no_antrian}"></span></p>
-                </div>
-                <a th:href="@{'/diagnosa/' + ${patient.id_pasien}}">
-                    <button class="edit-btn">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                </a>
-                
-                
-            </div>
+    <div class="main-content">
+        <div class="search-bar">
+            <form th:action="@{/api/patients/search}" method="get">
+                <input type="text" name="medicalRecordNumber" placeholder="Cari nomor rekam medis pasien">
+                <button type="submit">Cari</button>
+            </form>
         </div>
-    </main>
+
+        <main>
+            <div class="card-container">
+                <div class="card" th:each="patient : ${patients}">
+                    <div class="info">
+                        <h3 th:text="${patient.nama}"></h3>
+                        <p>Tanggal Lahir: <span th:text="${patient.tanggal_lahir}"></span></p>
+                        <p>Gender: <span th:text="${patient.jenis_kelamin}"></span></p>
+                        <p>Jadwal: <span th:text="${patient.jadwal}"></span></p>
+                        <p>Nomor Antrian: <span th:text="${patient.no_antrian}"></span></p>
+                    </div>
+                    <a th:href="@{'/diagnosa/' + ${patient.id_pasien}}">
+                        <button class="edit-btn">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </a>
+                    
+                    
+                </div>
+            </div>
+        </main>
+
+    </div>
 </body>
 </html>

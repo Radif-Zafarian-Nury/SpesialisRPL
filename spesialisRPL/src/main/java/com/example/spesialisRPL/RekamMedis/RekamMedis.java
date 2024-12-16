@@ -6,6 +6,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class RekamMedis {
+    private int id_diagnosa;
     private int id_pasien;
     private String tanggal;
     private double tinggi_badan;
@@ -17,6 +18,8 @@ public class RekamMedis {
     private String jenis_kelamin;
     private String tanggal_lahir;
     private String tekanan_darah;
-    private String catatan_tambahan;
+    private String informasi_tambahan;    //base64
     private String keluhan;
+
+    public RekamMedis(){}
 }
