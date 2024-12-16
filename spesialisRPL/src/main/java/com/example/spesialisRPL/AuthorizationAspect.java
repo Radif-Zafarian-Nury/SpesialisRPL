@@ -39,7 +39,8 @@ public class AuthorizationAspect {
         }
         
         if (!Arrays.asList(roles).contains(role)) {
-            throw new SecurityException("Authorized only for : " + Arrays.toString(roles));
+            response.sendRedirect("/login");
+            return;
         }
     }
 }

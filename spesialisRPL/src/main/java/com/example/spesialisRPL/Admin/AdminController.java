@@ -1,9 +1,7 @@
 package com.example.spesialisRPL.Admin;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -25,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.spesialisRPL.RequiredRole;
 import com.example.spesialisRPL.User.UserData;
 import com.example.spesialisRPL.User.UserRepository;
-import com.example.spesialisRPL.User.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -47,7 +45,7 @@ public class AdminController {
 
     //HALAMAN UTAMA
     @GetMapping("/")
-    //@RequiredRole({"admin"})
+    @RequiredRole({"admin"})
     public String index(@RequestParam(value = "tgl", required = false) LocalDate tgl, Model model, HttpSession session){
         
         if(tgl==null){
@@ -71,16 +69,23 @@ public class AdminController {
     //AMBIL NILAI DOKTER SPESIALISASI BERDASARKAN DOKTER
     @GetMapping("/get-spesialisasi")
     @ResponseBody
-    public ResponseEntity<List<String>> getSpesialisasi(@RequestParam("dokter") String dokter){
-        List<String> spesialisai = adminRepository.findSpecializationsByDoctor(dokter);
+    public ResponseEntity<List<String>> getSpesialisasi(
+        @RequestParam("dokter") String dokter,
+        @RequestParam("tanggal") String tanggal
+    ){
+        List<String> spesialisai = adminRepository.findSpecializationsByDoctor(dokter, tanggal);
         return ResponseEntity.ok(spesialisai);
     }
 
     //AMBIL NILAI JADWAL BERDASARKAN SPESIALIASI
     @GetMapping("/get-jadwal")
     @ResponseBody
-    public ResponseEntity<List<JadwalDokterData>> getJadwal(@RequestParam("spesialisasi") String spesialisasi){
-        List<JadwalDokterData> jadwal = adminRepository.findSchedulesBySpecialization(spesialisasi);
+    public ResponseEntity<List<JadwalDokterData>> getJadwal(
+        @RequestParam("spesialisasi") String spesialisasi,
+        @RequestParam("dokter") String dokter,
+        @RequestParam("tanggal") String tanggal
+    ){
+        List<JadwalDokterData> jadwal = adminRepository.findSchedulesBySpecialization(spesialisasi, dokter, tanggal);
         return ResponseEntity.ok(jadwal);
     }
 
@@ -125,6 +130,14 @@ public class AdminController {
         return ResponseEntity.ok(pendaftaran);
     }
 
+    @GetMapping("/daftar-ulang")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> daftarUlang(@RequestParam("id") int id){
+        
+        List<PasienData> pendaftaran = adminRepository.updateDaftarUlang(id);
+        return ResponseEntity.ok(pendaftaran);
+    }
+
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
     @GetMapping("/get-nama_pasien")
     @ResponseBody
@@ -149,9 +162,13 @@ public class AdminController {
 
     @PostMapping("/register-pasien")
     @ResponseBody
-    public ResponseEntity<String> registerPasien(@RequestParam("nik") String nik, @RequestParam("idJadwal") int idJadwal){
+    public ResponseEntity<String> registerPasien(
+        @RequestParam("nik") String nik, 
+        @RequestParam("idJadwal") int idJadwal,
+        @RequestParam("spesialisasi") String spesialisasi
+    ){
         //Validasi nik
-        if (nik == null || nik.length() != 16 || !nik.matches("[a-zA-Z]+")) {
+        if (nik == null || nik.length() != 16 || !nik.matches("\\d+")) {
             return ResponseEntity.badRequest().body("NIK tidak valid.");
         }
         
@@ -163,7 +180,7 @@ public class AdminController {
 
         //Mendaftarkan pasien
         try {
-            adminRepository.registerPasien(nik, idJadwal);
+            adminRepository.registerPasien(nik, idJadwal, spesialisasi);
             adminRepository.incrementKuotaTerisi(idJadwal);
             return ResponseEntity.ok("Pasien berhasil didaftarkan");
         } catch (Exception e){

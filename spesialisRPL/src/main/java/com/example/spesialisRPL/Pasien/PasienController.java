@@ -1,32 +1,49 @@
 package com.example.spesialisRPL.Pasien;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.example.spesialisRPL.RequiredRole;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PasienController {
     @Autowired
-    private PasienService pasienService;
+    private PasienRepository pasienRepository;
 
+    // @GetMapping("/listPasien")
+    // //@RequiredRole({"dokter", "perawat"})
+    // public String listPatients(Model model) {
+    //     List<Pasien> pasienList = pasienService.getAllpasiens();
+
+    //     model.addAttribute("patients", pasienList);
+    //     return "TenagaMedis/home";
+    // }
+
+    //LIST PASIEN
     @GetMapping("/listPasien")
-    @RequiredRole({"dokter", "perawat"})
-    public String listPatients(Model model, HttpSession session) {
-        //Ambil role
+    public String medisListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model,  HttpSession session){
+        if(tgl==null){
+            tgl = LocalDate.now();
+        }
+        List<Pasien> listPasien;
+
+        if (namaPasien == null) {
+            listPasien = pasienRepository.findPendaftaranByDate(tgl);
+        } else {
+            listPasien = pasienRepository.findPendaftaranByDateAndName(tgl, namaPasien);
+            model.addAttribute("name", namaPasien); 
+        }
         String role = (String) session.getAttribute("role");
 
-        List<Pasien> pasienList = pasienService.getAllpasiens();
-
+        model.addAttribute("tgl", tgl);
+        model.addAttribute("patients", listPasien);
         model.addAttribute("role", role);
-        model.addAttribute("patients", pasienList);
         return "TenagaMedis/home";
     }
-
 }
