@@ -172,3 +172,12 @@ main {
     flex-direction: column;
     justify-content: start;
 }
+
+.doctor_profile_pic {
+    margin-right: 10px;
+}
+
+.doctor_profile_pic > img{
+    width: 10vw;
+    height: 20vh;
+}

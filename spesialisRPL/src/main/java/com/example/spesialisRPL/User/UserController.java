@@ -36,12 +36,34 @@ public class UserController {
         return "User/index";
     }
 
-    @GetMapping("/form_pilih_dokter")
-    public String showDokterForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+    @GetMapping("/form_pilih_dokter_mata")
+    public String showDokterMataForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
         Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterMataById(id_dokter, tanggal);
         model.addAttribute("doctor", foundDokter.get());
-        return "User/form_pesan_dokter";
+        return "User/form_pesan_dokter_mata";
     }
+
+    @GetMapping("/form_pilih_dokter_gigi")
+    public String showDokterGigiForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+        Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterGigiById(id_dokter, tanggal);
+        model.addAttribute("doctor", foundDokter.get());
+        return "User/form_pesan_dokter_gigi";
+    }
+
+    @GetMapping("/form_pilih_dokter_tht")
+    public String showDokterThtForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+        Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterThtById(id_dokter, tanggal);
+        model.addAttribute("doctor", foundDokter.get());
+        return "User/form_pesan_dokter_tht";
+    }
+
+    @GetMapping("/form_pilih_dokter_jantung")
+    public String showDokterJantungForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+        Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterJantungById(id_dokter, tanggal);
+        model.addAttribute("doctor", foundDokter.get());
+        return "User/form_pesan_dokter_jantung";
+    }
+
     
     @GetMapping("/register")
     public String register(){
@@ -53,6 +75,27 @@ public class UserController {
         List<DokterCardSelection> listDokterMata = this.userRepository.findFilteredDokterMata(date);
         model.addAttribute("dokter_mata", listDokterMata);
         return "User/spesialis_mata";
+    }
+
+    @GetMapping("/spesialisGigi")
+    public String spesialisGigi(@RequestParam(value = "date", required = false) LocalDate date, Model model) {
+        List<DokterCardSelection> listDokterGigi = this.userRepository.findFilteredDokterGigi(date);
+        model.addAttribute("dokter_gigi", listDokterGigi);
+        return "User/spesialis_gigi";
+    }
+
+    @GetMapping("/spesialisTht")
+    public String spesialisTht(@RequestParam(value = "date", required = false) LocalDate date, Model model) {
+        List<DokterCardSelection> listDokterTht = this.userRepository.findFilteredDokterTht(date);
+        model.addAttribute("dokter_tht", listDokterTht);
+        return "User/spesialis_tht";
+    }
+
+    @GetMapping("/spesialisJantung")
+    public String spesialisJantung(@RequestParam(value = "date", required = false) LocalDate date, Model model) {
+        List<DokterCardSelection> listDokterTht = this.userRepository.findFilteredDokterJantung(date);
+        model.addAttribute("dokter_jantung", listDokterTht);
+        return "User/spesialis_jantung";
     }
 
     // @PostMapping("/pesan_dokter")
@@ -109,8 +152,8 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @PostMapping("/pesan_dokter")
-    public String pesanDokter(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+    @PostMapping("/pesan_dokter_mata")
+    public String pesanDokterMata(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
         if(session.getAttribute("user") == null) {
             return "redirect:/login";
         }
@@ -118,5 +161,38 @@ public class UserController {
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
         return "redirect:/user/spesialisMata";
+    }
+
+    @PostMapping("/pesan_dokter_gigi")
+    public String pesanDokterGigi(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+        if(session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        int idPasien = this.userRepository.getPatientIdByNik(nik);
+        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        return "redirect:/user/spesialisGigi";
+    }
+
+    @PostMapping("/pesan_dokter_tht")
+    public String pesanDokterTht(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+        if(session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        int idPasien = this.userRepository.getPatientIdByNik(nik);
+        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        return "redirect:/user/spesialisTht";
+    }
+
+    @PostMapping("/pesan_dokter_jantung")
+    public String pesanDokterJantung(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
+        if(session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        int idPasien = this.userRepository.getPatientIdByNik(nik);
+        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        return "redirect:/user/spesialisJantung";
     }
 }
