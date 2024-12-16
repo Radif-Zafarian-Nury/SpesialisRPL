@@ -114,7 +114,7 @@ public class UserController {
         if(session.getAttribute("user") == null) {
             return "redirect:/login";
         }
-
+        
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
         return "redirect:/user/spesialisMata";

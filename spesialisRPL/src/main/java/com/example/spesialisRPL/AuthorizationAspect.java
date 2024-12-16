@@ -39,6 +39,18 @@ public class AuthorizationAspect {
         }
         
         if (!Arrays.asList(roles).contains(role)) {
+            if(role.equals("Pasien")){
+                response.sendRedirect("/user/");
+                return;
+            }
+            if(role.equals("dokter") || role.equals("perawat")){
+                response.sendRedirect("/listPasien");
+                return;
+            }
+            if(role.equals("admin")){
+                response.sendRedirect("/admin/");
+                return;
+            }
             throw new SecurityException("Authorized only for : " + Arrays.toString(roles));
         }
     }

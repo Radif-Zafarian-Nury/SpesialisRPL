@@ -9,23 +9,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.spesialisRPL.RequiredRole;
+
 @Controller
 public class PasienController {
     @Autowired
     private PasienRepository pasienRepository;
 
-    // @GetMapping("/listPasien")
-    // //@RequiredRole({"dokter", "perawat"})
-    // public String listPatients(Model model) {
-    //     List<Pasien> pasienList = pasienService.getAllpasiens();
-
-    //     model.addAttribute("patients", pasienList);
-    //     return "TenagaMedis/home";
-    // }
-
     //LIST PASIEN
     @GetMapping("/listPasien")
+    @RequiredRole({"dokter", "perawat"})
     public String medisListPasien(@RequestParam(value = "tgl", required = false) LocalDate tgl, @RequestParam(value = "namaPasien", required = false) String namaPasien, Model model){
+        
         if(tgl==null){
             tgl = LocalDate.now();
         }
