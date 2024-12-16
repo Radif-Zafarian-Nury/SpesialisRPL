@@ -63,8 +63,10 @@
                     <p th:text="'No antrian: ' + ${row.no_antrian}"></p>
                 </div>
                 <div class="button-group">
-                    <button class="status-btn" th:onclick="|bayar('${row.id_pendaftaran}');|">Tandai Sudah
-                        Bayar</button>
+                    <button class="status-btn" th:onclick="|bayar('${row.id_pendaftaran}');|"
+                        th:disabled="${row.status_bayar}" th:classappend="${row.status_bayar} ? 'disabled' : ''">
+                        Tandai Sudah Bayar
+                    </button>
                     <button class="reregister-btn" onclick="daftarUlang()">Daftar Ulang</button>
 
                 </div>
@@ -92,6 +94,7 @@
                     throw new Error('Network response was not ok');
                 }
                 alert('Payment status updated successfully!'); // Or update the UI accordingly
+                location.reload();
             }
             catch (error) {
                 console.log("error");
@@ -99,7 +102,7 @@
             }
         }
 
-        
+
     </script>
 </body>
 
