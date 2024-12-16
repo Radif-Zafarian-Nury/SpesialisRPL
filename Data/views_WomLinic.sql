@@ -109,7 +109,11 @@ From
 CREATE VIEW lihat_pendaftaran_pasien AS
 (SELECT
 	pendaftaran.id_pendaftaran,
+	id_pasien,
 	users.nama as nama_pasien, --nama pasien
+	jenis_kelamin,
+	tanggal_lahir,
+	no_rekam_medis,
 	nama_dokter,
 	nama_spesialisasi,
 	waktu_mulai,
@@ -200,9 +204,3 @@ SELECT * FROM dokter_info;
 SELECT * FROM list_pasien;
 SELECT * FROM list_rekam_medis;
 SELECT * FROM ambil_last_rekam_medis;
-
---SELECT * 
---FROM lihat_pendaftaran_pasien
---WHERE id_pendaftaran = 1
-
---Select * from pendaftaran

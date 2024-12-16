@@ -16,11 +16,33 @@
         </div>
     </header>
 
-    <div class="search-bar">
+    <!-- <div class="search-bar">
         <form th:action="@{/api/patients/search}" method="get">
             <input type="text" name="medicalRecordNumber" placeholder="Cari nomor rekam medis pasien">
             <button type="submit">Cari</button>
         </form>
+    </div> -->
+
+    <!-- Search bar -->
+    <div class="search-bar">
+        <form method="GET" th:action="@{/listPasien}" id="searchForm">
+            <input type="hidden" name="tgl" th:value="${tgl}">
+            <input type="text" name="namaPasien" id="searchInput" th:value="${nama}"
+                placeholder="Cari nama pasien" onkeydown="checkKey(event, this.form)">
+            <button onclick="this.form.submit()">Cari</button> 
+        </form>
+
+    </div>
+
+    <!-- Filter Tanggal -->
+    <div class="tanggal-wrapper">
+        <div class="filter-tanggal">
+            <form method="GET" th:action="@{listPasien}" id="filterForm">
+                <div class="tanggal">
+                    <input type="date" name="tgl" th:value="${tgl}" onchange="this.form.submit()" />
+                </div>
+            </form>
+        </div>
     </div>
 
     <main>
@@ -38,10 +60,18 @@
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                 </a>
-                
-                
             </div>
         </div>
     </main>
+
+    <script>
+        async function checkKey(event, form) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submission
+                form.submit(); // Submit the form
+                console.log("Function is called");
+            }
+        }
+    </script>
 </body>
 </html>
