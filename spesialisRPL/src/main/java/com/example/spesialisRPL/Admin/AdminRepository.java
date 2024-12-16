@@ -24,6 +24,7 @@ public interface AdminRepository {
     void updateDokter(Dokter dokter, List<String> spesialisasi, List<JadwalDokterData> jadwal);
     List<JadwalDokterData> findSchedulesByDate(LocalDate tgl);
     List<PasienData> updatePembayaran(int id);
+    List<PasienData> updateDaftarUlang(int id);
     ArrayList<JadwalDokterData> getFutureJadwalByDoctorID(int id, LocalDate tgl);
     void deleteJadwalById(int idJadwal);
 }
