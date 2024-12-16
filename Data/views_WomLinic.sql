@@ -134,6 +134,7 @@ CREATE VIEW dokter_info AS
     id_user,
     nama,
     nik,
+	sip,
     foto_dokter,
     alamat,
     jenis_kelamin
@@ -174,6 +175,9 @@ CREATE VIEW list_rekam_medis AS
 	tinggi_badan,
 	berat_badan,
 	suhu_tubuh,
+	tekanan_darah,
+	keluhan,
+	catatan_tambahan,
 	resep_obat,
 	diagnosa_dokter
 FROM
