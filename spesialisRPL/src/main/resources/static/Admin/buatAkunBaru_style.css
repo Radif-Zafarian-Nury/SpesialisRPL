@@ -7,6 +7,11 @@ body {
 }
 /* Main content styling */
 header {
+    position: fixed;
+    height:60px;
+    width: 83vw;
+    box-sizing: border-box;
+    margin-left: 17vw;    
     background-color: rgb(243, 243, 243);
     color: white;
     padding: 10px 20px;
@@ -37,6 +42,8 @@ header button:hover {
 
 .main-content {
     flex: 1;
+    margin-top: 50px;
+    margin-left: 18vw;
     display: flex;
     flex-direction: column;
 }

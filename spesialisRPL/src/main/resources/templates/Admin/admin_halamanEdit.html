@@ -10,15 +10,15 @@
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
 
+    <header>
+        <span>Edit Data Dokter</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Edit Data Dokter</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <a th:href="@{/logout}"><button>Logout</button></a>
-            </div>
-        </header>
 
         <!-- Edit Form -->
         <div class="form-container">
@@ -84,6 +84,65 @@
                     </div>
 
                 </div>
+
+                <!-- Doctor Schedules -->
+                <div class="form-group" id="schedule-container">
+                    <label id="jadwal-label">Jadwal</label>
+                    <div class="schedule" th:each="jadwal, stat : ${wrapper.listJadwal}">
+                        <div class="schedule-input">
+                            <input type="hidden" name="idJadwal" th:name="'listJadwal[' + ${stat.index} + '].idJadwal'" th:value="${jadwal.idJadwal}" />
+                            <div class="input-group">
+                                <label for="tanggal">Tanggal</label>
+                                <input type="date" 
+                                    th:name="'listJadwal[' + ${stat.index} + '].tanggal'"
+                                    th:value="${jadwal.tanggal}" 
+                                    th:disabled="${jadwal.kuotaTerisi > 0}" 
+                                    required>
+                            </div>
+                            <div class="input-group">
+                                <label for="waktuMulai">Waktu Mulai</label>
+                                <input type="time" 
+                                    th:name="'listJadwal[' + ${stat.index} + '].waktu_mulai'"
+                                    th:value="${jadwal.waktu_mulai}" 
+                                    th:disabled="${jadwal.kuotaTerisi > 0}" 
+                                    min="07:00" max="17:00" step="3600"
+                                    required>
+                            </div>
+                            <div class="input-group">
+                                <label for="waktuSelesai">Waktu Selesai</label>
+                                <input type="time" 
+                                    th:name="'listJadwal[' + ${stat.index} + '].waktu_selesai'"
+                                    th:value="${jadwal.waktu_selesai}" 
+                                    th:disabled="${jadwal.kuotaTerisi > 0}" 
+                                    min="07:00" max="17:00" step="3600"
+                                    required>
+                            </div>
+                            <div class="input-group">
+                                <label for="kuotaMax">Kuota Max</label>
+                                <input type="number" 
+                                    th:name="'listJadwal[' + ${stat.index} + '].kuotaMax'"
+                                    th:value="${jadwal.kuotaMax}" 
+                                    th:min="${jadwal.kuotaTerisi }" 
+                                    required 
+                                    id="kuotaMax_${stat.index}" 
+                                    th:attr="onchange='validateKuotaMax(this, ' + ${jadwal.kuotaTerisi} + ')'">
+                            </div>
+                            <div class="input-group">
+                                <label for="kuotaTerisi">Kuota Terisi</label>
+                                <input type="number" 
+                                    th:name="'listJadwal[' + ${stat.index} + '].kuotaTerisi'"
+                                    th:value="${jadwal.kuotaTerisi}" 
+                                    disabled>
+                            </div>
+                            <img th:if="${jadwal.kuotaTerisi == 0}" 
+                                src="/assets/minus_circle.png" 
+                                onclick="removeScheduleInput(this)" 
+                                alt="Remove Schedule">
+                        </div>
+                    </div>
+                    <img id="plus-button" th:src="@{/assets/plus_circle.png}" onclick="addScheduleInput()" alt="Add Schedule">
+                </div>
+
                 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -91,7 +150,78 @@
                     <button type="submit" class="save-btn">Simpan</button>
                 </div>
             </form>
+
+            <script>
+                function addScheduleInput() {
+                    const scheduleDiv = document.createElement("div");
+                    scheduleDiv.className = "schedule-input";
+                
+                    const index = document.querySelectorAll('.schedule-input').length;
+                
+                    scheduleDiv.innerHTML = `
+                        <input type="hidden" name="listJadwal[${index}].idJadwal" value="-1" />
+                        <div class="input-group">
+                            <label for="tanggal">Tanggal</label>
+                            <input type="date" name="listJadwal[${index}].tanggal" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="waktu_mulai">Waktu Mulai</label>
+                            <input type="time" name="listJadwal[${index}].waktu_mulai" min="07:00" max="17:00" step="3600" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="waktu_selesai">Waktu Selesai</label>
+                            <input type="time" name="listJadwal[${index}].waktu_selesai" min="08:00" max="18:00" step="3600" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="kuotaMax">Kuota Max</label>
+                            <input type="number" name="listJadwal[${index}].kuotaMax" min="1" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="kuotaTerisi">Kuota Terisi</label>
+                            <input type="number" name="listJadwal[${index}].kuotaTerisi" value="0" placeholder="0" disabled required>
+                        </div>
+                        <img src="/assets/minus_circle.png" onclick="removeScheduleInput(this)" alt="Remove Schedule">
+                    `;
+                    const plusButton = document.getElementById("plus-button");
+                    plusButton.parentNode.insertBefore(scheduleDiv, plusButton);
+                }
+                
+                function removeScheduleInput(element) {
+                    const scheduleDiv = element.parentElement;
+                    const idInput = scheduleDiv.querySelector('[name$=".idJadwal"]');
+                    const idValue = idInput ? idInput.value : null;
+                
+                    if (idValue && idValue !== "-1") {
+                        const deleteInput = document.createElement("input");
+                        deleteInput.type = "hidden";
+                        deleteInput.name = "idsToDelete";  
+                        deleteInput.value = idValue;       
+                        document.getElementById("editDoctorForm").appendChild(deleteInput);
+                    }
+                
+                    scheduleDiv.remove();
+                
+                    const scheduleInputs = document.querySelectorAll('.schedule-input');
+                    scheduleInputs.forEach((schedule, index) => {
+                        schedule.querySelector('[name$=".idJadwal"]').name = `listJadwal[${index}].idJadwal`;
+                        schedule.querySelector('[name$=".tanggal"]').name = `listJadwal[${index}].tanggal`;
+                        schedule.querySelector('[name$=".waktu_mulai"]').name = `listJadwal[${index}].waktu_mulai`;
+                        schedule.querySelector('[name$=".waktu_selesai"]').name = `listJadwal[${index}].waktu_selesai`;
+                        schedule.querySelector('[name$=".kuotaMax"]').name = `listJadwal[${index}].kuotaMax`;
+                        schedule.querySelector('[name$=".kuotaTerisi"]').name = `listJadwal[${index}].kuotaTerisi`;
+                    });
+                }
+                
+                
             
+                function validateKuotaMax(inputElement, kuotaTerisi) {
+                    const kuotaMaxValue = parseInt(inputElement.value);
+                    if (kuotaMaxValue < kuotaTerisi) {
+                        alert("Kuota Max harus lebih besar atau sama dengan Kuota Terisi.");
+                        inputElement.value = inputElement.getAttribute("value");
+                    }
+                }
+            </script>
         </div>
         
     </div>

@@ -11,16 +11,16 @@
 <body>
     <!-- Sidebar -->
     <th:block th:include="~{Admin/sidebar :: sidebarAdmin}"></th:block>
-
+    
+    <header>
+        <span>Buat Akun Baru</span>
+        <div class="right">
+            <span>Hi, Admin</span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
     <!-- Main Content -->
     <div class="main-content">
-        <header>
-            <span>Buat Akun Baru</span>
-            <div class="right">
-                <span>Hi, Admin</span>
-                <a th:href="@{/logout}"><button>Logout</button></a>
-            </div>
-        </header>
 
         <!-- Error msg -->
         <div th:if="${error}" style="color: red;">
@@ -34,16 +34,26 @@
                 <!-- Name -->
                 <div class="form-group">
                     <label for="userName">Nama</label>
-                    <input type="text" id="userName" name="userName" placeholder="Masukkan nama lengkap" required
-                        minlength="16" maxlength="16">
+                    <input type="text" id="userName" name="nama" placeholder="Masukkan nama lengkap" required maxlength="100">
                 </div>
 
                 <!-- NIK -->
                 <div class="form-group">
                     <label for="userNIK">NIK</label>
-                    <input type="text" id="userNIK" name="userNIK" placeholder="Masukkan NIK" required minlength="16"
-                        maxlength="16">
+                    <input type="text" id="userNIK" name="nik" placeholder="Masukkan NIK" required minlength="16" maxlength="16">
 
+                </div>
+
+                <!-- Tempat Lahir -->
+                <div class="form-group">
+                    <label for="tempatLahir">Tempat Lahir</label>
+                    <input type="text" id="tempatLahir" name="tempat_lahir" placeholder="Masukkan tempat lahir" required>
+                </div>
+                
+                <!-- Tanggal Lahir -->
+                <div class="form-group">
+                    <label for="tanggalLahir">Tanggal Lahir</label>
+                    <input type="date" id="tanggalLahir" name="tanggal_lahir" required>
                 </div>
 
                 <!-- Email -->
@@ -55,7 +65,7 @@
                 <!-- Address -->
                 <div class="form-group">
                     <label for="userAddress">Alamat</label>
-                    <input type="text" id="userAddress" name="userAddress" placeholder="Masukkan alamat lengkap"
+                    <input type="text" id="userAddress" name="alamat" placeholder="Masukkan alamat lengkap"
                         required>
                 </div>
 
@@ -74,34 +84,36 @@
                         placeholder="Masukkan kembali kata sandi" required>
                 </div>
 
+                <input type="hidden" name="statusAktif" value="true">
 
                 <!-- Peran/Specialization -->
                 <div class="form-group">
                     <!-- Kalo spesialis, peran = dokter terus tambahin spesialis-->
                     <label for="userRole">Peran</label>
-                    <select id="userRole" name="userSpecialization">
-                        <option value="Spesialis Jantung">Spesialis Jantung</option>
-                        <option value="Spesialis Mata">Spesialis Mata</option>
-                        <option value="Spesialis Gigi">Spesialis Gigi</option>
-                        <option value="Spesialis THT">Spesialis THT</option>
-                        <option value="Perawat">Perawat</option>
-                        <option value="Admin">Admin</option>
+                    <select id="userRole" name="peran">
                         <option value="Pasien">Pasien</option>
+                        <option value="Perawat">Perawat</option>
+                        <option value="Dokter">Dokter</option>
+                        <option value="Admin">Admin</option>
                     </select>
+                </div>
+
+                <!-- input SIP -->
+                <div class="form-group" id="sipContainer" style="display: none;">
+                    <label for="noSIP">Nomor SIP</label>
+                    <input type="text" id="noSIP" name="sip" placeholder="Masukkan Nomor SIP">
                 </div>
 
                 <!-- Gender -->
                 <div class="form-group">
                     <label>Jenis Kelamin</label>
                     <label>
-                        <input type="radio" name="gender" value="male" required> Laki-laki
+                        <input type="radio" name="jenis_kelamin" value="L" required> Laki-laki
                     </label>
                     <label>
-                        <input type="radio" name="gender" value="female" required> Perempuan
+                        <input type="radio" name="jenis_kelamin" value="P" required> Perempuan
                     </label>
                 </div>
-
-
 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -111,5 +123,29 @@
         </div>
     </div>
 </body>
+
+<script>
+    // Dapatkan elemen-elemen terkait
+    const userRole = document.getElementById('userRole');
+    const sipContainer = document.getElementById('sipContainer');
+
+    // Daftar peran yang memerlukan nomor SIP
+    const rolesWithSIP = 'Dokter'
+
+    // Event listener untuk perubahan peran
+    userRole.addEventListener('change', function () {
+        if (rolesWithSIP.includes(userRole.value)) {
+            // Tampilkan input SIP jika peran adalah spesialis
+            sipContainer.style.display = 'block';
+            // Tambahkan atribut required
+            document.getElementById('noSIP').required = true;
+        } else {
+            // Sembunyikan input SIP jika peran bukan spesialis
+            sipContainer.style.display = 'none';
+            // Hapus atribut required
+            document.getElementById('noSIP').required = false;
+        }
+    });
+</script>
 
 </html>

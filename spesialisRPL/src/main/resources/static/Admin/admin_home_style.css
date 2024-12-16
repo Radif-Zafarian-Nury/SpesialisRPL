@@ -9,10 +9,18 @@ body {
 /* Main content styling */
 .main-content {
     flex: 1;
+    margin: 10px;
+    margin-top: 90px;
+    margin-left:18vw;
     display: flex;
     flex-direction: column;
 }
 header {
+    position: fixed;
+    height:60px;
+    width: 83vw;
+    box-sizing: border-box;
+    margin-left: 17vw;   
     background-color: rgb(243, 243, 243);
     color: white;
     padding: 10px 20px;
