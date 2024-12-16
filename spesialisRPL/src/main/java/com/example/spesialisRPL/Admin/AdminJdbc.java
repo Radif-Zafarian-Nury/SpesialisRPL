@@ -48,13 +48,13 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
-    public List<String> findSpecializationsByDoctor(String dokter) {
+    public List<String> findSpecializationsByDoctor(String dokter, String tanggal) {
         String sql = """
                 SELECT DISTINCT nama_spesialisasi
                 FROM lihat_jadwal_dokter
-                WHERE nama = ?
+                WHERE nama = ? AND tanggal = ?
                 """;
-        return jdbcTemplate.query(sql, (resultSet, rowNum) -> resultSet.getString("nama_spesialisasi"), dokter);
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> resultSet.getString("nama_spesialisasi"), dokter, LocalDate.parse(tanggal));
     }
 
     @Override
@@ -69,11 +69,11 @@ public class AdminJdbc implements AdminRepository{
 
 
     @Override
-    public List<JadwalDokterData> findSchedulesBySpecialization(String spesialisasi) {
+    public List<JadwalDokterData> findSchedulesBySpecialization(String spesialisasi, String dokter, String tanggal) {
         String sql = """
                 SELECT id_jadwal AS idJadwal, nama, nama_spesialisasi, tanggal, waktu_mulai, waktu_selesai
                 FROM lihat_jadwal_dokter
-                WHERE nama_spesialisasi = ?
+                WHERE nama_spesialisasi = ? AND nama = ? AND tanggal = ?
                 """;
         return jdbcTemplate.query(sql, (resultSet, rowNum) -> {
             JadwalDokterData jadwal = new JadwalDokterData(
@@ -85,7 +85,7 @@ public class AdminJdbc implements AdminRepository{
                 resultSet.getString("waktu_selesai")
             );
             return jadwal;
-        }, spesialisasi);
+        }, spesialisasi, dokter, LocalDate.parse(tanggal));
     }
 
     @Override
@@ -126,23 +126,29 @@ public class AdminJdbc implements AdminRepository{
     }
 
     @Override
-    public void registerPasien(String nik, int idJadwal){
+    public void registerPasien(String nik, int idJadwal, String spesialisasi){
         String sqlUser = "SELECT id_user FROM users WHERE nik = ?";
         Integer idUser = jdbcTemplate.queryForObject(sqlUser, Integer.class, nik);
         if (idUser == null) {
             throw new IllegalArgumentException("Pasien tidak ditemukan");
         }
 
+        String sqlSpesialisasi = "SELECT id_spesialisasi FROM spesialisasi WHERE nama_spesialisasi = ?";
+        Integer idSpesialisasi = jdbcTemplate.queryForObject(sqlSpesialisasi, Integer.class, spesialisasi);
+        if (idSpesialisasi == null) {
+            throw new IllegalArgumentException("Spesialisasi tidak ditemukan");
+        }
+
         // Tambahkan pasien ke tabel pendaftaran
         String sql = """
-            INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
-            VALUES (?, ?, FALSE, FALSE, (
+            INSERT INTO pendaftaran (id_pasien, id_jadwal, id_spesialisasi, status_daftar_ulang, status_bayar, no_antrian)
+            VALUES (?, ?, ?, FALSE, FALSE, (
                 SELECT COALESCE(MAX(no_antrian), 0) + 1
                 FROM pendaftaran
                 WHERE id_jadwal = ?
             ))
         """;
-        jdbcTemplate.update(sql, idUser, idJadwal, idJadwal);
+        jdbcTemplate.update(sql, idUser, idJadwal, idSpesialisasi, idJadwal);
     }
 
     public JadwalDokterData mapRowToJadwalDokter(ResultSet resultSet, int rowNum) throws SQLException {
