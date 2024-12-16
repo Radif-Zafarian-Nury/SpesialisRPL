@@ -129,6 +129,14 @@ public class AdminController {
         return ResponseEntity.ok(pendaftaran);
     }
 
+    @GetMapping("/daftar-ulang")
+    @ResponseBody
+    public ResponseEntity<List<PasienData>> daftarUlang(@RequestParam("id") int id){
+        
+        List<PasienData> pendaftaran = adminRepository.updateDaftarUlang(id);
+        return ResponseEntity.ok(pendaftaran);
+    }
+
     //AMBIL PENDAFTARAN PASIEN BERDASARKAN NAMA PASIEN DAN DATE www
     @GetMapping("/get-nama_pasien")
     @ResponseBody

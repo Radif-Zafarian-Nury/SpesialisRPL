@@ -93,7 +93,7 @@
                     console.error('Response status:', response.status);
                     throw new Error('Network response was not ok');
                 }
-                alert('Payment status updated successfully!'); // Or update the UI accordingly
+                alert('Status pembayaran berhasil diganti'); // Or update the UI accordingly
                 location.reload();
             }
             catch (error) {
@@ -105,12 +105,12 @@
         async function daftarUlang(id) {
             
             try {
-                const response = await fetch(`/admin/check-id_pendaftaran?id=${id}`);
+                const response = await fetch(`/admin/daftar-ulang?id=${id}`);
                 if (!response.ok) {
                     console.error('Response status:', response.status);
                     throw new Error('Network response was not ok');
                 }
-                alert('Payment status updated successfully!'); // Or update the UI accordingly
+                alert('Daftar ulang berhasil'); // Or update the UI accordingly
                 location.reload();
             }
             catch (error) {

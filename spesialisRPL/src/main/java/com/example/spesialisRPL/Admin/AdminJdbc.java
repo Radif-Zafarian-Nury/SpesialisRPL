@@ -142,13 +142,9 @@ public class AdminJdbc implements AdminRepository{
         // Tambahkan pasien ke tabel pendaftaran
         String sql = """
             INSERT INTO pendaftaran (id_pasien, id_jadwal, id_spesialisasi, status_daftar_ulang, status_bayar, no_antrian)
-            VALUES (?, ?, ?, FALSE, FALSE, (
-                SELECT COALESCE(MAX(no_antrian), 0) + 1
-                FROM pendaftaran
-                WHERE id_jadwal = ?
-            ))
+            VALUES (?, ?, ?, ?, ?, ?)
         """;
-        jdbcTemplate.update(sql, idUser, idJadwal, idSpesialisasi, idJadwal);
+        jdbcTemplate.update(sql, idUser, idJadwal, idSpesialisasi, false, false, null);
     }
 
     public JadwalDokterData mapRowToJadwalDokter(ResultSet resultSet, int rowNum) throws SQLException {
@@ -393,5 +389,34 @@ public class AdminJdbc implements AdminRepository{
             """;
 
         return jdbcTemplate.query(sql, this::mapRowToListPasien, id);
+    }
+
+    @Override
+    public List<PasienData> updateDaftarUlang(int idPendaftaran){
+        
+        String sqlIdJadwal = """
+                SELECT
+                id_jadwal
+                FROM pendaftaran
+                WHERE id_pendaftaran = ?
+                """;
+        Integer idJadwal = jdbcTemplate.queryForObject(sqlIdJadwal, Integer.class, idPendaftaran);
+        
+        String sql = """
+                UPDATE pendaftaran
+                SET status_daftar_ulang = true, 
+                no_antrian = (SELECT COALESCE(MAX(no_antrian), 0) + 1 FROM pendaftaran WHERE id_jadwal = ?)
+                WHERE id_pendaftaran = ?
+                """;
+        jdbcTemplate.update(sql,idJadwal, idPendaftaran);
+
+        sql = """
+            SELECT * 
+            FROM lihat_pendaftaran_pasien
+            WHERE id_pendaftaran = ?
+            ORDER BY waktu_mulai, no_antrian
+            """;
+
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, idPendaftaran);
     }
 }
