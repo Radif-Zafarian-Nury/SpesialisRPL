@@ -36,6 +36,6 @@ public class PasienController {
         model.addAttribute("tgl", tgl);
         model.addAttribute("patients", listPasien);
     
-        return "TenagaMedis/home"; // Return the view name
+        return "TenagaMedis/home"; 
     }
 }

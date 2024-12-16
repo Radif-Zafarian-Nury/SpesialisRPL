@@ -292,11 +292,6 @@ public class AdminController {
             return "Admin/admin_buatAkunBaru"; // Ganti dengan nama file HTML yang sesuai
         }
 
-        //Check NIK
-        // if (userRepository.findByNik(userData.getNik()).isPresent()) {
-        //     model.addAttribute("error", "NIK sudah terdaftar");
-        //     return "User/register";
-        // }
         
         //cek NIK (length & Harus Angka)
         if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
@@ -316,8 +311,7 @@ public class AdminController {
             return "User/register";
         }
 
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        // Date tanggal = (Date) sdf.parse(userData.getTanggal_lahir());
+        
 
         userData.setKata_sandi(passwordEncoder.encode(userData.getKata_sandi()));
         userRepository.saveUserDariAdmin(userData);

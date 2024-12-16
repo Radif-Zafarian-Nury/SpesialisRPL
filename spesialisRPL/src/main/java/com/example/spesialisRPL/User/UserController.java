@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 public class UserController {
 
     @Autowired
-    private UserService userService; // Inject UserService
+    private UserService userService; 
 
     @Autowired
     private UserRepository userRepository;
@@ -98,11 +98,6 @@ public class UserController {
         return "User/spesialis_jantung";
     }
 
-    // @PostMapping("/pesan_dokter")
-    // public String submitOrderDokterForm(@RequestMapping ) {
-
-    // }
-
     @PostMapping("/register")
     public String registerUser(
         @Valid @ModelAttribute UserData userData, 
@@ -114,12 +109,6 @@ public class UserController {
             model.addAttribute("error", "Please correct the highlighted errors.");
             return "User/register";
         }
-
-        //Check NIK
-        // if (userRepository.findByNik(userData.getNik()).isPresent()) {
-        //     model.addAttribute("error", "NIK sudah terdaftar");
-        //     return "User/register";
-        // }
         
         //cek length sama ada huruf ato ga
         if(userData.getNik().length() != 16 || userData.getNik().matches("[a-zA-Z]+")){
@@ -139,24 +128,17 @@ public class UserController {
             return "User/register";
         }
 
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        // LocalDate tanggal = userData.getTanggal_lahir();
-
         boolean isRegistered = userService.register(userData);
         if (!isRegistered) {
             model.addAttribute("error", "Registration failed. Please try again.");
             return "User/register";
         }
-        // userData.setPeran("pasien");
-        // userRepository.saveUser(userData);
         return "redirect:/login";
     }
 
     @PostMapping("/pesan_dokter_mata")
     public String pesanDokterMata(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-        if(session.getAttribute("user") == null) {
-            return "redirect:/login";
-        }
+
         
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
@@ -165,9 +147,6 @@ public class UserController {
 
     @PostMapping("/pesan_dokter_gigi")
     public String pesanDokterGigi(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-        if(session.getAttribute("user") == null) {
-            return "redirect:/login";
-        }
 
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
@@ -176,9 +155,6 @@ public class UserController {
 
     @PostMapping("/pesan_dokter_tht")
     public String pesanDokterTht(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-        if(session.getAttribute("user") == null) {
-            return "redirect:/login";
-        }
 
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
@@ -187,9 +163,6 @@ public class UserController {
 
     @PostMapping("/pesan_dokter_jantung")
     public String pesanDokterJantung(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-        if(session.getAttribute("user") == null) {
-            return "redirect:/login";
-        }
 
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
