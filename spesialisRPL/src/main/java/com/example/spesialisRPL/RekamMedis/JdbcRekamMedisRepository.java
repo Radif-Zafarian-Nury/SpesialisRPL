@@ -45,7 +45,10 @@ public class JdbcRekamMedisRepository implements RekamMedisRepository {
             resultSet.getString("diagnosa_dokter"),
             resultSet.getString("nama"),
             resultSet.getString("jenis_kelamin"),
-            resultSet.getString("tanggal_lahir")
+            resultSet.getString("tanggal_lahir"),
+            resultSet.getString("tekanan_darah"),
+            resultSet.getString("catatan_tambahan"),
+            resultSet.getString("keluhan")
         );
     }
 }

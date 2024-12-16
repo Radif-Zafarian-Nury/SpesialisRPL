@@ -16,4 +16,7 @@ public class RekamMedis {
     private String nama;
     private String jenis_kelamin;
     private String tanggal_lahir;
+    private String tekanan_darah;
+    private String catatan_tambahan;
+    private String keluhan;
 }

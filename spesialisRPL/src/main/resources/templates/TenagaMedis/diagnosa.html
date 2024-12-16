@@ -23,7 +23,9 @@
                 <thead>
                     <tr>
                         <th>Tanggal</th>
-                        <th>Informasi Awal (BB, TB, Suhu)</th>
+                        <th>Informasi Awal (BB, TB, Suhu, Tekanan Darah)</th>
+                        <th>Keluhan Pasien</th>
+                        <th>Catatan Tambahan</th>
                         <th>Diagnosa Dokter</th>
                         <th>Resep Obat</th>
                     </tr>
@@ -35,7 +37,10 @@
                             BB: <span th:text="${rekam.berat_badan}"></span> kg,
                             TB: <span th:text="${rekam.tinggi_badan}"></span> cm,
                             Suhu: <span th:text="${rekam.suhu_tubuh}"></span> °C
+                            Tekanan Darah: <span th:text="${rekam.tekanan_darah}"></span> mm/Hg
                         </td>
+                        <td th:text="${rekam.keluhan}"></td>
+                        <td th:text="${rekam.catatan_tambahan}"></td>
                         <td th:text="${rekam.diagnosa_dokter}"></td>
                         <td th:text="${rekam.resep_obat}"></td>
                     </tr>
