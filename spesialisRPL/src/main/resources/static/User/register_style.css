@@ -50,25 +50,6 @@ body {
     width: 100%;
 }
 
-.wrapper_p,
-.wrapper_l {
-    display: flex;
-    align-items: flex-start; 
-    margin-bottom: 15px;
-    margin-left: 0; 
-    text-align: left; 
-}
-
-input[type="radio"] {
-    margin: 0;
-    padding: 0; 
-}
-
-.wrapper_p label,
-.wrapper_l label {
-    margin-left: 10px;
-}
-
 .register_form button {
     padding: 10px;
     border: none;
@@ -108,3 +89,28 @@ input[type="radio"] {
         padding: 15px;
     }
 }
+
+.gender-container {
+    display: flex;
+    flex-direction: row; 
+    gap: 20px; 
+    margin-bottom: 15px;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center; 
+}
+
+.gender-option input[type="radio"] {
+    margin: 0 5px 0 0; 
+    width: 16px;
+    height: 16px;
+}
+
+.gender-option label {
+    font-size: 16px;
+    margin: 0; 
+}
+
+

@@ -35,6 +35,9 @@ CREATE TABLE diagnosa(
 	tinggi_badan FLOAT,
 	berat_badan FLOAT,
 	suhu_tubuh FLOAT,
+	tekanan_darah VARCHAR(7),
+	keluhan VARCHAR(2000),
+	catatan_tambahan VARCHAR(5000),
 	resep_obat VARCHAR(5000),
 	diagnosa_dokter VARCHAR(5000),
 	PRIMARY KEY (id_diagnosa, id_pasien)
@@ -83,10 +86,11 @@ VALUES
   	('Jantung'),
 	('Gigi'),
 	('Mata');
-INSERT INTO diagnosa (id_pasien, tanggal, tinggi_badan, berat_badan, suhu_tubuh, resep_obat, diagnosa_dokter)
+INSERT INTO diagnosa (id_pasien, tanggal, tinggi_badan, berat_badan, suhu_tubuh, tekanan_darah, keluhan, catatan_tambahan, resep_obat, diagnosa_dokter)
 VALUES
-	(3, '2024-12-01', 165, 60, 36.7, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
-	(4, '2024-12-02', 180, 75, 37.2, 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
+	(3, '2024-12-01', 165, 60, 36.7, '120/80', 'Demam dan kelelahan', NULL, 'Paracetamol 500mg 3x sehari', 'Demam ringan, disarankan istirahat dan minum cairan.'),
+	(4, '2024-12-02', 180, 75, 37.2, '125/85', 'Mata merah dan perih', 'Hasil lab: tidak ada infeksi bakteri', 'Tetes mata 3x sehari, Obat pereda nyeri 200mg 2x sehari', 'Keluhan mata merah dan iritasi, didiagnosa konjungtivitis, disarankan untuk menggunakan tetes mata dan obat pereda nyeri serta istirahatkan mata.');
+
 INSERT INTO spesialisasi_dokter (id_dokter, id_spesialisasi)
 VALUES
 	(1, 1), 

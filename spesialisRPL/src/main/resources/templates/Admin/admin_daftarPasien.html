@@ -71,6 +71,9 @@
                     </select>
                 </div>
 
+                <input type="hidden" id="idSpesialisasi" name="idSpesialisasi">
+
+
                 <div class="form-group">
                     <label for="jadwal">Pilih Jadwal</label>
                     <select id="jadwal" name="jadwal" required>
@@ -144,10 +147,11 @@
 
         async function filterSpesialisasi() {
             const dokter = document.getElementById("dokter").value;
-            if (!dokter) return;
+            const tanggal = document.getElementById("tanggal").value;
+            if (!dokter || !tanggal) return;
 
             try {
-                const response = await fetch(`/admin/get-spesialisasi?dokter=${dokter}`);
+                const response = await fetch(`/admin/get-spesialisasi?dokter=${dokter}&tanggal=${tanggal}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch spesialisasi: @{response.status}`)
                 }
@@ -170,10 +174,12 @@
 
         async function filterJadwal() {
             const spesialisasi = document.getElementById("spesialisasi").value;
-            if (!spesialisasi) return;
+            const dokter = document.getElementById("dokter").value;
+            const tanggal = document.getElementById("tanggal").value;
+            if (!spesialisasi || !dokter || !tanggal) return;
 
             try {
-                const response = await fetch(`/admin/get-jadwal?spesialisasi=${spesialisasi}`);
+                const response = await fetch(`/admin/get-jadwal?spesialisasi=${spesialisasi}&dokter=${dokter}&tanggal=${tanggal}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch jadwal: ${response.status}`);
                 }
@@ -190,7 +196,6 @@
             } catch (error) {
                 console.error("Error fetching jadwal: ", error);
             }
-
         }
 
         async function registerPasien(event) {
@@ -198,8 +203,9 @@
 
             const nik = document.getElementById('NIK').value;
             const idJadwal = document.getElementById('jadwal').value;
+            const spesialisasi = document.getElementById('spesialisasi').value
 
-            if (!nik || !idJadwal) {
+            if (!nik || !idJadwal || !idSpesialisasi) {
                 alert("Harap isi semua kolom.");
                 return false;
             }
@@ -222,7 +228,7 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: new URLSearchParams({ nik, idJadwal }),
+                    body: new URLSearchParams({ nik, idJadwal, spesialisasi }),
                 });
 
                 const message = await response.text();

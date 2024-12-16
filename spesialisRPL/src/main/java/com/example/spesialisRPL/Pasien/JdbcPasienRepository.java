@@ -2,11 +2,13 @@ package com.example.spesialisRPL.Pasien;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 
 @Repository
 public class JdbcPasienRepository implements PasienRepository {
@@ -14,30 +16,38 @@ public class JdbcPasienRepository implements PasienRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Pasien> findAll() {
-        String sql = "SELECT * FROM list_pasien";
-        return jdbcTemplate.query(sql, this::mapRowToPasien);
+    public List<Pasien> findPendaftaranByDate(LocalDate tgl) {
+        String sql = """
+            SELECT * 
+            FROM lihat_pendaftaran_pasien
+            WHERE tanggal = ?
+            ORDER BY status_bayar, waktu_mulai, no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl);
     }
 
+    public Pasien mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
+        return new Pasien(
+            resultSet.getInt("id_pasien"),
+            resultSet.getString("nama_pasien"),
+            resultSet.getString("jenis_kelamin"),
+            resultSet.getString("tanggal_lahir"),
+            resultSet.getInt("no_rekam_medis"),
+            resultSet.getInt("no_antrian"),
+            resultSet.getString("waktu_mulai"),
+            resultSet.getString("waktu_selesai")
+            );
+    }
 
     @Override
-    public List<Pasien> searchByMedicalRecordNumber(String noRekamMedis) {
-        String sql = "SELECT * FROM list_pasien WHERE no_rekam_medis LIKE ?";
-        return jdbcTemplate.query(sql, this::mapRowToPasien, "%" + noRekamMedis + "%");
+    public List<Pasien> findPendaftaranByDateAndName(LocalDate tgl, String name) {
+        String sql = """
+                SELECT * 
+                FROM lihat_pendaftaran_pasien
+                WHERE tanggal = ?
+                AND (nama_pasien iLIKE ?)
+                ORDER BY waktu_mulai, no_antrian
+                """;
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
     }
-
-    private Pasien mapRowToPasien(ResultSet rs, int rowNum) throws SQLException {
-        Pasien pasien = new Pasien();
-        pasien.setNama(rs.getString("nama"));
-        pasien.setJenis_kelamin(rs.getString("jenis_kelamin"));
-        pasien.setTanggal_lahir(rs.getString("tanggal_lahir"));
-        pasien.setNo_rekam_medis(rs.getString("no_rekam_medis"));
-        pasien.setNo_antrian(rs.getString("no_antrian"));
-        pasien.setWaktu_mulai(rs.getString("waktu_mulai"));
-        pasien.setWaktu_selesai(rs.getString("waktu_selesai"));
-        pasien.setId_pasien(rs.getInt("id_pasien"));
-        return pasien;
-    }
-
-    
 }

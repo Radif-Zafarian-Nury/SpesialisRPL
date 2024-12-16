@@ -90,6 +90,7 @@ GROUP BY
 
 CREATE VIEW nama_Dokter_di_jadwal AS(
 SELECT
+	id_pendaftaran,
 	nama AS nama_dokter,
 	id_user AS id_dokter,
 	id_jadwal
@@ -106,9 +107,13 @@ From
 );
 
 CREATE VIEW lihat_pendaftaran_pasien AS
-(SELECT DISTINCT
-	id_pendaftaran,
-	users.nama,
+(SELECT
+	pendaftaran.id_pendaftaran,
+	id_pasien,
+	users.nama as nama_pasien, --nama pasien
+	jenis_kelamin,
+	tanggal_lahir,
+	no_rekam_medis,
 	nama_dokter,
 	nama_spesialisasi,
 	waktu_mulai,
@@ -118,15 +123,11 @@ CREATE VIEW lihat_pendaftaran_pasien AS
 	status_daftar_ulang,
 	no_antrian
 FROM
-	users 
-	INNER JOIN pendaftaran
-	ON users.id_user = pendaftaran.id_pasien
-	INNER JOIN jadwal
-	ON jadwal.id_jadwal = pendaftaran.id_jadwal 
-	INNER JOIN nama_Dokter_di_jadwal
-	ON nama_Dokter_di_jadwal.id_dokter = jadwal.id_dokter 
-	INNER JOIN daftar_dokter
-	ON nama_Dokter_di_jadwal.nama_dokter = daftar_dokter.nama
+	pendaftaran 
+INNER JOIN users ON pendaftaran.id_pasien = users.id_user --nama pasien
+INNER JOIN nama_Dokter_di_jadwal ON pendaftaran.id_pendaftaran = nama_Dokter_di_jadwal.id_pendaftaran --nama dokter
+INNER JOIN spesialisasi ON pendaftaran.id_spesialisasi = spesialisasi.id_spesialisasi --nama spesialisasi
+INNER JOIN jadwal ON pendaftaran.id_jadwal = jadwal.id_jadwal --waktu & tanggal
 	);
 
 CREATE VIEW dokter_info AS
@@ -134,6 +135,7 @@ CREATE VIEW dokter_info AS
     id_user,
     nama,
     nik,
+	sip,
     foto_dokter,
     alamat,
     jenis_kelamin
@@ -174,6 +176,9 @@ CREATE VIEW list_rekam_medis AS
 	tinggi_badan,
 	berat_badan,
 	suhu_tubuh,
+	tekanan_darah,
+	keluhan,
+	catatan_tambahan,
 	resep_obat,
 	diagnosa_dokter
 FROM
