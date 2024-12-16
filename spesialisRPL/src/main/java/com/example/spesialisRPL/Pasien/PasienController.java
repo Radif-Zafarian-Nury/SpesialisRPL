@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.spesialisRPL.RequiredRole;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class PasienController {
     @Autowired
@@ -16,9 +18,13 @@ public class PasienController {
 
     @GetMapping("/listPasien")
     @RequiredRole({"dokter", "perawat"})
-    public String listPatients(Model model) {
+    public String listPatients(Model model, HttpSession session) {
+        //Ambil role
+        String role = (String) session.getAttribute("role");
+
         List<Pasien> pasienList = pasienService.getAllpasiens();
 
+        model.addAttribute("role", role);
         model.addAttribute("patients", pasienList);
         return "TenagaMedis/home";
     }
