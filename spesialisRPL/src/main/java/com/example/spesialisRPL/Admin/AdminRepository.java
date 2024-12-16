@@ -23,6 +23,7 @@ public interface AdminRepository {
     List<String> getAllSpesialisasi();
     void updateDokter(Dokter dokter, List<String> spesialisasi, List<JadwalDokterData> jadwal);
     List<JadwalDokterData> findSchedulesByDate(LocalDate tgl);
+    List<PasienData> updatePembayaran(int id);
     ArrayList<JadwalDokterData> getFutureJadwalByDoctorID(int id, LocalDate tgl);
     void deleteJadwalById(int idJadwal);
 }

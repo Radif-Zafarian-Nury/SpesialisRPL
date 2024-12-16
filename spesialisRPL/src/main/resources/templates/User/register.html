@@ -31,6 +31,14 @@
                 <input type="text" id="nik" name="nik" placeholder="Masukkan NIK" required minlength="16"
                     maxlength="16">
 
+                <!--tempat lahir  -->
+                <label for="tempatLahir">Tempat Lahir</label>
+                <input type="text" id="tempatLahir" name="tempat_lahir" placeholder="Masukkan tempat lahir" required>
+
+                <!-- tanggal lahir -->
+                <label for="tanggalLahir">Tanggal Lahir</label>
+                    <input type="date" id="tanggalLahir" name="tanggal_lahir" required>
+
                 <!-- Email -->
                 <label for="email"><b>Email</b></label>
                 <input type="text" id="email" name="email" required>
@@ -61,7 +69,7 @@
                 <button type="submit">Registrasi</button>
                 <div class="wrapper_ask">
                     <span class="ask">Sudah memiliki akun?</span>
-                    <a th:href="@{login}" class="login">
+                    <a th:href="@{/login}" class="login">
                         <span>Masuk</span>
                     </a>
                 </div>

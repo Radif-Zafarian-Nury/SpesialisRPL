@@ -1,5 +1,7 @@
 package com.example.spesialisRPL.User;
 
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class UserService {
             userRepository.saveUser(user);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Error saat menyimpan user: " + e.getMessage());
             return false;
         }
