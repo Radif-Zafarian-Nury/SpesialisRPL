@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informasi Tambahan</title>
+</head>
+<body>
+    <div>
+        <img th:if="${informasi_tambahan != null}" 
+            th:src="'data:image/jpeg;base64,' + ${informasi_tambahan}" 
+            alt="Image Informasi Tambahan">
+        <p th:if="${informasi_tambahan == null}">No image available</p>
+    </div>
+</body>
+</html>

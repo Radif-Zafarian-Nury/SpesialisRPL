@@ -45,9 +45,9 @@ public class JdbcPasienRepository implements PasienRepository {
                 SELECT * 
                 FROM lihat_pendaftaran_pasien
                 WHERE tanggal = ?
-                AND (nama_pasien iLIKE ?)
+                AND (nama_pasien ILIKE ?)
                 ORDER BY waktu_mulai, no_antrian
                 """;
-        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl,name);
+        return jdbcTemplate.query(sql, this::mapRowToListPasien, tgl, ("%"+name+"%"));
     }
 }

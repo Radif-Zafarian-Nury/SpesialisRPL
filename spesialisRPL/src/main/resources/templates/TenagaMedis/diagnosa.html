@@ -7,73 +7,111 @@
     <link rel="stylesheet" th:href="@{/Dokter/stylesDiagnosa.css}">
 </head>
 <body>
-    <div class="medical-card">
-        <h1>Kartu Medis Pasien</h1>
-        
-        <div th:if="${rekamMedisList != null and !rekamMedisList.isEmpty()}">
-            <!-- Informasi Pasien -->
-            <div class="patient-info">
-                <p>Nama: <span th:text="${rekamMedisList[0].nama}">John Doe</span></p>
-                <p>Tanggal Lahir: <span th:text="${rekamMedisList[0].tanggal_lahir}">1990-01-01</span></p>
-                <p>Gender: <span th:text="${rekamMedisList[0].jenis_kelamin}">Laki-laki</span></p>
+    <header>
+        <a th:href="@{/listPasien}"><img src="/assets/WomLinic Fix Logo.png" alt="Logo"></a>
+        <span>Diagnosa Pasien</span>
+        <div class="right">
+            <span th:text="'Hi, ' + ${role}"></span>
+            <a th:href="@{/logout}"><button>Logout</button></a>
+        </div>
+    </header>
+    <div class="main-content">
+        <div class="medical-card">
+            <h1>Kartu Medis Pasien</h1>
+            <div th:if="${rekamMedisList != null and !rekamMedisList.isEmpty()}">
+                <!-- Informasi Pasien -->
+                <div class="patient-info">
+                    <p>Nama: <span th:text="${rekamMedisList[0].nama}">John Doe</span></p>
+                    <p>Tanggal Lahir: <span th:text="${rekamMedisList[0].tanggal_lahir}">1990-01-01</span></p>
+                    <p>Gender: <span th:text="${rekamMedisList[0].jenis_kelamin}">Laki-laki</span></p>
+                </div>
+                
+                <!-- Riwayat Rekam Medis -->
+                <table id="medical-history">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Informasi Awal (BB, TB, Suhu, Tekanan Darah)</th>
+                            <th>Keluhan Pasien</th>
+                            <th>Informasi Tambahan</th>
+                            <th>Diagnosa Dokter</th>
+                            <th>Resep Obat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="rekam : ${rekamMedisList}">
+                            <td th:text="${rekam.tanggal}"></td>
+                            <td>
+                                BB: <span th:text="${rekam.berat_badan}"></span> kg,
+                                TB: <span th:text="${rekam.tinggi_badan}"></span> cm,
+                                Suhu: <span th:text="${rekam.suhu_tubuh}"></span> °C,
+                                Tekanan Darah: <span th:text="${rekam.tekanan_darah}"></span> mmHg
+                            </td>
+                            <td th:text="${rekam.keluhan}"></td>
+                            <td>
+                                <span th:if="${rekam.informasi_tambahan != null}">
+                                    <a th:href="@{/diagnosa/detail/{id}(id=${rekam.id_diagnosa})}" target="_blank">Informasi Tambahan</a>
+                                </span>
+                                    <span th:if="${rekam.informasi_tambahan == null}">-</span>
+                            </td>
+                            <td th:text="${rekam.diagnosa_dokter}"></td>
+                            <td th:text="${rekam.resep_obat}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            
-            <!-- Riwayat Rekam Medis -->
-            <table id="medical-history">
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Informasi Awal (BB, TB, Suhu)</th>
-                        <th>Diagnosa Dokter</th>
-                        <th>Resep Obat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="rekam : ${rekamMedisList}">
-                        <td th:text="${rekam.tanggal}"></td>
-                        <td>
-                            BB: <span th:text="${rekam.berat_badan}"></span> kg,
-                            TB: <span th:text="${rekam.tinggi_badan}"></span> cm,
-                            Suhu: <span th:text="${rekam.suhu_tubuh}"></span> °C
-                        </td>
-                        <td th:text="${rekam.diagnosa_dokter}"></td>
-                        <td th:text="${rekam.resep_obat}"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    
+            <div th:if="${rekamMedisList == null or rekamMedisList.isEmpty()}">
+                <p>Tidak ada riwayat medis</p>
+            </div>
+    
+            <!-- Form Tambah Rekam Medis -->
+            <h2>Tambah Rekam Medis Baru</h2>
+            <form th:action="@{/diagnosa/rekam-medis}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id_pasien" th:value="${idPasien}">
+                
+                <!-- Role Perawat -->
+                <label for="tanggal">Tanggal:</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="date" th:value="${role == 'dokter' ? terbaru.tanggal : ''}" id="tanggal" name="tanggal" required><br>
+                
+                <label for="tinggi_badan">Tinggi Badan (cm):</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="number" th:value="${role == 'dokter' ? terbaru.tinggi_badan : ''}" id="tinggi_badan" name="tinggi_badan" step="0.1" required><br>
+                
+                <label for="berat_badan">Berat Badan (kg):</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="number" th:value="${role == 'dokter' ? terbaru.berat_badan : ''}" id="berat_badan" name="berat_badan" step="0.1" required><br>
+                
+                <label for="suhu_tubuh">Suhu Tubuh (°C):</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="number" th:value="${role == 'dokter' ? terbaru.suhu_tubuh : ''}" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
+                
+                <label for="tekanan_darah">Tekanan Darah (mmHg):</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="text" th:value="${role == 'dokter' ? terbaru.tekanan_darah : ''}" id="tekanan_darah" name="tekanan_darah" maxlength="7" required><br>
+                
+                <label for="keluhan">Keluhan Pasien:</label>
+                <textarea class="input-perawat" th:disabled="${role != 'perawat'}" id="keluhan" th:text="${role == 'dokter' ? terbaru.keluhan : ''}" name="keluhan" maxlength="2000" required></textarea><br>
+                
+                <label for="foto_informasi_tambahan">Informasi Tambahan:</label>
+                <input class="input-perawat" th:disabled="${role != 'perawat'}" type="file" id="foto_informasi_tambahan" name="foto_informasi_tambahan" accept="image/jpg, image/jpeg, image/png">
+    
+                <!-- Role Dokter-->
+                <label for="diagnosa_dokter">Diagnosa Dokter:</label>
+                <textarea th:disabled="${role != 'dokter' || (role == 'dokter' && terbaru.diagnosa_dokter != null) }" th:text="${role == 'dokter' && terbaru.diagnosa_dokter != null ? terbaru.diagnosa_dokter : ''}" id="diagnosa_dokter" name="diagnosa_dokter" maxlength="5000" required></textarea><br>
+                
+                <label for="resep_obat">Resep Obat:</label>
+                <textarea th:disabled="${role != 'dokter' || (role == 'dokter' && terbaru.resep_obat != null)}" th:text="${role == 'dokter' && terbaru.resep_obat != null ? terbaru.resep_obat : ''}" id="resep_obat" name="resep_obat" maxlength="5000" required></textarea><br>
+                
+                <button type="submit">Tambah</button>
+            </form>
+        </div>    
+    
+    </div>
+    </body>
+<script>
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelectorAll('.input-perawat').forEach(function (el) {
+            el.removeAttribute('disabled');
+        });
+    });
+</script>
 
-        <div th:if="${rekamMedisList == null or rekamMedisList.isEmpty()}">
-            <p>Tidak ada riwayat medis</p>
-        </div>
 
-        <!-- Form Tambah Rekam Medis -->
-        <h2>Tambah Rekam Medis Baru</h2>
-        <form th:action="@{/diagnosa/rekam-medis}" method="post">
-            <input type="hidden" name="id_pasien" th:value="${idPasien}">
-            
-            <!-- Role Perawat -->
-            <label for="tanggal">Tanggal:</label>
-            <input th:disabled="${role != 'perawat'}" type="date" id="tanggal" name="tanggal" required><br>
-            
-            <label for="tinggi_badan">Tinggi Badan (cm):</label>
-            <input th:disabled="${role != 'perawat'}" type="number" id="tinggi_badan" name="tinggi_badan" step="0.1" required><br>
-            
-            <label for="berat_badan">Berat Badan (kg):</label>
-            <input th:disabled="${role != 'perawat'}" type="number" id="berat_badan" name="berat_badan" step="0.1" required><br>
-            
-            <label for="suhu_tubuh">Suhu Tubuh (°C):</label>
-            <input th:disabled="${role != 'perawat'}" type="number" id="suhu_tubuh" name="suhu_tubuh" step="0.1" required><br>
-            
-            <!-- Role Dokter-->
-            <label for="diagnosa_dokter">Diagnosa Dokter:</label>
-            <textarea th:disabled="${role != 'dokter'}" id="diagnosa_dokter" name="diagnosa_dokter" required></textarea><br>
-            
-            <label for="resep_obat">Resep Obat:</label>
-            <textarea th:disabled="${role != 'dokter'}" id="resep_obat" name="resep_obat" required></textarea><br>
-            
-            <button type="submit">Tambah</button>
-        </form>
-    </div>    
-</body>
 </html>

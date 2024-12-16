@@ -1,15 +1,14 @@
 --DROP
-DROP VIEW IF EXISTS ambil_last_rekam_medis CASCADE;
 DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
 DROP VIEW IF EXISTS lihat_jadwal_dokter;
 DROP VIEW IF EXISTS daftar_dokter;
 DROP VIEW IF EXISTS dokter_cards;
+DROP VIEW IF EXISTS lihat_pendaftaran_pasien;
 DROP VIEW IF EXISTS jadwal_dokter_admin_homepage;
 DROP VIEW IF EXISTS dokter_info;
 DROP VIEW IF EXISTS list_pasien;
 DROP VIEW IF EXISTS list_rekam_medis;
 DROP VIEW IF EXISTS nama_dokter_di_jadwal;
-
 
 --VIEW
 CREATE VIEW lihat_jadwal_dokter AS
@@ -168,6 +167,7 @@ WHERE
 
 CREATE VIEW list_rekam_medis AS
 (SELECT 
+	id_diagnosa,
 	id_pasien,
 	nama,
 	tanggal_lahir,
@@ -178,7 +178,7 @@ CREATE VIEW list_rekam_medis AS
 	suhu_tubuh,
 	tekanan_darah,
 	keluhan,
-	catatan_tambahan,
+	informasi_tambahan,
 	resep_obat,
 	diagnosa_dokter
 FROM
