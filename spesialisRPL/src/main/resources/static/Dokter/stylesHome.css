@@ -13,25 +13,28 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+
 header .right {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 header span {
-    color: rgb(181, 4, 4); 
+    color: rgb(181, 4, 4);
 }
 
 header button {
-    background-color:  rgb(181, 4, 4);
+    background-color: rgb(181, 4, 4);
     color: white;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
 }
+
 header button:hover {
-    background-color:  rgb(255, 0, 0);
+    background-color: rgb(255, 0, 0);
 }
 
 h1 {
@@ -123,6 +126,7 @@ main {
     padding: 20px;
     background-color: white;
 }
+
 .search-bar input {
     width: 300px;
     padding: 10px;
@@ -131,6 +135,7 @@ main {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
 .search-bar button {
     padding: 10px 15px;
     font-size: 16px;
@@ -140,6 +145,19 @@ main {
     cursor: pointer;
     border-radius: 5px;
 }
+
 .search-bar button:hover {
     background-color: rgb(255, 0, 0);
+}
+
+.tanggal input {
+    width: 10rem;
+    height: 3rem;
+    border-radius: 10px;
+    border-color: rgb(181, 4, 4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    font-weight: bold;
 }
