@@ -331,6 +331,8 @@ public class AdminJdbc implements AdminRepository{
         String deleteSql = "DELETE FROM jadwal WHERE id_jadwal = ?";
         jdbcTemplate.update(deleteSql, idJadwal);
     }
+
+    @Override
     public List<PasienData> findPendaftaranByDate(LocalDate tgl) {
         String sql = """
             SELECT * 
@@ -344,7 +346,7 @@ public class AdminJdbc implements AdminRepository{
     public PasienData mapRowToListPasien(ResultSet resultSet, int rowNum) throws SQLException {
         return new PasienData(
             resultSet.getInt("id_pendaftaran"),
-            resultSet.getString("nama"),
+            resultSet.getString("nama_pasien"),
             resultSet.getString("nama_dokter"),
             resultSet.getString("nama_spesialisasi"),
             resultSet.getString("waktu_mulai"),
@@ -379,9 +381,9 @@ public class AdminJdbc implements AdminRepository{
 
         sql = """
             SELECT * 
-                FROM lihat_pendaftaran_pasien
-                WHERE id_pendaftaran = ?
-                ORDER BY waktu_mulai, no_antrian
+            FROM lihat_pendaftaran_pasien
+            WHERE id_pendaftaran = ?
+            ORDER BY waktu_mulai, no_antrian
             """;
 
         return jdbcTemplate.query(sql, this::mapRowToListPasien, id);
