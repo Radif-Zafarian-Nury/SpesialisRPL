@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pesan Dokter</title>
     <link rel="stylesheet" type="text/css" th:href="@{/User/form_pesan_dokter.css}">
 </head>
+
 <body>
     <div class="header_container">
         <header>
@@ -32,7 +34,8 @@
             <div class="info_dokter">
                 <div class="foto_dokter_container">
                     <div class="doctor_profile_pic">
-                        <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder.jpg'" />
+                        <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}"
+                            onerror="this.src='/assets/placeholder.jpg'" />
                     </div>
                 </div>
                 <div class="container_jadwal_dokter">
@@ -43,7 +46,8 @@
                         <h3>Jadwal Yang Tersedia:</h3>
                         <div class="list_jadwal_dokter">
                             <div class="jadwal_dokter" th:each="jadwal : ${doctor.jadwal}">
-                                <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}" class="waktu_operasi"></div>
+                                <div th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"
+                                    class="waktu_operasi"></div>
                             </div>
                         </div>
                     </div>
@@ -55,7 +59,8 @@
                     <label for="jadwal">Pilih Jadwal</label>
                     <select id="jadwal" name="id_jadwal" required>
                         <option value="" disabled selected>Pilih Jadwal</option>
-                        <option th:each="jadwal : ${doctor.jadwal}" th:value="${jadwal.id_jadwal}" th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"></option>
+                        <option th:each="jadwal : ${doctor.jadwal}" th:value="${jadwal.id_jadwal}"
+                            th:text="${jadwal.waktu_mulai} + ' - ' + ${jadwal.waktu_selesai}"></option>
                     </select>
                 </div>
                 <div class="form-actions">
@@ -65,4 +70,5 @@
         </div>
     </main>
 </body>
+
 </html>
