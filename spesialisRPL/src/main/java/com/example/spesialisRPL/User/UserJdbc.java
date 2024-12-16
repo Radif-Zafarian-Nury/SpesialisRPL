@@ -1,20 +1,17 @@
 package com.example.spesialisRPL.User;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.spesialisRPL.Admin.JadwalDokterData;
 import com.example.spesialisRPL.Doctor.Doctor;
 import com.example.spesialisRPL.Doctor.DoctorJdbc;
 import com.example.spesialisRPL.Doctor.DokterCardSelection;
@@ -28,7 +25,7 @@ public class UserJdbc implements UserRepository{
     private DoctorJdbc dokterJdbc;
 
     @Override
-    public void saveUser(UserData userData, Date tanggal) {
+    public void saveUser(UserData userData) {
         String query = "SELECT * FROM ambil_last_rekam_medis";
         Integer rekamMedis = jdbcTemplate.queryForObject(query, Integer.class) + 1;
         String sql = "INSERT INTO users(nama, nik, email, alamat, kata_sandi, jenis_kelamin, peran, tempat_lahir, tanggal_lahir, status_aktif, no_rekam_medis) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
@@ -42,13 +39,13 @@ public class UserJdbc implements UserRepository{
             userData.getJenis_kelamin(),
             "pasien",
             userData.getTempat_lahir(), 
-            tanggal,
+            userData.getTanggal_lahir(),
             true,
             rekamMedis);
     }
 
     @Override
-    public void saveUserDariAdmin(UserData userData, Date tanggal) {
+    public void saveUserDariAdmin(UserData userData) {
         String sip = null;
         String peran = "dokter";
         Integer rekamMedis = null;
@@ -77,7 +74,7 @@ public class UserJdbc implements UserRepository{
             userData.getJenis_kelamin(),
             peran,
             userData.getTempat_lahir(), 
-            tanggal,
+            userData.getTanggal_lahir(),
             true,
             rekamMedis,
             sip);

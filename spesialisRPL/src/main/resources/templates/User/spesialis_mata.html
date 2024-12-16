@@ -57,7 +57,7 @@
         <div class="doctors_container">
             <div th:each="doctor : ${dokter_mata}" class="doctor_card">
                 <div class="doctor_profile_pic">
-                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder_dokterfoto.jpg'" />
+                    <img th:src="'data:image/jpeg;base64,' + ${doctor.foto_dokter}" th:alt="${doctor.nama}" onerror="this.src='/assets/placeholder.jpg'" />
                 </div>
                 <div class="doctor_name">
                     <h2 th:text="${doctor.nama}">Doctor Name</h2>

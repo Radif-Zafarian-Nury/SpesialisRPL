@@ -18,7 +18,7 @@ public class JdbcRekamMedisRepository implements RekamMedisRepository {
     @Override
     public List<RekamMedis> findByIdPasien(int idPasien) {
         String sql = "SELECT * FROM list_rekam_medis WHERE id_pasien = ?";
-        return jdbcTemplate.query(sql, this::mapRowToRekamMedis);
+        return jdbcTemplate.query(sql, this::mapRowToRekamMedis, idPasien); 
     }
 
     public RekamMedis save(RekamMedis rekamMedis) {
@@ -37,7 +37,7 @@ public class JdbcRekamMedisRepository implements RekamMedisRepository {
     private RekamMedis mapRowToRekamMedis(ResultSet resultSet, int rowNum) throws SQLException {
         return new RekamMedis(
             resultSet.getInt("id_pasien"),
-            resultSet.getString("tanggal"), // Pastikan tanggal diambil sebagai String
+            resultSet.getDate("tanggal").toString(),
             resultSet.getDouble("tinggi_badan"),
             resultSet.getDouble("berat_badan"),
             resultSet.getDouble("suhu_tubuh"),
@@ -45,7 +45,7 @@ public class JdbcRekamMedisRepository implements RekamMedisRepository {
             resultSet.getString("diagnosa_dokter"),
             resultSet.getString("nama"),
             resultSet.getString("jenis_kelamin"),
-            resultSet.getString("tanggal_lahir")
+            resultSet.getDate("tanggal_lahir").toString()
         );
     }
 }

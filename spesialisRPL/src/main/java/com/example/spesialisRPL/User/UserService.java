@@ -1,6 +1,6 @@
 package com.example.spesialisRPL.User;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,12 +14,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public boolean register(UserData user, Date tanggal) {
+    public boolean register(UserData user) {
         try {
             user.setKata_sandi(passwordEncoder.encode(user.getKata_sandi()));
-            userRepository.saveUser(user, tanggal);
+            userRepository.saveUser(user);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Error saat menyimpan user: " + e.getMessage());
             return false;
         }
