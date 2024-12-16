@@ -156,6 +156,11 @@ body {
     justify-content: center;
 }
 
+.doctor_profile_pic > img {
+    width: 12vw;
+    height: 20vh;
+}
+
 .doctor_schedule {
     grid-area: schedule;
     margin-bottom: 3vh;
