@@ -23,5 +23,7 @@ public interface UserRepository {
     Optional<DokterCardSelection> findDokterThtById(int id_dokter, Date tanggal);
     Optional<DokterCardSelection> findDokterJantungById(int id_dokter, Date tanggal);
     int getPatientIdByNik(String nik);
-    void daftarPasien(int id_pasien, int id_jadwal);
+    void daftarPasien(int id_pasien, int id_jadwal, int id_spesialisasi);
+    boolean cekPasienTerdaftarJadwal(int id_pasien, int id_jadwal);
+    int getIdSpesialisasi(String nama_spesialisasi);
 }

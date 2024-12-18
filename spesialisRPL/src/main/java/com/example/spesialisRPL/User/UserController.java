@@ -138,34 +138,46 @@ public class UserController {
 
     @PostMapping("/pesan_dokter_mata")
     public String pesanDokterMata(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-
-        
-        int idPasien = this.userRepository.getPatientIdByNik(nik);
-        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        if (!daftarPasienKeSpesialis(nik, "Mata", id_jadwal)) {
+            return "redirect:/user/spesialisMata?error=true";
+        }
         return "redirect:/user/spesialisMata";
     }
 
     @PostMapping("/pesan_dokter_gigi")
     public String pesanDokterGigi(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-
-        int idPasien = this.userRepository.getPatientIdByNik(nik);
-        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        if (!daftarPasienKeSpesialis(nik, "Gigi", id_jadwal)) {
+            return "redirect:/user/spesialisGigi?error=true";
+        }
         return "redirect:/user/spesialisGigi";
     }
 
     @PostMapping("/pesan_dokter_tht")
     public String pesanDokterTht(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-
-        int idPasien = this.userRepository.getPatientIdByNik(nik);
-        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        if (!daftarPasienKeSpesialis(nik, "THT", id_jadwal)) {
+            return "redirect:/user/spesialisTht?error=true";
+        }
         return "redirect:/user/spesialisTht";
     }
 
     @PostMapping("/pesan_dokter_jantung")
     public String pesanDokterJantung(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-
-        int idPasien = this.userRepository.getPatientIdByNik(nik);
-        this.userRepository.daftarPasien(idPasien, id_jadwal);
+        if (!daftarPasienKeSpesialis(nik, "Jantung", id_jadwal)) {
+            return "redirect:/user/spesialisJantung?error=true";
+        }
         return "redirect:/user/spesialisJantung";
+    }
+
+    private boolean daftarPasienKeSpesialis(String nik, String nama_spesialisasi, int id_jadwal){
+        int id_pasien = this.userRepository.getPatientIdByNik(nik);
+        int id_spesialisasi = this.userRepository.getIdSpesialisasi(nama_spesialisasi);
+
+        boolean terdaftar = this.userRepository.cekPasienTerdaftarJadwal(id_pasien, id_jadwal);
+        if (terdaftar) {
+            return false;
+        }
+
+        this.userRepository.daftarPasien(id_pasien, id_jadwal, id_spesialisasi);
+        return true;
     }
 }

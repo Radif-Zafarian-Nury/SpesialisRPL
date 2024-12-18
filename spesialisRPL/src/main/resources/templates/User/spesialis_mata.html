@@ -7,6 +7,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/User/spesialis_style.css}">
 </head>
 <body>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            alert("Anda sudah terdaftar di jadwal ini. Silahkan pilih jadwal lain.");
+        }
+    </script>
+
     <div class="header_container">
         <header>
             <img src="/assets/WomLinic Fix Logo.png" class="womlinic_logo" />
