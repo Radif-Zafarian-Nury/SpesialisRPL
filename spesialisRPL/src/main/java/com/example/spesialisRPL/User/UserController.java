@@ -1,10 +1,10 @@
 package com.example.spesialisRPL.User;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.spesialisRPL.Doctor.DokterCardSelection;
+import com.example.spesialisRPL.RequiredRole;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -37,28 +38,41 @@ public class UserController {
     }
 
     @GetMapping("/form_pilih_dokter_mata")
-    public String showDokterMataForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+    @RequiredRole({"pasien"})
+    public String showDokterMataForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "User/login";
+        }
         Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterMataById(id_dokter, tanggal);
         model.addAttribute("doctor", foundDokter.get());
         return "User/form_pesan_dokter_mata";
     }
 
     @GetMapping("/form_pilih_dokter_gigi")
-    public String showDokterGigiForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+    public String showDokterGigiForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "User/login";
+        }
         Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterGigiById(id_dokter, tanggal);
         model.addAttribute("doctor", foundDokter.get());
         return "User/form_pesan_dokter_gigi";
     }
 
     @GetMapping("/form_pilih_dokter_tht")
-    public String showDokterThtForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+    public String showDokterThtForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "User/login";
+        }
         Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterThtById(id_dokter, tanggal);
         model.addAttribute("doctor", foundDokter.get());
         return "User/form_pesan_dokter_tht";
     }
 
     @GetMapping("/form_pilih_dokter_jantung")
-    public String showDokterJantungForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model) {
+    public String showDokterJantungForm(@RequestParam("id_dokter") int id_dokter, @RequestParam("tanggal") Date tanggal, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "User/login";
+        }
         Optional<DokterCardSelection> foundDokter = this.userRepository.findDokterJantungById(id_dokter, tanggal);
         model.addAttribute("doctor", foundDokter.get());
         return "User/form_pesan_dokter_jantung";

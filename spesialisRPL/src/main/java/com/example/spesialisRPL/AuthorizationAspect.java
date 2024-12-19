@@ -39,7 +39,7 @@ public class AuthorizationAspect {
         }
         
         if (!Arrays.asList(roles).contains(role)) {
-            if(role.equals("Pasien")){
+            if(role.equals("pasien")){
                 response.sendRedirect("/user/");
                 return;
             }
@@ -48,6 +48,7 @@ public class AuthorizationAspect {
                 return;
             }
             if(role.equals("admin")){
+                System.out.println("Lu admin lu punya kuasa");
                 response.sendRedirect("/admin/");
                 return;
             }
