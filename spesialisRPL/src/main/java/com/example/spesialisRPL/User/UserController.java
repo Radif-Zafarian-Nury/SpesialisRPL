@@ -138,7 +138,7 @@ public class UserController {
 
     @PostMapping("/pesan_dokter_mata")
     public String pesanDokterMata(@RequestParam("nik") String nik, @RequestParam("id_jadwal") int id_jadwal, HttpSession session, Model model) {
-
+        
         
         int idPasien = this.userRepository.getPatientIdByNik(nik);
         this.userRepository.daftarPasien(idPasien, id_jadwal);
