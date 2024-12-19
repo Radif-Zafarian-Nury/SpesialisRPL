@@ -173,11 +173,32 @@ public class UserJdbc implements UserRepository{
     }
 
     @Override
-    public void daftarPasien(int id_pasien, int id_jadwal) {
+    public void daftarPasien(int id_pasien, int id_jadwal, int id_spesialisasi) {
         String sql = """
-                INSERT INTO pendaftaran (id_pasien, id_jadwal, status_daftar_ulang, status_bayar, no_antrian)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO pendaftaran (id_pasien, id_jadwal, id_spesialisasi, status_daftar_ulang, status_bayar, no_antrian)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
-        jdbcTemplate.update(sql, id_pasien, id_jadwal, false, false, null);
+        jdbcTemplate.update(sql, id_pasien, id_jadwal, id_spesialisasi, false, false, null);
+    }
+
+    @Override
+    public boolean cekPasienTerdaftarJadwal(int id_pasien, int id_jadwal) {
+        String sql = """
+                SELECT COUNT(*)
+                FROM pendaftaran
+                WHERE id_pasien = ? AND id_jadwal = ?
+                """;
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id_pasien, id_jadwal);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public int getIdSpesialisasi(String nama_spesialisasi) {
+        String sql = "SELECT id_spesialisasi FROM spesialisasi WHERE nama_spesialisasi = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, nama_spesialisasi);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
     }
 }
